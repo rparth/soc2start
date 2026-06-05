@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "soc2start.fullname" . }}-chrome
+  labels:
+    {{- include "soc2start.labels" . | nindent 4 }}
+    app.kubernetes.io/component: chrome
+spec:
+  type: ClusterIP
+  ports:
+    - name: devtools
+      port: {{ .Values.chrome.service.port }}
+      targetPort: devtools
+      protocol: TCP
+  selector:
+    {{- include "soc2start.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: chrome

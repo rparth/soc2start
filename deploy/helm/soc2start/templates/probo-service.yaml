@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "soc2start.fullname" . }}-probo
+  labels:
+    {{- include "soc2start.labels" . | nindent 4 }}
+    app.kubernetes.io/component: probo
+spec:
+  type: {{ .Values.probo.service.type }}
+  ports:
+    - name: http
+      port: {{ .Values.probo.service.port }}
+      targetPort: http
+      protocol: TCP
+    - name: metrics
+      port: {{ .Values.probo.service.metricsPort }}
+      targetPort: metrics
+      protocol: TCP
+  selector:
+    {{- include "soc2start.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: probo

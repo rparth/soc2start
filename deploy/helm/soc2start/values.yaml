@@ -1,0 +1,234 @@
+# SOC2Start.io Helm Chart Values
+
+# -- Global settings
+global:
+  # -- Domain for the application
+  domain: soc2start.example.com
+
+# -- Probo application
+probo:
+  image:
+    repository: ghcr.io/getprobo/probo
+    tag: ""  # defaults to Chart.appVersion
+    pullPolicy: IfNotPresent
+  imagePullSecrets: []
+  replicaCount: 2
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+    limits:
+      cpu: "1"
+      memory: 1Gi
+  podAnnotations: {}
+  nodeSelector: {}
+  tolerations: []
+  affinity: {}
+  service:
+    type: ClusterIP
+    port: 8080
+    metricsPort: 8081
+  # -- Base URL the application is reachable at
+  baseURL: ""  # defaults to https://<global.domain>
+  # -- CORS allowed origins (comma-separated)
+  corsAllowedOrigins: ""  # defaults to baseURL
+  # -- API listen address
+  apiAddr: ":8080"
+  # -- Metrics listen address
+  metricsAddr: "0.0.0.0:8081"
+  # -- Cookie domain
+  cookieDomain: ""  # defaults to global.domain
+  # -- Mailer sender
+  mailer:
+    senderName: SOC2Start.io
+    senderEmail: no-reply@notification.soc2start.io
+  # -- SMTP configuration
+  smtp:
+    addr: ""
+    user: ""
+    password: ""
+    tlsRequired: true
+  # -- OTEL SDK disabled
+  otelDisabled: false
+  # -- Tracing endpoint
+  tracingAddr: ""
+  # -- Custom domains ACME
+  acme:
+    directory: "https://acme-v02.api.letsencrypt.org/directory"
+    email: "admin@soc2start.io"
+  # -- Trust center addresses
+  trustCenter:
+    httpAddr: ":80"
+    httpsAddr: ":443"
+  # -- Existing secret name containing sensitive env vars.
+  # Must contain keys: PROBOD_ENCRYPTION_KEY, AUTH_COOKIE_SECRET,
+  # AUTH_PASSWORD_PEPPER, OAUTH2_SERVER_SIGNING_KEY
+  existingSecret: ""
+  # -- Inline secrets (ignored when existingSecret is set).
+  # For production, use existingSecret or a secrets manager.
+  secrets:
+    encryptionKey: ""
+    cookieSecret: ""
+    passwordPepper: ""
+    oauth2SigningKey: ""
+
+# -- AWS / S3 configuration
+aws:
+  region: us-east-1
+  bucket: soc2start
+  accessKeyID: ""
+  secretAccessKey: ""
+  # -- Set endpoint for S3-compatible storage (SeaweedFS, MinIO).
+  # Leave empty to use real AWS S3.
+  endpoint: ""
+  usePathStyle: false
+  # -- Existing secret containing AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY
+  existingSecret: ""
+
+# -- PostgreSQL
+postgres:
+  # -- Deploy built-in PostgreSQL StatefulSet
+  enabled: true
+  image:
+    repository: postgres
+    tag: "16"
+    pullPolicy: IfNotPresent
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+    limits:
+      cpu: "1"
+      memory: 2Gi
+  storage:
+    size: 20Gi
+    storageClass: ""
+  # -- Connection settings (used by probo)
+  auth:
+    username: probod
+    password: ""
+    database: probod
+    # -- Existing secret with keys: PG_USERNAME, PG_PASSWORD
+    existingSecret: ""
+  # -- External PostgreSQL (used when postgres.enabled is false)
+  external:
+    host: ""
+    port: "5432"
+  config:
+    sharedBuffers: 256MB
+    maxConnections: 200
+
+# -- SeaweedFS (S3-compatible object storage)
+seaweedfs:
+  # -- Deploy built-in SeaweedFS StatefulSet.
+  # Set to false to use real AWS S3 or another S3 provider.
+  enabled: true
+  image:
+    repository: chrislusf/seaweedfs
+    tag: latest
+    pullPolicy: IfNotPresent
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 1Gi
+  storage:
+    size: 50Gi
+    storageClass: ""
+  service:
+    s3Port: 8333
+
+# -- Headless Chrome (PDF generation)
+chrome:
+  image:
+    repository: chromedp/headless-shell
+    tag: latest
+    pullPolicy: IfNotPresent
+  replicaCount: 1
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 500m
+      memory: 1Gi
+  service:
+    port: 9222
+
+# -- Ingress configuration
+ingress:
+  enabled: true
+  # -- Ingress class name
+  className: alb
+  # -- Extra annotations merged onto the Ingress resource
+  annotations: {}
+  # -- Host for the ingress rule (defaults to global.domain)
+  host: ""
+  # -- TLS configuration
+  tls:
+    enabled: true
+  # -- AWS ALB-specific settings
+  alb:
+    enabled: true
+    # -- ALB scheme: internet-facing or internal
+    scheme: internet-facing
+    # -- Target type: ip or instance
+    targetType: ip
+    # -- SSL certificate ARN from ACM
+    certificateArn: ""
+    # -- Listen ports
+    listenPorts: '[{"HTTPS": 443}]'
+    # -- SSL policy
+    sslPolicy: ELBSecurityPolicy-TLS13-1-2-2021-06
+    # -- Health check path
+    healthcheckPath: /healthz
+    # -- WAF Web ACL ARN (optional)
+    wafAclArn: ""
+    # -- Extra ALB annotations
+    extraAnnotations: {}
+  # -- Cloudflare IP whitelisting
+  cloudflare:
+    enabled: false
+    # -- Cloudflare IPv4 CIDR ranges.
+    # See https://www.cloudflare.com/ips-v4/
+    ipv4:
+      - 173.245.48.0/20
+      - 103.21.244.0/22
+      - 103.22.200.0/22
+      - 103.31.4.0/22
+      - 141.101.64.0/18
+      - 108.162.192.0/18
+      - 190.93.240.0/20
+      - 188.114.96.0/20
+      - 197.234.240.0/22
+      - 198.41.128.0/17
+      - 162.158.0.0/15
+      - 104.16.0.0/13
+      - 104.24.0.0/14
+      - 172.64.0.0/13
+      - 131.0.72.0/22
+    # -- Cloudflare IPv6 CIDR ranges.
+    # See https://www.cloudflare.com/ips-v6/
+    ipv6:
+      - 2400:cb00::/32
+      - 2606:4700::/32
+      - 2803:f800::/32
+      - 2405:b500::/32
+      - 2405:8100::/32
+      - 2a06:98c0::/29
+      - 2c0f:f248::/32
+    # -- Additional trusted IPs to whitelist (e.g., office VPN)
+    extraIPs: []
+
+# -- ServiceAccount
+serviceAccount:
+  create: true
+  annotations: {}
+  name: ""
+
+# -- Pod disruption budget for probo
+podDisruptionBudget:
+  enabled: true
+  minAvailable: 1

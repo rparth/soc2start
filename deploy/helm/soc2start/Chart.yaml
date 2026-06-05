@@ -1,0 +1,6 @@
+apiVersion: v2
+name: soc2start
+description: SOC2Start.io compliance platform
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

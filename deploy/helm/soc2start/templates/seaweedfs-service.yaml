@@ -1,0 +1,24 @@
+{{- if .Values.seaweedfs.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "soc2start.fullname" . }}-seaweedfs
+  labels:
+    {{- include "soc2start.labels" . | nindent 4 }}
+    app.kubernetes.io/component: seaweedfs
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+    - name: s3
+      port: {{ .Values.seaweedfs.service.s3Port }}
+      targetPort: s3
+      protocol: TCP
+    - name: master
+      port: 9333
+      targetPort: master
+      protocol: TCP
+  selector:
+    {{- include "soc2start.selectorLabels" . | nindent 4 }}
+    app.kubernetes.io/component: seaweedfs
+{{- end }}

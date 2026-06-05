@@ -1,0 +1,24 @@
+SOC2Start.io has been deployed.
+
+Application URL: {{ include "soc2start.baseURL" . }}
+
+{{- if .Values.ingress.enabled }}
+Ingress host: {{ include "soc2start.ingressHost" . }}
+{{- if .Values.ingress.cloudflare.enabled }}
+Cloudflare IP whitelisting is ENABLED. Only Cloudflare proxy IPs can reach the ALB.
+{{- end }}
+{{- end }}
+
+{{- if .Values.postgres.enabled }}
+PostgreSQL is running as a StatefulSet inside the cluster.
+For production, consider using an external managed database (RDS) by setting:
+  postgres.enabled=false
+  postgres.external.host=<rds-endpoint>
+{{- end }}
+
+{{- if .Values.seaweedfs.enabled }}
+SeaweedFS is running as a StatefulSet for S3-compatible storage.
+For production, consider using real AWS S3 by setting:
+  seaweedfs.enabled=false
+  aws.endpoint=""
+{{- end }}

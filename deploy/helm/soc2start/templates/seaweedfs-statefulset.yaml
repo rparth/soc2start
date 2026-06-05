@@ -1,0 +1,56 @@
+{{- if .Values.seaweedfs.enabled }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "soc2start.fullname" . }}-seaweedfs
+  labels:
+    {{- include "soc2start.labels" . | nindent 4 }}
+    app.kubernetes.io/component: seaweedfs
+spec:
+  serviceName: {{ include "soc2start.fullname" . }}-seaweedfs
+  replicas: 1
+  selector:
+    matchLabels:
+      {{- include "soc2start.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: seaweedfs
+  template:
+    metadata:
+      labels:
+        {{- include "soc2start.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: seaweedfs
+    spec:
+      containers:
+        - name: seaweedfs
+          image: "{{ .Values.seaweedfs.image.repository }}:{{ .Values.seaweedfs.image.tag }}"
+          imagePullPolicy: {{ .Values.seaweedfs.image.pullPolicy }}
+          args:
+            - server
+            - -s3
+            - -s3.port={{ .Values.seaweedfs.service.s3Port }}
+            - -volume.max=100
+            - -master.volumeSizeLimitMB=1024
+            - -dir=/data
+          ports:
+            - name: s3
+              containerPort: {{ .Values.seaweedfs.service.s3Port }}
+              protocol: TCP
+            - name: master
+              containerPort: 9333
+              protocol: TCP
+          resources:
+            {{- toYaml .Values.seaweedfs.resources | nindent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: /data
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        {{- if .Values.seaweedfs.storage.storageClass }}
+        storageClassName: {{ .Values.seaweedfs.storage.storageClass }}
+        {{- end }}
+        resources:
+          requests:
+            storage: {{ .Values.seaweedfs.storage.size }}
+{{- end }}

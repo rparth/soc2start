@@ -1,0 +1,99 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "soc2start.fullname" . }}-probo
+  labels:
+    {{- include "soc2start.labels" . | nindent 4 }}
+    app.kubernetes.io/component: probo
+spec:
+  replicas: {{ .Values.probo.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "soc2start.selectorLabels" . | nindent 6 }}
+      app.kubernetes.io/component: probo
+  template:
+    metadata:
+      annotations:
+        checksum/config: {{ include (print $.Template.BasePath "/probo-configmap.yaml") . | sha256sum }}
+        checksum/secret: {{ include (print $.Template.BasePath "/probo-secret.yaml") . | sha256sum }}
+        {{- with .Values.probo.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      labels:
+        {{- include "soc2start.selectorLabels" . | nindent 8 }}
+        app.kubernetes.io/component: probo
+    spec:
+      serviceAccountName: {{ include "soc2start.serviceAccountName" . }}
+      {{- with .Values.probo.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: probo
+          image: {{ include "soc2start.proboImage" . }}
+          imagePullPolicy: {{ .Values.probo.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+            - name: metrics
+              containerPort: 8081
+              protocol: TCP
+          envFrom:
+            - configMapRef:
+                name: {{ include "soc2start.fullname" . }}-probo
+            - secretRef:
+                name: {{ include "soc2start.proboSecretName" . }}
+            - secretRef:
+                name: {{ include "soc2start.awsSecretName" . }}
+          env:
+            - name: PG_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "soc2start.pgSecretName" . }}
+                  key: PG_USERNAME
+            - name: PG_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "soc2start.pgSecretName" . }}
+                  key: PG_PASSWORD
+            {{- if .Values.probo.smtp.password }}
+            - name: SMTP_PASSWORD
+              value: {{ .Values.probo.smtp.password | quote }}
+            {{- end }}
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          resources:
+            {{- toYaml .Values.probo.resources | nindent 12 }}
+          volumeMounts:
+            - name: data
+              mountPath: /data
+            - name: config
+              mountPath: /etc/probod
+      volumes:
+        - name: data
+          emptyDir: {}
+        - name: config
+          emptyDir: {}
+      {{- with .Values.probo.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.probo.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.probo.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
