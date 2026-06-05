@@ -39,6 +39,7 @@ import { ControlledField } from "#/components/form/ControlledField";
 import { DocumentClassificationOptions } from "#/components/form/DocumentClassificationOptions";
 import { DocumentTypeOptions } from "#/components/form/DocumentTypeOptions";
 import { getTemplatesForType, documentTemplates } from "#/data/document-templates";
+import { markdownToProseMirrorJSON } from "#/data/markdown-to-prosemirror";
 import { PeopleMultiSelectField } from "#/components/form/PeopleMultiSelectField";
 import { useFormWithSchema } from "#/hooks/useFormWithSchema";
 import { useOrganizationId } from "#/hooks/useOrganizationId";
@@ -107,7 +108,7 @@ export function CreateDocumentDialog({ trigger, connection }: CreateDocumentDial
     const template = documentTemplates.find(t => t.id === templateId);
     if (template) {
       setValue("title", template.title);
-      templateContentRef.current = template.content;
+      templateContentRef.current = markdownToProseMirrorJSON(template.content);
     }
   };
 
