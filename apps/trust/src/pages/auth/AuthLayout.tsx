@@ -40,8 +40,8 @@ export function AuthLayout(props: { queryRef: PreloadedQuery<AuthLayoutQuery> })
     : compliancePage.logoFileUrl;
 
   return (
-    <div className="min-h-screen text-txt-primary bg-level-0 flex flex-col items-center justify-center">
-      <Card className="w-full max-w-lg px-12 py-8 flex flex-col items-center justify-center">
+    <div className="min-h-screen text-txt-primary bg-level-0 flex flex-col items-center justify-center bg-[radial-gradient(ellipse_at_top,_var(--color-level-1)_0%,_var(--color-level-0)_70%)]">
+      <Card className="w-full max-w-lg px-12 py-8 flex flex-col items-center justify-center shadow-mid">
         <div className="w-full flex flex-col items-center justify-center gap-8">
           {logoFileUrl
             ? (

@@ -25,7 +25,7 @@ type Props = PropsWithChildren<{
 }>;
 
 const card = tv({
-  base: "border border-border-solid bg-level-1 rounded-xl transition-all duration-150 hover:-translate-y-0.5 hover:shadow-[0_8px_30px_rgba(13,33,55,0.06)]",
+  base: "border border-border-solid bg-level-1 rounded-xl transition-all duration-200 ease-[cubic-bezier(0.25,1,0.5,1)] hover:-translate-y-0.5 hover:shadow-[0_8px_30px_rgba(13,33,55,0.08)]",
   variants: {
     padded: {
       true: "p-6",

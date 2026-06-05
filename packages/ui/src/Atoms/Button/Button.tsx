@@ -28,9 +28,9 @@ export const button = tv({
   variants: {
     variant: {
       primary:
-                "bg-emerald text-white hover:bg-emerald-light hover:-translate-y-px hover:shadow-[0_4px_12px_rgba(39,174,96,0.3)] shadow-base active:bg-emerald active:translate-y-0",
+                "bg-emerald text-white hover:bg-emerald-light hover:-translate-y-px hover:shadow-[0_4px_12px_rgba(39,174,96,0.3)] shadow-base active:bg-emerald active:translate-y-0 active:scale-[0.98] active:shadow-none",
       secondary:
-                "bg-white text-txt-primary hover:bg-primary hover:text-white shadow-base hover:shadow-hover active:bg-primary-pressed active:text-white border-2 border-primary",
+                "bg-white text-txt-primary hover:bg-primary hover:text-white shadow-base hover:shadow-hover active:bg-primary-pressed active:text-white active:scale-[0.98] active:shadow-none border-2 border-primary",
       tertiary:
                 "bg-transparent text-txt-primary hover:text-txt-accent active:bg-tertiary-pressed",
       quaternary:
