@@ -44,7 +44,7 @@ import { IconCrossLargeX } from "../../Atoms/Icons";
 export const dialog = tv({
   slots: {
     overlay:
-            "fixed inset-0 z-50 bg-dialog/40 duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+            "fixed inset-0 z-50 bg-dialog/30 duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
     content:
             "text-txt-secondary text-sm fixed inset-0 m-auto z-50 w-full h-max bg-level-2 rounded-2xl max-w-5xl w-[95%] duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-top-5 data-[state=open]:slide-in-from-top-5",
     header: "flex justify-between items-center p-3 border-b border-b-border-low",

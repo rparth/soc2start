@@ -39,7 +39,7 @@ export const selectCell = tv({
             "text-txt-primary absolute left-0 top-0 right-0 bg-level-2 border border-border-low rounded-b-sm",
     value: "flex flex-col gap-2 py-3 justify-center",
     input: "text-sm text-txt-secondary border-y border-border-low py-2 px-3 w-full focus:outline-txt-accent outline",
-    item: "py-2 px-3 hover:bg-level-3 data-[selected=true]:bg-level-3",
+    item: "py-2 px-3 hover:bg-highlight data-[selected=true]:bg-active",
   },
 });
 

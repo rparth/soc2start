@@ -37,7 +37,7 @@
     --color-subtle: rgba(13, 33, 55, 0.03);
     --color-highlight: rgba(13, 33, 55, 0.05);
     --color-active: #E8F8EF;
-    --color-accent: #0D2137;
+    --color-accent: #27AE60;
     --color-danger: #FDECEB;
     --color-danger-plain: #E74C3C;
     --color-danger-dark: #E74C3C;
@@ -65,7 +65,7 @@
     --color-tertiary-hover: rgba(13, 33, 55, 0.03);
     --color-subtle-hover: rgba(13, 33, 55, 0.05);
     --color-highlight-hover: rgba(13, 33, 55, 0.08);
-    --color-accent-hover: #1A3D5E;
+    --color-accent-hover: #34D278;
     --color-active-hover: #D4F2DC;
     --color-danger-hover: #C0392B;
 
@@ -76,7 +76,7 @@
     --color-tertiary-pressed: rgba(13, 33, 55, 0.05);
     --color-subtle-pressed: rgba(13, 33, 55, 0.08);
     --color-highlight-pressed: rgba(13, 33, 55, 0.12);
-    --color-accent-pressed: #2D5A8A;
+    --color-accent-pressed: #1E9A4A;
     --color-active-pressed: #C0EBD0;
     --color-danger-pressed: #A93226;
 
