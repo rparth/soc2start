@@ -23,11 +23,13 @@ import {
   DialogFooter,
   Input,
   Label,
+  Option,
   PropertyRow,
+  Select,
   useDialogRef,
   useToast,
 } from "@probo/ui";
-import { type ReactNode } from "react";
+import { type ReactNode, useRef } from "react";
 import { useMutation } from "react-relay";
 import { graphql } from "relay-runtime";
 import { z } from "zod";
@@ -36,6 +38,7 @@ import type { CreateDocumentDialogMutation } from "#/__generated__/core/CreateDo
 import { ControlledField } from "#/components/form/ControlledField";
 import { DocumentClassificationOptions } from "#/components/form/DocumentClassificationOptions";
 import { DocumentTypeOptions } from "#/components/form/DocumentTypeOptions";
+import { getTemplatesForType, documentTemplates } from "#/data/document-templates";
 import { PeopleMultiSelectField } from "#/components/form/PeopleMultiSelectField";
 import { useFormWithSchema } from "#/hooks/useFormWithSchema";
 import { useOrganizationId } from "#/hooks/useOrganizationId";
@@ -82,7 +85,7 @@ export function CreateDocumentDialog({ trigger, connection }: CreateDocumentDial
   const organizationId = useOrganizationId();
   const { toast } = useToast();
 
-  const { control, handleSubmit, register, formState, reset } = useFormWithSchema(
+  const { control, handleSubmit, register, formState, reset, watch, setValue } = useFormWithSchema(
     documentSchema,
     {
       defaultValues: {
@@ -96,11 +99,24 @@ export function CreateDocumentDialog({ trigger, connection }: CreateDocumentDial
   const [createDocument, isLoading]
     = useMutation<CreateDocumentDialogMutation>(createDocumentMutation);
 
+  const templateContentRef = useRef<string>("");
+  const selectedDocumentType = watch("documentType");
+  const availableTemplates = getTemplatesForType(selectedDocumentType);
+
+  const handleTemplateSelect = (templateId: string) => {
+    const template = documentTemplates.find(t => t.id === templateId);
+    if (template) {
+      setValue("title", template.title);
+      templateContentRef.current = template.content;
+    }
+  };
+
   const onSubmit = (data: z.infer<typeof documentSchema>) => {
     createDocument({
       variables: {
         input: {
           ...data,
+          content: templateContentRef.current || undefined,
           organizationId,
         },
         connections: [connection],
@@ -112,6 +128,7 @@ export function CreateDocumentDialog({ trigger, connection }: CreateDocumentDial
         }
         toast({ title: __("Success"), description: __("Document created successfully."), variant: "success" });
         dialogRef.current?.close();
+        templateContentRef.current = "";
         reset();
       },
       onError(error) {
@@ -162,6 +179,24 @@ export function CreateDocumentDialog({ trigger, connection }: CreateDocumentDial
                 <DocumentTypeOptions />
               </ControlledField>
             </PropertyRow>
+
+            {availableTemplates.length > 0 && (
+              <PropertyRow
+                id="template"
+                label={__("Template")}
+              >
+                <Select
+                  placeholder={__("Start from scratch")}
+                  onValueChange={handleTemplateSelect}
+                >
+                  {availableTemplates.map((t) => (
+                    <Option key={t.id} value={t.id}>
+                      {t.title}
+                    </Option>
+                  ))}
+                </Select>
+              </PropertyRow>
+            )}
 
             <PropertyRow
               id="classification"
