@@ -54,6 +54,14 @@ const routes = [
         Component: lazy(() => import("#/pages/auth/VerifyMagicLinkPage")),
       },
       {
+        path: "/magic-link-expired",
+        Component: lazy(() => import("#/pages/auth/MagicLinkExpiredPage")),
+      },
+      {
+        path: "/magic-link-already-used",
+        Component: lazy(() => import("#/pages/auth/MagicLinkAlreadyUsedPage")),
+      },
+      {
         path: "/full-name",
         Component: lazy(() => import("#/pages/auth/FullNamePage")),
       },
