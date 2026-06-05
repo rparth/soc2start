@@ -773,6 +773,10 @@ func (s *OrganizationService) CreateOrganization(
 				return fmt.Errorf("cannot insert thirdParty: %w", err)
 			}
 
+			if err := seedOrganizationData(ctx, tx, scope, organization.ID, tenantID); err != nil {
+				return fmt.Errorf("cannot seed organization data: %w", err)
+			}
+
 			return nil
 		},
 	)
