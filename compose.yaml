@@ -181,6 +181,7 @@ services:
       MAILER_SENDER_EMAIL: "no-reply@notification.getprobo.com"
       MAILER_SENDER_NAME: "Probo"
       CHROME_DP_ADDR: "chrome:9222"
+      ACME_DIRECTORY: "https://pebble:14000/dir"
       METRICS_ADDR: "0.0.0.0:8081"
       TRACING_ADDR: "tempo:4317"
     ports:
