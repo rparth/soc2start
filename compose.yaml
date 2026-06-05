@@ -157,6 +157,9 @@ services:
         if [ -z "$$OAUTH2_SERVER_SIGNING_KEY" ]; then
           export OAUTH2_SERVER_SIGNING_KEY="$$(openssl genrsa 2048 2>/dev/null)"
         fi
+        if [ -f /pebble-certs/rootCA.pem ]; then
+          export ACME_ROOT_CA="$$(cat /pebble-certs/rootCA.pem)"
+        fi
         exec /usr/local/bin/entrypoint.sh
     environment:
       PROBOD_ENCRYPTION_KEY: "thisisnotasecretAAAAAAAAAAAAAAAAAAAAAAAAAAA="
@@ -189,7 +192,10 @@ services:
       - "8081:8081"
     volumes:
       - "probo-data:/data"
+      - "./compose/pebble/certs:/pebble-certs:ro"
     depends_on:
+      pebble:
+        condition: service_started
       postgres:
         condition: service_healthy
       seaweedfs:
