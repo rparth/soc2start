@@ -145,6 +145,57 @@ services:
       - "8056:8056" # Management API
     command: -dnsserver ":8053" -http01 ":8055" -management ":8056"
 
+  probo:
+    build: .
+    pull_policy: missing
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        export OAUTH2_SERVER_SIGNING_KEY="$$(cat /tmp/oauth2-key.pem)"
+        export ACME_ROOT_CA="$$(cat /tmp/rootCA.pem 2>/dev/null || true)"
+        exec /usr/local/bin/entrypoint.sh
+    environment:
+      PROBOD_ENCRYPTION_KEY: "thisisnotasecretAAAAAAAAAAAAAAAAAAAAAAAAAAA="
+      AUTH_COOKIE_SECRET: "this-is-a-secure-secret-for-cookie-signing-at-least-32-bytes"
+      AUTH_PASSWORD_PEPPER: "this-is-a-secure-pepper-for-password-hashing-at-least-32-bytes"
+      AUTH_COOKIE_SECURE: "false"
+      PROBOD_BASE_URL: "http://localhost:8080"
+      API_ADDR: ":8080"
+      API_CORS_ALLOWED_ORIGINS: "http://localhost:8080,http://localhost:5173,http://localhost:5174"
+      PG_ADDR: "postgres:5432"
+      PG_USERNAME: "postgres"
+      PG_PASSWORD: "postgres"
+      PG_DATABASE: "probod"
+      AWS_REGION: "us-east-1"
+      AWS_BUCKET: "probod"
+      AWS_ACCESS_KEY_ID: "probod"
+      AWS_SECRET_ACCESS_KEY: "thisisnotasecret"
+      AWS_ENDPOINT: "http://seaweedfs:8333"
+      AWS_USE_PATH_STYLE: "true"
+      SMTP_ADDR: "mailpit:1025"
+      SMTP_TLS_REQUIRED: "false"
+      MAILER_SENDER_EMAIL: "no-reply@notification.getprobo.com"
+      MAILER_SENDER_NAME: "Probo"
+      CHROME_DP_ADDR: "chrome:9222"
+      ACME_DIRECTORY: "https://pebble:14000/dir"
+      METRICS_ADDR: "0.0.0.0:8081"
+      TRACING_ADDR: "tempo:4317"
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    volumes:
+      - "./cfg/.dev-oauth2-signing-key.pem:/tmp/oauth2-key.pem:ro"
+      - "./compose/pebble/certs/rootCA.pem:/tmp/rootCA.pem:ro"
+      - "probo-data:/data"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      seaweedfs:
+        condition: service_started
+      chrome:
+        condition: service_started
+
   keycloak:
     image: "quay.io/keycloak/keycloak:26.6.1@sha256:26ae26445475f7fac5f90ee138b1bdb64324f5815fb16133ffdbdb122d97c4d8"
     pull_policy: missing
@@ -170,6 +221,7 @@ services:
       - "keycloak-data:/opt/keycloak/data/h2:rw"
 
 volumes:
+  probo-data:
   postgres-data:
   seaweedfs-data:
   grafana-data:
