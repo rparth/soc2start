@@ -18,6 +18,7 @@ import { useId } from "react";
 type Props = {
   className?: string;
   withPicto?: boolean;
+  size?: "sm" | "md";
 };
 
 function ShieldIcon({ size = 32 }: { size?: number }) {
@@ -65,12 +66,16 @@ function ShieldIcon({ size = 32 }: { size?: number }) {
   );
 }
 
-export function Logo({ className, withPicto }: Props) {
+export function Logo({ className, withPicto, size = "md" }: Props) {
+  const iconSize = size === "sm" ? 22 : 40;
+  const textClass = size === "sm" ? "text-sm" : "text-2xl";
+  const gapClass = size === "sm" ? "gap-1.5" : "gap-3";
+
   if (withPicto) {
     return (
-      <div className={clsx(className, "flex items-center gap-3")} role="img" aria-label="SOC2Start.io">
-        <ShieldIcon size={40} />
-        <span className="text-2xl tracking-[-1.5px] leading-none">
+      <div className={clsx(className, "flex items-center", gapClass)} role="img" aria-label="SOC2Start.io">
+        <ShieldIcon size={iconSize} />
+        <span className={clsx(textClass, "tracking-[-1.5px] leading-none")}>
           <span className="font-extrabold text-[var(--color-txt-primary)]">SOC2</span>
           <span className="font-light text-[var(--color-txt-primary)]">Start</span>
           <span className="font-light text-[var(--color-txt-accent)]">.io</span>
