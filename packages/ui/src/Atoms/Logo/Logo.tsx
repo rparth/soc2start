@@ -13,7 +13,6 @@
 // PERFORMANCE OF THIS SOFTWARE.
 
 import { clsx } from "clsx";
-import { useId } from "react";
 
 type Props = {
   className?: string;
@@ -21,7 +20,6 @@ type Props = {
 };
 
 export function Logo({ className, withPicto }: Props) {
-  const id = useId();
   if (withPicto) {
     return (
       <svg
