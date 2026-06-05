@@ -186,7 +186,7 @@ services:
       CHROME_DP_ADDR: "chrome:9222"
       ACME_DIRECTORY: "https://pebble:14000/dir"
       METRICS_ADDR: "0.0.0.0:8081"
-      TRACING_ADDR: "tempo:4317"
+      OTEL_SDK_DISABLED: "true"
     ports:
       - "8080:8080"
       - "8081:8081"
