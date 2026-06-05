@@ -20,7 +20,7 @@ export function ProboLogo() {
     <Img
       style={{verticalAlign: "middle", height: "100%"}}
       src="{{.PoweredByLogoURL}}"
-      alt="Probo"
+      alt="SOC2Start.io"
       height="16"
     />
   );

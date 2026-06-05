@@ -78,8 +78,8 @@ const main: React.CSSProperties = {
   margin: '0',
   padding: '0',
   fontFamily:
-    "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
-  backgroundColor: '#fffffb',
+    "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif",
+  backgroundColor: '#F5F7FA',
   WebkitTextSizeAdjust: '100%',
 };
 
@@ -95,13 +95,13 @@ const container: React.CSSProperties = {
 export const headerSection: React.CSSProperties = {
   padding: '40px 40px 30px 40px',
   textAlign: 'center',
-  backgroundColor: '#101e1c',
+  backgroundColor: '#0D2137',
   borderRadius: '8px 8px 0 0',
 };
 
 export const h1: React.CSSProperties = {
   margin: '0',
-  color: '#e6ff03',
+  color: '#27AE60',
   fontSize: '24px',
   fontWeight: '600',
   lineHeight: '1.3',
@@ -113,7 +113,7 @@ const content: React.CSSProperties = {
 
 const text: React.CSSProperties = {
   margin: '0 0 20px 0',
-  color: '#141e12',
+  color: '#0D2137',
   fontSize: '16px',
   lineHeight: '24px',
 };
@@ -125,7 +125,7 @@ export const buttonContainer: React.CSSProperties = {
 export const button: React.CSSProperties = {
   display: 'inline-block',
   padding: '14px 28px',
-  backgroundColor: '#101e1c',
+  backgroundColor: '#0D2137',
   color: '#ffffff',
   textDecoration: 'none',
   borderRadius: '8px',
@@ -136,19 +136,19 @@ export const button: React.CSSProperties = {
 
 export const footerText: React.CSSProperties = {
   margin: '0',
-  color: '#6b716a',
+  color: '#7A8FA3',
   fontSize: '14px',
   lineHeight: '20px',
 };
 
 const footerSection: React.CSSProperties = {
   padding: '30px 40px',
-  borderTop: '1px solid #ecefec',
+  borderTop: '1px solid #E8ECF0',
 };
 
 const footerAddress: React.CSSProperties = {
   margin: '10px 0 0 0',
-  color: '#6b716a',
+  color: '#7A8FA3',
   fontSize: '12px',
   lineHeight: '18px',
 };
@@ -159,7 +159,7 @@ const logoSection: React.CSSProperties = {
 
 export const bodyText: React.CSSProperties = {
   margin: '0 0 30px 0',
-  color: '#141e12',
+  color: '#0D2137',
   fontSize: '16px',
   lineHeight: '24px',
 };

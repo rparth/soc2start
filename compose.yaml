@@ -179,7 +179,7 @@ services:
       SMTP_ADDR: "mailpit:1025"
       SMTP_TLS_REQUIRED: "false"
       MAILER_SENDER_EMAIL: "no-reply@notification.getprobo.com"
-      MAILER_SENDER_NAME: "Probo"
+      MAILER_SENDER_NAME: "SOC2Start.io"
       CHROME_DP_ADDR: "chrome:9222"
       ACME_DIRECTORY: "https://pebble:14000/dir"
       METRICS_ADDR: "0.0.0.0:8081"

@@ -18,9 +18,9 @@ import EmailLayout, { bodyText, button, buttonContainer, footerText } from './co
 
 export const Invitation = () => {
   return (
-    <EmailLayout subject={'Invitation to join {{.OrganizationName}} on Probo'}>
+    <EmailLayout subject={'Invitation to join {{.OrganizationName}} on SOC2Start.io'}>
       <Text style={bodyText}>
-        You have been invited to join organization <strong>{'{{.OrganizationName}}'}</strong> on Probo. Click the button below to activate your account:
+        You have been invited to join organization <strong>{'{{.OrganizationName}}'}</strong> on SOC2Start.io. Click the button below to activate your account:
       </Text>
 
       <Section style={buttonContainer}>
