@@ -13,7 +13,7 @@
 // PERFORMANCE OF THIS SOFTWARE.
 
 import { Skeleton } from "@probo/ui";
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useRef, useTransition } from "react";
 import { useQueryLoader } from "react-relay";
 
 import type { ViewerMembershipLayoutQuery } from "#/__generated__/iam/ViewerMembershipLayoutQuery.graphql";
@@ -27,12 +27,21 @@ import {
 
 function EmployeeLayoutQueryLoader() {
   const organizationId = useOrganizationId();
+  const mounted = useRef(false);
+  const [, startTransition] = useTransition();
   const [queryRef, loadQuery] = useQueryLoader<ViewerMembershipLayoutQuery>(
     viewerMembershipLayoutQuery,
   );
 
   useEffect(() => {
-    loadQuery({ organizationId, hideSidebar: true });
+    if (!mounted.current) {
+      mounted.current = true;
+      loadQuery({ organizationId, hideSidebar: true });
+    } else {
+      startTransition(() => {
+        loadQuery({ organizationId, hideSidebar: true });
+      });
+    }
   }, [organizationId, loadQuery]);
 
   if (!queryRef) {
