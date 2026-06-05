@@ -52,7 +52,7 @@ export function Toggle({ checked, onChange, disabled = false, size = "default", 
         backgroundColor: checked
           ? "var(--color-accent)"
           : "var(--color-border-mid)",
-        transition: "background-color 200ms ease-in-out",
+        transition: "background-color 200ms cubic-bezier(0.25, 1, 0.5, 1)",
       }}
     >
       <span
@@ -63,7 +63,7 @@ export function Toggle({ checked, onChange, disabled = false, size = "default", 
           borderRadius: 9999,
           backgroundColor: "white",
           boxShadow: "0 1px 2px rgba(0,0,0,0.1)",
-          transition: "transform 200ms ease-in-out",
+          transition: "transform 200ms cubic-bezier(0.25, 1, 0.5, 1)",
           transform: checked ? `translateX(${travel}px)` : "translateX(0)",
         }}
       />
