@@ -39,7 +39,7 @@ export const description: INodeProperties[] = [
 			},
 		],
 		default: 'console',
-		description: 'Which Probo API to call',
+		description: 'Which SOC2Start.io API to call',
 	},
 	{
 		displayName: 'Query',

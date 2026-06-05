@@ -23,15 +23,15 @@ import {
 export class ProboApi implements ICredentialType {
 	name = 'proboApi';
 
-	displayName = 'Probo API';
+	displayName = 'SOC2Start.io API';
 
-	icon: Icon = { light: 'file:../icons/probo-light.svg', dark: 'file:../icons/probo.svg' };
+	icon: Icon = { light: 'file:../icons/soc2start-light.svg', dark: 'file:../icons/soc2start.svg' };
 
 	documentationUrl = 'https://www.getprobo.com/docs';
 
 	properties: INodeProperties[] = [
 		{
-			displayName: 'Probo Server',
+			displayName: 'SOC2Start.io Server',
 			name: 'server',
 			type: 'string',
 			default: 'https://us.console.getprobo.com',

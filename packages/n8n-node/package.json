@@ -29,7 +29,7 @@
     ]
   },
   "license": "MIT",
-  "description": "n8n nodes for integrating with the Probo compliance platform API",
+  "description": "n8n nodes for integrating with the SOC2Start.io compliance platform API",
   "keywords": [
     "n8n",
     "n8n-nodes",

@@ -27,15 +27,15 @@ import {
 
 export class Probo implements INodeType {
 	description: INodeTypeDescription = {
-		displayName: 'Probo',
+		displayName: 'SOC2Start.io',
 		name: 'probo',
-		icon: { light: 'file:../../icons/probo-light.svg', dark: 'file:../../icons/probo.svg' },
+		icon: { light: 'file:../../icons/soc2start-light.svg', dark: 'file:../../icons/soc2start.svg' },
 		group: ['input'],
 		version: 1,
 		subtitle: '={{$parameter["resource"]}} / {{$parameter["operation"]}}',
-		description: 'Consume data from the Probo API',
+		description: 'Consume data from the SOC2Start.io API',
 		defaults: {
-			name: 'Probo',
+			name: 'SOC2Start.io',
 		},
 		usableAsTool: true,
 		inputs: [NodeConnectionTypes.Main],
