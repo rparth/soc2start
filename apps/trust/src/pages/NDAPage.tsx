@@ -232,7 +232,7 @@ export function NDAPage(props: {
   return (
     <div className="bg-level-2 flex flex-col min-h-screen lg:h-screen">
       <header className="flex items-center h-12 justify-between border-b border-border-solid px-4 flex-none">
-        <Logo />
+        <Logo withPicto />
       </header>
       <div className="grid lg:grid-cols-2 min-h-0 flex-1">
         <div className="flex flex-col items-center overflow-y-auto">
@@ -303,7 +303,7 @@ export function NDAPage(props: {
             </div>
           </div>
           <a
-            href="https://www.getprobo.com/"
+            href="https://soc2start.io/"
             className="flex gap-1 text-sm font-medium text-txt-tertiary items-center py-6"
           >
             Powered by

@@ -13,6 +13,7 @@
 // PERFORMANCE OF THIS SOFTWARE.
 
 import { clsx } from "clsx";
+import { useId } from "react";
 
 type Props = {
   className?: string;
@@ -20,6 +21,9 @@ type Props = {
 };
 
 function ShieldIcon({ size = 32 }: { size?: number }) {
+  const id = useId();
+  const fillId = `shield-fill-${id}`;
+  const strokeId = `check-stroke-${id}`;
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -29,18 +33,18 @@ function ShieldIcon({ size = 32 }: { size?: number }) {
       fill="none"
     >
       <defs>
-        <linearGradient id="shield-fill" x1="0" y1="0" x2="0" y2="1">
+        <linearGradient id={fillId} x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stopColor="#1A3D5E" />
           <stop offset="100%" stopColor="#0D2137" />
         </linearGradient>
-        <linearGradient id="check-stroke" x1="0" y1="0" x2="1" y2="1">
+        <linearGradient id={strokeId} x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stopColor="#34D278" />
           <stop offset="100%" stopColor="#27AE60" />
         </linearGradient>
       </defs>
       <path
         d="M256 36 L88 112 L88 252 C88 376 256 480 256 480 C256 480 424 376 424 252 L424 112 Z"
-        fill="url(#shield-fill)"
+        fill={`url(#${fillId})`}
       />
       <path
         d="M256 36 L88 112 L88 252 C88 376 256 480 256 480 C256 480 424 376 424 252 L424 112 Z"
@@ -52,7 +56,7 @@ function ShieldIcon({ size = 32 }: { size?: number }) {
       <polyline
         points="190,264 234,316 328,204"
         fill="none"
-        stroke="url(#check-stroke)"
+        stroke={`url(#${strokeId})`}
         strokeWidth="36"
         strokeLinecap="round"
         strokeLinejoin="round"
