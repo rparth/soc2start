@@ -1,0 +1,136 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-06-04T00:00:00Z",
+  "title": "Design System: SOC2Start.io",
+  "extensions": {
+    "colorMeta": {
+      "navy-dark": { "role": "primary", "displayName": "Navy Dark", "canonical": "oklch(22% 0.04 250)", "tonalRamp": ["#050B12", "#0A1624", "#0D2137", "#132D4A", "#1A3D5E", "#2D5A8A", "#4A7AB0", "#7A9FC8"] },
+      "navy": { "role": "primary", "displayName": "Navy", "canonical": "oklch(33% 0.06 250)", "tonalRamp": ["#0A1624", "#0D2137", "#132D4A", "#1A3D5E", "#2D5A8A", "#4A7AB0", "#7A9FC8", "#B0CCE0"] },
+      "navy-mid": { "role": "primary", "displayName": "Navy Mid", "canonical": "oklch(44% 0.08 250)", "tonalRamp": ["#0D2137", "#132D4A", "#1A3D5E", "#2D5A8A", "#4A7AB0", "#6A94C0", "#8FB4D6", "#B8D4EC"] },
+      "emerald": { "role": "secondary", "displayName": "Emerald", "canonical": "oklch(64% 0.17 155)", "tonalRamp": ["#0E4A24", "#167A3A", "#1E9A4A", "#27AE60", "#34D278", "#5DE09A", "#8EEABC", "#C0F2DA"] },
+      "emerald-light": { "role": "secondary", "displayName": "Emerald Light", "canonical": "oklch(72% 0.18 155)", "tonalRamp": ["#167A3A", "#1E9A4A", "#27AE60", "#34D278", "#5DE09A", "#8EEABC", "#C0F2DA", "#E8F8EF"] },
+      "emerald-pale": { "role": "neutral", "displayName": "Emerald Pale", "canonical": "oklch(96% 0.03 155)", "tonalRamp": ["#8EEABC", "#A6EFC8", "#BEF4D4", "#D4F2DC", "#E0F6E6", "#E8F8EF", "#F2FBF6", "#F8FDF9"] },
+      "slate": { "role": "neutral", "displayName": "Slate", "canonical": "oklch(63% 0.02 250)", "tonalRamp": ["#2D4357", "#3A5468", "#4A6578", "#5A7688", "#6A8598", "#7A8FA3", "#9AABB8", "#B8C4CE"] },
+      "surface": { "role": "neutral", "displayName": "Surface", "canonical": "oklch(97% 0.005 250)", "tonalRamp": ["#B8C4CE", "#C8D0D8", "#D8DEE4", "#E4E8EC", "#E8ECF0", "#F0F2F5", "#F5F7FA", "#FAFBFC"] },
+      "border": { "role": "neutral", "displayName": "Border", "canonical": "oklch(93% 0.005 250)", "tonalRamp": ["#A8B4C0", "#B8C4CE", "#C8D0D8", "#D8DEE4", "#E0E4E8", "#E8ECF0", "#F0F2F5", "#F5F7FA"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Page heroes only. Rare in product surfaces." },
+      "headline": { "displayName": "Headline", "purpose": "Section headers, page titles, card titles." },
+      "title": { "displayName": "Title", "purpose": "Subsection headers, modal titles, sidebar labels." },
+      "body": { "displayName": "Body", "purpose": "Primary reading text. Max 65-75ch." },
+      "label": { "displayName": "Label", "purpose": "Badges, timestamps, metadata, field labels." },
+      "mono": { "displayName": "Mono", "purpose": "Code, API keys, GIDs, CLI output." }
+    },
+    "shadows": [
+      { "name": "base", "value": "0px 1px 3px 0px rgba(13,33,55,0.1), 0px -1px 0px 0px rgba(0,0,0,0.1) inset", "purpose": "Buttons at rest. Subtle pressed-plate feel." },
+      { "name": "hover", "value": "0px 2px 6px 0px rgba(13,33,55,0.1), 0px -1px 0px 0px rgba(0,0,0,0.1) inset", "purpose": "Buttons on hover." },
+      { "name": "focus", "value": "0px 0px 0px 4px rgba(39,174,96,0.3)", "purpose": "Emerald focus ring for keyboard navigation." },
+      { "name": "mid", "value": "0px 2px 4px 0px rgba(13,33,55,0.08), 0px 2px 12px 0px rgba(13,33,55,0.06)", "purpose": "Dropdowns, popovers, floating elements." },
+      { "name": "card-hover", "value": "0 8px 30px rgba(13,33,55,0.06)", "purpose": "Cards on hover with lift." }
+    ],
+    "motion": [
+      { "name": "transition-default", "value": "all 150ms ease-out", "purpose": "Default for interactive state changes." },
+      { "name": "ease-out-quart", "value": "cubic-bezier(0.25, 1, 0.5, 1)", "purpose": "Smooth deceleration for entrances and reveals." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1280px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Main call-to-action. Emerald fill, white text, lifts on hover.",
+      "html": "<button class=\"ds-btn-primary\">Get Started</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 12px 24px; border-radius: 12px; border: none; background: #27AE60; color: #fff; font-family: Inter, system-ui, sans-serif; font-size: 14px; font-weight: 600; line-height: 1; letter-spacing: 0; cursor: pointer; white-space: nowrap; transition: all 150ms ease-out; box-shadow: 0px 1px 3px 0px rgba(13,33,55,0.1), 0px -1px 0px 0px rgba(0,0,0,0.1) inset; } .ds-btn-primary:hover { background: #34D278; transform: translateY(-1px); box-shadow: 0 4px 12px rgba(39,174,96,0.3); } .ds-btn-primary:active { background: #27AE60; transform: translateY(0); } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0px 0px 0px 4px rgba(39,174,96,0.3); }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Secondary action. White fill, navy border, inverts on hover.",
+      "html": "<button class=\"ds-btn-secondary\">Learn More</button>",
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 12px 24px; border-radius: 12px; border: 2px solid #0D2137; background: #fff; color: #0D2137; font-family: Inter, system-ui, sans-serif; font-size: 14px; font-weight: 600; line-height: 1; cursor: pointer; white-space: nowrap; transition: all 150ms ease-out; box-shadow: 0px 1px 3px 0px rgba(13,33,55,0.1), 0px -1px 0px 0px rgba(0,0,0,0.1) inset; } .ds-btn-secondary:hover { background: #0D2137; color: #fff; box-shadow: 0px 2px 6px 0px rgba(13,33,55,0.1), 0px -1px 0px 0px rgba(0,0,0,0.1) inset; } .ds-btn-secondary:active { background: #2D5A8A; color: #fff; } .ds-btn-secondary:focus-visible { outline: none; box-shadow: 0px 0px 0px 4px rgba(39,174,96,0.3); }"
+    },
+    {
+      "name": "Danger Button",
+      "kind": "button",
+      "refersTo": "button-danger",
+      "description": "Destructive actions. Red fill, white text.",
+      "html": "<button class=\"ds-btn-danger\">Delete</button>",
+      "css": ".ds-btn-danger { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 12px 24px; border-radius: 12px; border: 1px solid #E74C3C; background: #E74C3C; color: #fff; font-family: Inter, system-ui, sans-serif; font-size: 14px; font-weight: 600; line-height: 1; cursor: pointer; white-space: nowrap; transition: all 150ms ease-out; box-shadow: 0px 1px 3px 0px rgba(13,33,55,0.1), 0px -1px 0px 0px rgba(0,0,0,0.1) inset; } .ds-btn-danger:hover { background: #C0392B; box-shadow: 0px 2px 6px 0px rgba(13,33,55,0.1), 0px -1px 0px 0px rgba(0,0,0,0.1) inset; } .ds-btn-danger:active { background: #A93226; } .ds-btn-danger:focus-visible { outline: none; box-shadow: 0px 0px 0px 4px rgba(39,174,96,0.3); }"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card-default",
+      "description": "Content container. Flat at rest, lifts on hover.",
+      "html": "<div class=\"ds-card\"><h3 class=\"ds-card-title\">Risk Assessment</h3><p class=\"ds-card-text\">3 open findings require attention</p></div>",
+      "css": ".ds-card { border: 1px solid #E8ECF0; background: #fff; border-radius: 12px; padding: 24px; transition: all 150ms ease-out; } .ds-card:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(13,33,55,0.06); } .ds-card-title { font-family: Inter, system-ui, sans-serif; font-size: 16px; font-weight: 600; color: #0D2137; margin: 0 0 8px; letter-spacing: -0.4px; } .ds-card-text { font-family: Inter, system-ui, sans-serif; font-size: 14px; color: #7A8FA3; margin: 0; }"
+    },
+    {
+      "name": "Input",
+      "kind": "input",
+      "refersTo": "input-bordered",
+      "description": "Standard text input. Border thickens and glows emerald on focus.",
+      "html": "<input class=\"ds-input\" type=\"text\" placeholder=\"Search controls...\" />",
+      "css": ".ds-input { width: 100%; padding: 6px 12px; border: 1.5px solid #E8ECF0; border-radius: 8px; background: #fff; color: #0D2137; font-family: Inter, system-ui, sans-serif; font-size: 14px; line-height: 1.43; transition: all 150ms ease-out; } .ds-input:hover { border-color: rgba(13,33,55,0.25); } .ds-input:focus { border: 2px solid #27AE60; box-shadow: 0 0 0 3px rgba(39,174,96,0.1); outline: none; } .ds-input::placeholder { color: #7A8FA3; }"
+    },
+    {
+      "name": "Badge Success",
+      "kind": "chip",
+      "refersTo": "badge-sm",
+      "description": "Status indicator pill with colored dot.",
+      "html": "<div class=\"ds-badge-success\"><span class=\"ds-badge-dot\"></span>Compliant</div>",
+      "css": ".ds-badge-success { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 9999px; background: #E8F8EF; color: #27AE60; font-family: Inter, system-ui, sans-serif; font-size: 12px; font-weight: 600; white-space: nowrap; } .ds-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #27AE60; flex-shrink: 0; }"
+    },
+    {
+      "name": "Badge Danger",
+      "kind": "chip",
+      "refersTo": "badge-sm",
+      "description": "Danger/failure status pill.",
+      "html": "<div class=\"ds-badge-danger\"><span class=\"ds-badge-dot\"></span>Non-compliant</div>",
+      "css": ".ds-badge-danger { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 9999px; background: #FDECEB; color: #E74C3C; font-family: Inter, system-ui, sans-serif; font-size: 12px; font-weight: 600; white-space: nowrap; } .ds-badge-danger .ds-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #E74C3C; flex-shrink: 0; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Assured Advisor",
+    "overview": "SOC2Start.io looks like the tool a seasoned CISO would build for themselves: clean, dense where it matters, spacious where decisions happen. It carries authority through restraint, not ornamentation. The navy-and-emerald palette grounds every screen in professional confidence without drifting into the cold grey monotony of legacy GRC tools.\n\nThe system prioritizes scanability over decoration. Tables, lists, and status indicators are information-dense. Forms, approvals, and signing flows breathe. Every transition is purposeful; nothing moves for the sake of movement.\n\nThis is not a startup dashboard trying to look fun. It is not an enterprise tool resigned to looking ugly. It sits in the narrow band of \"clearly well-made\" that earns trust from compliance professionals who've seen too many tools that look either cheap or overproduced.",
+    "keyCharacteristics": [
+      "Navy anchors identity; emerald signals action and success",
+      "Light mode default, dark mode supported via system preference",
+      "Tight negative letter-spacing on headings for density and authority",
+      "Rounded corners (8-12px) soften without becoming playful",
+      "Subtle hover elevation on interactive surfaces"
+    ],
+    "rules": [
+      { "name": "The Emerald Discipline Rule", "body": "Emerald appears only on interactive elements (buttons, links, active states) and success indicators. It is never decorative. If a surface is emerald, it is clickable or it confirms success.", "section": "colors" },
+      { "name": "The Tinted Neutral Rule", "body": "No pure greys. Every neutral carries a trace of navy hue (chroma ~0.005-0.01 in OKLCH terms).", "section": "colors" },
+      { "name": "The Weight Ladder Rule", "body": "Adjacent hierarchy levels must differ by at least one weight step (100 units) or one size step (1.25x). Same-weight, same-size text at different semantic levels is flat hierarchy and always wrong.", "section": "typography" },
+      { "name": "The Flat-By-Default Rule", "body": "Surfaces are flat at rest. Shadows appear only as a response to state (hover, focus, elevation change). A card at rest has a 1px border, not a shadow.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do use emerald exclusively for interactive and success elements. Its value comes from restraint.",
+      "Do use the navy-dark-to-emerald contrast pair as the primary visual signature.",
+      "Do give forms and approval workflows generous vertical spacing (24-32px between groups).",
+      "Do use the 1.5px-to-2px border thickening on focus as the standard input feedback pattern.",
+      "Do support system dark mode."
+    ],
+    "donts": [
+      "Don't use legacy GRC aesthetics: grey-on-grey surfaces, 11px text walls, modal-on-modal workflows, or tiny click targets.",
+      "Don't use the generic SaaS-cream aesthetic: soft beige gradients, same-radius-everything, indistinct brand identity.",
+      "Don't use playful patterns: emoji in UI chrome, pastel palettes, whimsical illustrations.",
+      "Don't use border-left or border-right greater than 1px as a colored accent stripe.",
+      "Don't use gradient text (background-clip: text with gradient).",
+      "Don't use glassmorphism or backdrop-blur decoratively.",
+      "Don't use the hero-metric template (big number, small label, gradient accent).",
+      "Don't use bounce or elastic easing.",
+      "Don't use pure black (#000) or pure white (#fff)."
+    ]
+  }
+}

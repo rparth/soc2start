@@ -20,10 +20,10 @@ CONNECT_API="$BASE_URL/api/connect/v1/graphql"
 COOKIE_JAR=$(mktemp)
 trap 'rm -f "$COOKIE_JAR"' EXIT
 
-EMAIL="seed@dev.probo.test"
-PASSWORD="seed@dev.probo.test"
-FULL_NAME="Seed Admin"
-ORG_NAME="Acme Corp"
+EMAIL="admin@soc2start.io"
+PASSWORD="admin@soc2start.io"
+FULL_NAME="Administrator"
+ORG_NAME="SOC2Start"
 
 # Helpers
 gql_connect() {
