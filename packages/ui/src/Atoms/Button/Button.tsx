@@ -24,15 +24,15 @@ import { tv, type VariantProps } from "tailwind-variants";
 import { Slot } from "../Slot";
 
 export const button = tv({
-  base: "flex items-center justify-center gap-[6px] px-3 py-2 rounded-lg cursor-pointer text-sm font-medium h-8 focus:outline-none whitespace-nowrap w-max",
+  base: "flex items-center justify-center gap-[6px] px-3 py-2 rounded-lg cursor-pointer text-sm font-semibold h-8 focus:outline-none whitespace-nowrap w-max transition-all duration-150",
   variants: {
     variant: {
       primary:
-                "bg-primary text-invert hover:bg-primary-hover shadow-base hover:shadow-hover active:bg-primary-pressed",
+                "bg-emerald text-white hover:bg-emerald-light hover:-translate-y-px hover:shadow-[0_4px_12px_rgba(39,174,96,0.3)] shadow-base active:bg-emerald active:translate-y-0",
       secondary:
-                "bg-secondary text-txt-primary hover:bg-secondary-hover shadow-base hover:shadow-hover active:bg-secondary-pressed border border-border-low",
+                "bg-white text-txt-primary hover:bg-primary hover:text-white shadow-base hover:shadow-hover active:bg-primary-pressed active:text-white border-2 border-primary",
       tertiary:
-                "bg-tertiary text-txt-primary hover:bg-tertiary-hover active:bg-tertiary-pressed",
+                "bg-transparent text-txt-primary hover:text-txt-accent active:bg-tertiary-pressed",
       quaternary:
                 "bg-highlight text-txt-primary hover:bg-highlight-hover active:bg-highlight-pressed",
       danger: "bg-danger-plain text-txt-invert hover:bg-danger-hover shadow-base hover:shadow-hover active:bg-danger-pressed border border-border-danger",

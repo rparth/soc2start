@@ -31,7 +31,7 @@ type Props = {
 } & HTMLAttributes<HTMLElement>;
 
 const badge = tv({
-  base: "font-medium rounded-lg w-max flex gap-1 items-center group whitespace-nowrap",
+  base: "font-semibold rounded-full w-max flex gap-1 items-center group whitespace-nowrap",
   variants: {
     variant: {
       success: "bg-success text-txt-success",

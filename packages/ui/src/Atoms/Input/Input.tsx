@@ -29,12 +29,12 @@ export const input = tv({
   base: "w-full disabled:bg-transparent",
   variants: {
     invalid: {
-      true: "border-border-danger hover:border-border-danger",
-      false: "border-border-mid hover:border-border-strong",
+      true: "border-2 border-border-danger hover:border-border-danger",
+      false: "border-[1.5px] border-border-solid hover:border-border-strong focus:border-2 focus:border-border-accent focus:shadow-[0_0_0_3px_rgba(39,174,96,0.1)]",
     },
     variant: {
       bordered:
-                "py-[6px] bg-secondary border  rounded-[10px]  text-sm px-3 text-txt-primary",
+                "py-[6px] bg-secondary rounded-lg text-sm px-3 text-txt-primary transition-all duration-150",
       ghost: "text-base text-txt-secondary outline-none",
       title: "text-2xl font-semibold text-txt-primary outline-none",
     },
