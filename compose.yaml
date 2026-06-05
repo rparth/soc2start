@@ -146,6 +146,7 @@ services:
     command: -dnsserver ":8053" -http01 ":8055" -management ":8056"
 
   probo:
+    profiles: ["app"]
     build: .
     pull_policy: missing
     entrypoint:
