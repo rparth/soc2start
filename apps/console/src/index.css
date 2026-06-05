@@ -4,6 +4,10 @@
 @source "../../../packages/ui/src";
 @source "../../../packages/helpers/src";
 
+html {
+  background-color: var(--color-level-0);
+}
+
 /* Hide scrollbar utility */
 .scrollbar-hide {
   -ms-overflow-style: none;  /* IE and Edge */
