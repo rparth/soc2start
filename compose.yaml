@@ -146,15 +146,17 @@ services:
     command: -dnsserver ":8053" -http01 ":8055" -management ":8056"
 
   probo:
-    profiles: ["app"]
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
     pull_policy: missing
     entrypoint:
       - /bin/sh
       - -c
       - |
-        export OAUTH2_SERVER_SIGNING_KEY="$$(cat /tmp/oauth2-key.pem)"
-        export ACME_ROOT_CA="$$(cat /tmp/rootCA.pem 2>/dev/null || true)"
+        if [ -z "$$OAUTH2_SERVER_SIGNING_KEY" ]; then
+          export OAUTH2_SERVER_SIGNING_KEY="$$(openssl genrsa 2048 2>/dev/null)"
+        fi
         exec /usr/local/bin/entrypoint.sh
     environment:
       PROBOD_ENCRYPTION_KEY: "thisisnotasecretAAAAAAAAAAAAAAAAAAAAAAAAAAA="
@@ -179,15 +181,12 @@ services:
       MAILER_SENDER_EMAIL: "no-reply@notification.getprobo.com"
       MAILER_SENDER_NAME: "Probo"
       CHROME_DP_ADDR: "chrome:9222"
-      ACME_DIRECTORY: "https://pebble:14000/dir"
       METRICS_ADDR: "0.0.0.0:8081"
       TRACING_ADDR: "tempo:4317"
     ports:
       - "8080:8080"
       - "8081:8081"
     volumes:
-      - "./cfg/.dev-oauth2-signing-key.pem:/tmp/oauth2-key.pem:ro"
-      - "./compose/pebble/certs/rootCA.pem:/tmp/rootCA.pem:ro"
       - "probo-data:/data"
     depends_on:
       postgres:
