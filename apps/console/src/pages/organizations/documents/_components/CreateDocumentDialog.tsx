@@ -147,8 +147,8 @@ export function CreateDocumentDialog({ trigger, connection }: CreateDocumentDial
       title={<Breadcrumb items={[__("Documents"), __("New Document")]} />}
     >
       <form onSubmit={e => void handleSubmit(onSubmit)(e)}>
-        <DialogContent className="grid grid-cols-[1fr_420px]">
-          <div className="py-8 px-10 space-y-4">
+        <DialogContent className="grid grid-cols-1 md:grid-cols-[1fr_420px]">
+          <div className="py-6 px-4 sm:py-8 sm:px-10 space-y-4">
             <Input
               id="title"
               aria-label={__("Title")}

@@ -233,8 +233,8 @@ export function FormRiskDialog({
       )}
     >
       <form onSubmit={e => void handleSubmit(onSubmit)(e)}>
-        <DialogContent className="grid grid-cols-[1fr_420px]">
-          <div className="py-8 px-12 space-y-6">
+        <DialogContent className="grid grid-cols-1 md:grid-cols-[1fr_420px]">
+          <div className="py-6 px-4 sm:py-8 sm:px-12 space-y-6">
             <TemplateSelector
               onChange={onTemplateChange}
               control={control}

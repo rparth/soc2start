@@ -342,7 +342,7 @@ export function DocumentList(props: {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
         <Select
           value={writeModeFilter ?? "ALL"}
           onValueChange={handleWriteModeFilterChange}
