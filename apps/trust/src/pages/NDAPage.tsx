@@ -308,7 +308,7 @@ export function NDAPage(props: {
           >
             Powered by
             {" "}
-            <Logo withPicto className="h-6" />
+            <Logo withPicto />
           </a>
         </div>
         {isDesktop && (

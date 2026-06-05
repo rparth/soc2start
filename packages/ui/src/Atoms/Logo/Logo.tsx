@@ -64,61 +64,21 @@ function ShieldIcon({ size = 32 }: { size?: number }) {
 export function Logo({ className, withPicto }: Props) {
   if (withPicto) {
     return (
-      <div className={clsx(className, "flex items-center gap-2")}>
-        <ShieldIcon />
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 160 24"
-          className="h-6"
-          role="img"
-          aria-label="SOC2Start.io"
-        >
-          <text
-            x="0"
-            y="18"
-            fontFamily="Inter, system-ui, sans-serif"
-            fill="var(--color-txt-primary)"
-          >
-            <tspan fontWeight="800" letterSpacing="-1.5px">SOC2</tspan>
-            <tspan fontWeight="300">Start</tspan>
-          </text>
-          <text
-            x="118"
-            y="18"
-            fontFamily="Inter, system-ui, sans-serif"
-            fontWeight="300"
-            fill="var(--color-txt-accent)"
-          >.io</text>
-        </svg>
+      <div className={clsx(className, "flex items-center gap-3")} role="img" aria-label="SOC2Start.io">
+        <ShieldIcon size={40} />
+        <span className="text-2xl tracking-[-1.5px] leading-none">
+          <span className="font-extrabold text-[var(--color-txt-primary)]">SOC2</span>
+          <span className="font-light text-[var(--color-txt-primary)]">Start</span>
+          <span className="font-light text-[var(--color-txt-accent)]">.io</span>
+        </span>
       </div>
     );
   }
   return (
-    <svg
-      className={className}
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 160 24"
-      role="img"
-      aria-label="SOC2Start.io"
-    >
-      <text
-        x="0"
-        y="18"
-        fontFamily="Inter, system-ui, sans-serif"
-        fill="currentColor"
-      >
-        <tspan fontWeight="800" letterSpacing="-1.5px">SOC2</tspan>
-        <tspan fontWeight="300">Start</tspan>
-      </text>
-      <text
-        x="118"
-        y="18"
-        fontFamily="Inter, system-ui, sans-serif"
-        fontWeight="300"
-        fill="var(--color-txt-accent)"
-      >.io</text>
-    </svg>
+    <span className={clsx(className, "tracking-[-1.5px] leading-none")} role="img" aria-label="SOC2Start.io">
+      <span className="font-extrabold">SOC2</span>
+      <span className="font-light">Start</span>
+      <span className="font-light text-[var(--color-txt-accent)]">.io</span>
+    </span>
   );
 }

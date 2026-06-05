@@ -299,7 +299,7 @@ function BannerPreview({ showBranding }: { showBranding: boolean }) {
         >
           Privacy by
           {" "}
-          <Logo withPicto className="inline h-3.5 align-[-3px]" />
+          <Logo withPicto className="inline-flex text-xs" />
         </div>
       )}
     </div>

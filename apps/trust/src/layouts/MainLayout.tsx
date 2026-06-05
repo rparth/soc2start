@@ -65,7 +65,7 @@ export function MainLayout(props: Props) {
       >
         {__("Powered by")}
         {" "}
-        <Logo withPicto className="h-6" />
+        <Logo withPicto />
       </a>
     </TrustCenterProvider>
   );
