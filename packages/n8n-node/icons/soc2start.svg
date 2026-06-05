@@ -1,5 +1,15 @@
-<svg viewBox="0 0 300 300" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="300" height="300" rx="70" fill="#0D2137"/>
-<rect x="50" y="40" width="200" height="220" rx="40" fill="#1A3D5E"/>
-<path d="M100 155l35 35 65-75" stroke="#27AE60" stroke-width="28" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+<svg viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="sf" x1="0" y1="0" x2="0" y2="1">
+<stop offset="0%" stop-color="#1A3D5E"/>
+<stop offset="100%" stop-color="#0D2137"/>
+</linearGradient>
+<linearGradient id="cs" x1="0" y1="0" x2="1" y2="1">
+<stop offset="0%" stop-color="#34D278"/>
+<stop offset="100%" stop-color="#27AE60"/>
+</linearGradient>
+</defs>
+<path d="M256 36 L88 112 L88 252 C88 376 256 480 256 480 C256 480 424 376 424 252 L424 112 Z" fill="url(#sf)"/>
+<path d="M256 36 L88 112 L88 252 C88 376 256 480 256 480 C256 480 424 376 424 252 L424 112 Z" fill="none" stroke="#2D5A8A" stroke-width="3" opacity="0.4"/>
+<polyline points="190,264 234,316 328,204" fill="none" stroke="url(#cs)" stroke-width="36" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

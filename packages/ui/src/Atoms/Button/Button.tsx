@@ -24,7 +24,7 @@ import { tv, type VariantProps } from "tailwind-variants";
 import { Slot } from "../Slot";
 
 export const button = tv({
-  base: "flex items-center justify-center gap-[6px] px-3 py-2 rounded-lg cursor-pointer text-sm font-semibold h-8 focus:outline-none whitespace-nowrap w-max transition-all duration-150",
+  base: "flex items-center justify-center gap-[6px] px-6 py-3 rounded-lg cursor-pointer text-sm font-semibold focus:outline-none whitespace-nowrap w-max transition-all duration-150",
   variants: {
     variant: {
       primary:

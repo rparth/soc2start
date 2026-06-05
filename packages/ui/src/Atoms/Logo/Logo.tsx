@@ -19,50 +19,79 @@ type Props = {
   withPicto?: boolean;
 };
 
+function ShieldIcon({ size = 32 }: { size?: number }) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 512 512"
+      width={size}
+      height={size}
+      fill="none"
+    >
+      <defs>
+        <linearGradient id="shield-fill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#1A3D5E" />
+          <stop offset="100%" stopColor="#0D2137" />
+        </linearGradient>
+        <linearGradient id="check-stroke" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#34D278" />
+          <stop offset="100%" stopColor="#27AE60" />
+        </linearGradient>
+      </defs>
+      <path
+        d="M256 36 L88 112 L88 252 C88 376 256 480 256 480 C256 480 424 376 424 252 L424 112 Z"
+        fill="url(#shield-fill)"
+      />
+      <path
+        d="M256 36 L88 112 L88 252 C88 376 256 480 256 480 C256 480 424 376 424 252 L424 112 Z"
+        fill="none"
+        stroke="#2D5A8A"
+        strokeWidth="3"
+        opacity="0.4"
+      />
+      <polyline
+        points="190,264 234,316 328,204"
+        fill="none"
+        stroke="url(#check-stroke)"
+        strokeWidth="36"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 export function Logo({ className, withPicto }: Props) {
   if (withPicto) {
     return (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        className={clsx(className, "aspect-[200/32]")}
-        viewBox="0 0 200 32"
-        role="img"
-        aria-label="SOC2Start.io"
-      >
-        <rect
-          width="28"
-          height="28"
-          x="2"
-          y="2"
-          rx="6"
-          fill="#1A3D5E"
-        />
-        <path
-          d="M10 17.5l4 4 8-9"
-          stroke="#27AE60"
-          strokeWidth="2.5"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+      <div className={clsx(className, "flex items-center gap-2")}>
+        <ShieldIcon />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
           fill="none"
-        />
-        <text
-          x="38"
-          y="22"
-          fontFamily="Inter, system-ui, sans-serif"
-          fill="var(--color-txt-primary)"
+          viewBox="0 0 160 24"
+          className="h-6"
+          role="img"
+          aria-label="SOC2Start.io"
         >
-          <tspan fontWeight="800" letterSpacing="-1.5px">SOC2</tspan>
-          <tspan fontWeight="300">Start</tspan>
-        </text>
-        <text
-          x="150"
-          y="22"
-          fontFamily="Inter, system-ui, sans-serif"
-          fontWeight="300"
-          fill="#27AE60"
-        >.io</text>
-      </svg>
+          <text
+            x="0"
+            y="18"
+            fontFamily="Inter, system-ui, sans-serif"
+            fill="var(--color-txt-primary)"
+          >
+            <tspan fontWeight="800" letterSpacing="-1.5px">SOC2</tspan>
+            <tspan fontWeight="300">Start</tspan>
+          </text>
+          <text
+            x="118"
+            y="18"
+            fontFamily="Inter, system-ui, sans-serif"
+            fontWeight="300"
+            fill="var(--color-txt-accent)"
+          >.io</text>
+        </svg>
+      </div>
     );
   }
   return (
@@ -88,7 +117,7 @@ export function Logo({ className, withPicto }: Props) {
         y="18"
         fontFamily="Inter, system-ui, sans-serif"
         fontWeight="300"
-        fill="#27AE60"
+        fill="var(--color-txt-accent)"
       >.io</text>
     </svg>
   );

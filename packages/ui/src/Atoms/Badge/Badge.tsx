@@ -30,8 +30,16 @@ type Props = {
   size?: "sm" | "md";
 } & HTMLAttributes<HTMLElement>;
 
+const dotColor: Record<string, string> = {
+  success: "bg-txt-success",
+  warning: "bg-txt-warning",
+  danger: "bg-txt-danger",
+  info: "bg-txt-info",
+  neutral: "bg-txt-secondary",
+};
+
 const badge = tv({
-  base: "font-semibold rounded-full w-max flex gap-1 items-center group whitespace-nowrap",
+  base: "font-semibold rounded-full w-max flex gap-1.5 items-center group whitespace-nowrap",
   variants: {
     variant: {
       success: "bg-success text-txt-success",
@@ -43,8 +51,8 @@ const badge = tv({
       highlight: "bg-highlight text-txt-primary",
     },
     size: {
-      sm: "text-xs py-[2px] px-[6px]",
-      md: "text-sm py-[6px] px-2",
+      sm: "text-xs py-[5px] px-[14px]",
+      md: "text-sm py-[6px] px-4",
     },
   },
   defaultVariants: {
@@ -55,8 +63,12 @@ const badge = tv({
 
 export function Badge(props: Props) {
   const Component = props.asChild ? Slot : "div";
-  const { className, size, variant, ...restProps } = props;
+  const { className, size, variant, children, ...restProps } = props;
+  const dot = variant && dotColor[variant];
   return (
-    <Component {...restProps} className={badge({ className, size, variant })} />
+    <Component {...restProps} className={badge({ className, size, variant })}>
+      {dot && <span className={`size-1.5 rounded-full ${dot} shrink-0`} />}
+      {children}
+    </Component>
   );
 }
