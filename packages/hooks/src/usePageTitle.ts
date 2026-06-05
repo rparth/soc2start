@@ -16,9 +16,9 @@ import { useEffect } from "react";
 
 export function usePageTitle(title: string) {
     useEffect(() => {
-        document.title = title + " - Probo";
+        document.title = title + " - SOC2Start.io";
         return () => {
-            document.title = "Probo";
+            document.title = "SOC2Start.io";
         };
     }, [title]);
 }

@@ -111,7 +111,7 @@ function SignUpPageContent(props: { queryRef: NonNullable<ReturnType<typeof useQ
         <div className="space-y-2">
           <h1 className="text-3xl font-bold">{__("Registration unavailable")}</h1>
           <p className="text-txt-tertiary">
-            {__("New account registration is currently disabled. Please contact your administrator or reach out to Probo for assistance.")}
+            {__("New account registration is currently disabled. Please contact your administrator or reach out to SOC2Start.io for assistance.")}
           </p>
         </div>
 
