@@ -12,8 +12,9 @@
 // OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 // PERFORMANCE OF THIS SOFTWARE.
 
+import { sprintf } from "@probo/helpers";
 import { useTranslate } from "@probo/i18n";
-import { Spinner } from "@probo/ui";
+import { Spinner, useToast } from "@probo/ui";
 import { useEffect, useRef } from "react";
 import { graphql, type PreloadedQuery,
   useMutation, usePreloadedQuery } from "react-relay";
@@ -68,9 +69,27 @@ export function SCIMSettingsPage(props: {
 }) {
   const { queryRef } = props;
   const { __ } = useTranslate();
+  const { toast } = useToast();
   const [searchParams, setSearchParams] = useSearchParams();
   const connectorId = searchParams.get("connector_id");
+  const errorParam = searchParams.get("error");
+  const providerParam = searchParams.get("provider");
   const mutationTriggeredRef = useRef(false);
+
+  useEffect(() => {
+    if (errorParam === "provider_not_configured" && providerParam) {
+      toast({
+        title: __("Connection failed"),
+        description: sprintf(__("The %s connector is not configured on this server. Contact your administrator."), providerParam.replace(/_/g, " ")),
+        variant: "error",
+      });
+      setSearchParams((params: URLSearchParams) => {
+        params.delete("error");
+        params.delete("provider");
+        return params;
+      });
+    }
+  }, [errorParam, providerParam, toast, __, setSearchParams]);
 
   const { organization } = usePreloadedQuery(scimSettingsPageQuery, queryRef);
   if (organization.__typename !== "Organization") {

@@ -45,7 +45,15 @@ func handleConnectorInitiate(
 		}
 
 		if _, err := connectorRegistry.Get(provider); err != nil {
+			if continueURL := r.URL.Query().Get("continue"); continueURL != "" {
+				redirectURL := continueURL + "?error=provider_not_configured&provider=" + provider
+				http.Redirect(w, r, redirectURL, http.StatusSeeOther)
+
+				return
+			}
+
 			httpserver.RenderError(w, http.StatusBadRequest, fmt.Errorf("unsupported provider: %q", provider))
+
 			return
 		}
 
