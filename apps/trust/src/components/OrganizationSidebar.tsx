@@ -26,7 +26,7 @@ import {
   SocialIcon,
   useToast,
 } from "@probo/ui";
-import { type PropsWithChildren } from "react";
+import { type PropsWithChildren, useState } from "react";
 import { useMutation } from "react-relay";
 import { useLocation, useNavigate, useSearchParams } from "react-router";
 import { graphql } from "relay-runtime";
@@ -85,7 +85,8 @@ export function OrganizationSidebar({
   const navigate = useNavigate();
   const location = useLocation();
 
-  const logoFileUrl = theme === "dark" ? (trustCenter?.darkLogoFileUrl ?? trustCenter?.logoFileUrl) : trustCenter?.logoFileUrl;
+  const [logoHasError, setLogoHasError] = useState(false);
+  const logoFileUrl = logoHasError ? null : (theme === "dark" ? (trustCenter?.darkLogoFileUrl ?? trustCenter?.logoFileUrl) : trustCenter?.logoFileUrl);
 
   const [requestAllAccesses, isRequestingAccess]
     = useMutation<OrganizationSidebar_requestAllAccessesMutation>(
@@ -222,6 +223,7 @@ export function OrganizationSidebar({
               alt=""
               src={logoFileUrl}
               className="size-24 rounded-2xl border border-border-mid shadow-mid bg-level-1"
+              onError={() => setLogoHasError(true)}
             />
           )
         : (

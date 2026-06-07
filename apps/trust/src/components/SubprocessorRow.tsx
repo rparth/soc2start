@@ -15,6 +15,7 @@
 import { faviconUrl, getCountryName } from "@probo/helpers";
 import { useTranslate } from "@probo/i18n";
 import { IconPin } from "@probo/ui";
+import { useState } from "react";
 import { useFragment } from "react-relay";
 import { graphql } from "relay-runtime";
 
@@ -31,7 +32,8 @@ const subprocessorRowFragment = graphql`
 
 export function SubprocessorRow(props: { subprocessor: SubprocessorRowFragment$key; hasAnyCountries?: boolean }) {
   const subprocessor = useFragment(subprocessorRowFragment, props.subprocessor);
-  const logo = faviconUrl(subprocessor.websiteUrl);
+  const [logoHasError, setLogoHasError] = useState(false);
+  const logo = logoHasError ? null : faviconUrl(subprocessor.websiteUrl);
   const { __ } = useTranslate();
 
   return (
@@ -42,6 +44,7 @@ export function SubprocessorRow(props: { subprocessor: SubprocessorRowFragment$k
               src={logo}
               className="size-8 flex-none rounded-lg"
               alt=""
+              onError={() => setLogoHasError(true)}
             />
           )
         : (

@@ -15,6 +15,7 @@
 import { acceptImage } from "@probo/helpers";
 import { useTranslate } from "@probo/i18n";
 import {
+  Avatar,
   Button,
   Card,
   Dropzone,
@@ -82,6 +83,8 @@ export function CompliancePageBrandPage(props: { queryRef: PreloadedQuery<Compli
 
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const [darkLogoPreview, setDarkLogoPreview] = useState<string | null>(null);
+  const [logoError, setLogoError] = useState(false);
+  const [darkLogoError, setDarkLogoError] = useState(false);
 
   const [updateBrand, isUpdating] = useMutationWithToasts<CompliancePageBrandPage_updateMutation>(
     updateTrustCenterBrandMutation,
@@ -113,6 +116,7 @@ export function CompliancePageBrandPage(props: { queryRef: PreloadedQuery<Compli
       return;
     }
 
+    setLogoError(false);
     processLogoFile(file, setLogoPreview);
 
     void updateBrand({
@@ -144,6 +148,7 @@ export function CompliancePageBrandPage(props: { queryRef: PreloadedQuery<Compli
       return;
     }
 
+    setDarkLogoError(false);
     processLogoFile(file, setDarkLogoPreview);
 
     void updateBrand({
@@ -166,6 +171,7 @@ export function CompliancePageBrandPage(props: { queryRef: PreloadedQuery<Compli
     const file = files[0];
     if (!file) return;
 
+    setLogoError(false);
     processLogoFile(file, setLogoPreview);
 
     void updateBrand({
@@ -188,6 +194,7 @@ export function CompliancePageBrandPage(props: { queryRef: PreloadedQuery<Compli
     const file = files[0];
     if (!file) return;
 
+    setDarkLogoError(false);
     processLogoFile(file, setDarkLogoPreview);
 
     void updateBrand({
@@ -234,8 +241,8 @@ export function CompliancePageBrandPage(props: { queryRef: PreloadedQuery<Compli
     });
   };
 
-  const currentLogoUrl = logoPreview || logoFileUrl;
-  const currentDarkLogoUrl = darkLogoPreview || darkLogoFileUrl;
+  const currentLogoUrl = logoPreview || (logoError ? null : logoFileUrl);
+  const currentDarkLogoUrl = darkLogoPreview || (darkLogoError ? null : darkLogoFileUrl);
 
   return (
     <div className="space-y-8">
@@ -261,6 +268,7 @@ export function CompliancePageBrandPage(props: { queryRef: PreloadedQuery<Compli
                           src={currentLogoUrl}
                           alt={__("Compliance page logo")}
                           className="h-16 max-w-xs object-contain"
+                          onError={() => setLogoError(true)}
                         />
                       </div>
                       <FileButton
@@ -306,6 +314,7 @@ export function CompliancePageBrandPage(props: { queryRef: PreloadedQuery<Compli
                           src={currentDarkLogoUrl}
                           alt={__("Compliance page dark logo")}
                           className="h-16 max-w-xs object-contain"
+                          onError={() => setDarkLogoError(true)}
                         />
                       </div>
                       <FileButton

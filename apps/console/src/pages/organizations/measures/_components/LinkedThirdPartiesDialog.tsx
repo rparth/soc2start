@@ -202,7 +202,8 @@ function ThirdPartyRow(
   const isLinked = props.linkedIds.has(props.thirdParty.id);
   const onClick = isLinked ? props.onUnlink : props.onLink;
   const IconComponent = isLinked ? IconTrashCan : IconPlusLarge;
-  const logo = faviconUrl(props.thirdParty.websiteUrl);
+  const [logoHasError, setLogoHasError] = useState(false);
+  const logo = logoHasError ? null : faviconUrl(props.thirdParty.websiteUrl);
   return (
     <button
       type="button"
@@ -211,7 +212,7 @@ function ThirdPartyRow(
       onClick={() => onClick(props.thirdParty.id)}
     >
       {logo && (
-        <img src={logo} alt={props.thirdParty.name} className="rounded h-5 w-5" />
+        <img src={logo} alt={props.thirdParty.name} className="rounded h-5 w-5" onError={() => setLogoHasError(true)} />
       )}
       {props.thirdParty.name}
       <Badge>{props.thirdParty.category}</Badge>

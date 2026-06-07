@@ -229,9 +229,10 @@ export function DocumentPage({ queryRef }: Props) {
   const nodeTitle = getNodeTitle(node);
   const nodeId = getNodeId(node);
 
-  const logoFileUrl = theme === "dark"
+  const [logoHasError, setLogoHasError] = useState(false);
+  const logoFileUrl = logoHasError ? null : (theme === "dark"
     ? (trustCenter?.darkLogoFileUrl ?? trustCenter?.logoFileUrl)
-    : trustCenter?.logoFileUrl;
+    : trustCenter?.logoFileUrl);
 
   const [exportDocument, isExportingDocument]
     = useMutation<DocumentPageExportDocumentMutation>(exportDocumentMutation);
@@ -404,6 +405,7 @@ export function DocumentPage({ queryRef }: Props) {
             alt=""
             src={logoFileUrl}
             className="h-6 w-auto"
+            onError={() => setLogoHasError(true)}
           />
         )}
         <span className="text-sm font-medium truncate">
