@@ -123,6 +123,7 @@ type (
 		Files                                 *FileService
 		CustomDomains                         *CustomDomainService
 		SlackMessages                         *slack.Service
+		MonitoringReports                     *MonitoringReportService
 	}
 )
 
@@ -264,6 +265,16 @@ func NewService(
 		logger:        logger.Named("custom_domains"),
 	}
 	svc.SlackMessages = slackService
+	svc.MonitoringReports = &MonitoringReportService{
+		svc: svc,
+		fileValidator: filevalidation.NewValidator(
+			filevalidation.WithCategories(
+				filevalidation.CategoryData,
+				filevalidation.CategorySpreadsheet,
+				filevalidation.CategoryText,
+			),
+		),
+	}
 
 	return svc, nil
 }

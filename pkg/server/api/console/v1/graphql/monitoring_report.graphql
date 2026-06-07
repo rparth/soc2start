@@ -1,0 +1,105 @@
+enum MonitoringReportType
+    @goModel(
+        model: "go.probo.inc/probo/pkg/coredata.MonitoringReportType"
+    ) {
+    PROWLER
+        @goEnum(
+            value: "go.probo.inc/probo/pkg/coredata.MonitoringReportTypeProwler"
+        )
+    PENTEST
+        @goEnum(
+            value: "go.probo.inc/probo/pkg/coredata.MonitoringReportTypePentest"
+        )
+}
+
+type MonitoringReport implements Node {
+    id: ID!
+    organization: Organization @goField(forceResolver: true)
+    reportType: MonitoringReportType!
+    name: String!
+    file: File @goField(forceResolver: true)
+    uploader: Profile @goField(forceResolver: true)
+    rowCount: Int!
+    summary: String!
+    createdAt: Datetime!
+    updatedAt: Datetime!
+    permission(action: String!): Boolean! @goField(forceResolver: true)
+}
+
+type MonitoringReportConnection
+    @goModel(
+        model: "go.probo.inc/probo/pkg/server/api/console/v1/types.MonitoringReportConnection"
+    ) {
+    totalCount: Int! @goField(forceResolver: true)
+    edges: [MonitoringReportEdge!]!
+    pageInfo: PageInfo!
+}
+
+type MonitoringReportEdge
+    @goModel(
+        model: "go.probo.inc/probo/pkg/server/api/console/v1/types.MonitoringReportEdge"
+    ) {
+    cursor: CursorKey!
+    node: MonitoringReport!
+}
+
+input MonitoringReportOrder
+    @goModel(
+        model: "go.probo.inc/probo/pkg/server/api/console/v1/types.MonitoringReportOrder"
+    ) {
+    field: MonitoringReportOrderField!
+    direction: OrderDirection!
+}
+
+enum MonitoringReportOrderField
+    @goModel(
+        model: "go.probo.inc/probo/pkg/coredata.MonitoringReportOrderField"
+    ) {
+    CREATED_AT
+}
+
+input MonitoringReportFilter
+    @goModel(
+        model: "go.probo.inc/probo/pkg/server/api/console/v1/types.MonitoringReportFilter"
+    ) {
+    reportType: MonitoringReportType
+}
+
+input CreateMonitoringReportInput {
+    organizationId: ID!
+    reportType: MonitoringReportType!
+    name: String!
+    file: Upload!
+}
+
+type CreateMonitoringReportPayload {
+    monitoringReportEdge: MonitoringReportEdge!
+}
+
+input DeleteMonitoringReportInput {
+    monitoringReportId: ID!
+}
+
+type DeleteMonitoringReportPayload {
+    deletedMonitoringReportId: ID!
+}
+
+extend type Organization {
+    monitoringReports(
+        first: Int
+        after: CursorKey
+        last: Int
+        before: CursorKey
+        orderBy: MonitoringReportOrder
+        filter: MonitoringReportFilter
+    ): MonitoringReportConnection! @goField(forceResolver: true)
+}
+
+extend type Mutation {
+    createMonitoringReport(
+        input: CreateMonitoringReportInput!
+    ): CreateMonitoringReportPayload
+    deleteMonitoringReport(
+        input: DeleteMonitoringReportInput!
+    ): DeleteMonitoringReportPayload
+}

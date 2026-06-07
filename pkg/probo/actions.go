@@ -484,4 +484,10 @@ const (
 	// ElectronicSignature actions (tenant-scoped via the related document
 	// version signature / trust center access).
 	ActionElectronicSignatureGet = "core:electronic-signature:get"
+
+	// MonitoringReport actions
+	ActionMonitoringReportGet    = "core:monitoring-report:get"
+	ActionMonitoringReportList   = "core:monitoring-report:list"
+	ActionMonitoringReportCreate = "core:monitoring-report:create"
+	ActionMonitoringReportDelete = "core:monitoring-report:delete"
 )
