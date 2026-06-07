@@ -23,6 +23,7 @@ import {
   DropdownItem,
   EmptyState,
   IconCircleCheck,
+  IconKey,
   IconTrashCan,
   PageHeader,
   Table,
@@ -52,12 +53,15 @@ import type { DevicePosturePageRefetchQuery } from "#/__generated__/core/DeviceP
 import type { DevicePosturePageRowFragment$key } from "#/__generated__/core/DevicePosturePageRowFragment.graphql";
 import { useOrganizationId } from "#/hooks/useOrganizationId";
 
+import { GenerateEnrollmentTokenDialog } from "./GenerateEnrollmentTokenDialog";
+
 export const DevicePostureConnectionKey = "DevicePosturePage_devices";
 
 export const devicePosturePageQuery = graphql`
   query DevicePosturePageQuery($organizationId: ID!) {
     node(id: $organizationId) {
       ... on Organization {
+        canCreateDevice: permission(action: "core:device:create")
         canDeleteDevice: permission(action: "core:device:delete")
         ...DevicePosturePageFragment
       }
@@ -165,7 +169,15 @@ export default function DevicePosturePage({
         description={__(
           "View connected agents and their security posture status.",
         )}
-      />
+      >
+        {organization.node?.canCreateDevice && (
+          <GenerateEnrollmentTokenDialog organizationId={organizationId}>
+            <Button icon={IconKey}>
+              {__("Enroll device")}
+            </Button>
+          </GenerateEnrollmentTokenDialog>
+        )}
+      </PageHeader>
 
       {devices.length === 0 ? (
         <EmptyState
