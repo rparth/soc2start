@@ -13,7 +13,7 @@
 // PERFORMANCE OF THIS SOFTWARE.
 
 import { useTranslate } from "@probo/i18n";
-import { Badge, Button, EmptyState, IconChevronDown, IconMail, IconTrashCan, Spinner, Table, Tbody, Th, Thead, Tr } from "@probo/ui";
+import { Badge, Button, EmptyState, IconChevronDown, IconMail, IconTrashCan, Spinner, Table, Tbody, Td, Th, Thead, Tr } from "@probo/ui";
 import { usePaginationFragment } from "react-relay";
 import { graphql } from "relay-runtime";
 

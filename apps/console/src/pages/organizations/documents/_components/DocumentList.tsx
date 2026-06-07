@@ -15,7 +15,7 @@
 import { documentClassifications, documentTypes, documentWriteModes, getDocumentClassificationLabel, getDocumentTypeLabel, getDocumentWriteModeLabel, sprintf } from "@probo/helpers";
 import { useList } from "@probo/hooks";
 import { useTranslate } from "@probo/i18n";
-import { Button, Card, Checkbox, EmptyState, IconArchive, IconArrowDown, IconCrossLargeX, IconPageTextLine, IconSignature, IconTrashCan, IconUpload, Option, Select, Tbody, Th, Thead, Tr, useConfirm } from "@probo/ui";
+import { Button, Checkbox, EmptyState, IconArchive, IconArrowDown, IconCrossLargeX, IconPageTextLine, IconSignature, IconTrashCan, IconUpload, Option, Select, Tbody, Th, Thead, Tr, useConfirm } from "@probo/ui";
 import { type ComponentProps, use, useEffect, useRef, useState, useTransition } from "react";
 import { usePaginationFragment } from "react-relay";
 import { ConnectionHandler, graphql } from "relay-runtime";
