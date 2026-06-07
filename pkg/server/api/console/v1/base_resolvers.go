@@ -455,6 +455,26 @@ func (r *queryResolver) Node(ctx context.Context, id gid.GID) (types.Node, error
 				UpdatedAt: version.UpdatedAt,
 			}, nil
 		}
+	case coredata.MonitoringReportEntityType:
+		action = probo.ActionMonitoringReportGet
+		loadNode = func(ctx context.Context, scope *coredata.Scope, id gid.GID) (types.Node, error) {
+			report, err := r.probo.MonitoringReports.Get(ctx, scope, id)
+			if err != nil {
+				return nil, err
+			}
+
+			return types.NewMonitoringReport(report), nil
+		}
+	case coredata.DeviceEntityType:
+		action = probo.ActionDeviceGet
+		loadNode = func(ctx context.Context, scope *coredata.Scope, id gid.GID) (types.Node, error) {
+			device, err := r.probo.Devices.Get(ctx, scope, id)
+			if err != nil {
+				return nil, err
+			}
+
+			return types.NewDevice(device), nil
+		}
 	default:
 	}
 
