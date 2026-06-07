@@ -109,7 +109,7 @@ function SignUpPageContent(props: { queryRef: NonNullable<ReturnType<typeof useQ
     return (
       <div className="space-y-6 w-full max-w-md mx-auto pt-8 text-center">
         <div className="space-y-2">
-          <h1 className="text-3xl font-bold">{__("Registration unavailable")}</h1>
+          <h1 className="text-3xl font-bold tracking-tight">{__("Registration unavailable")}</h1>
           <p className="text-txt-tertiary">
             {__("New account registration is currently disabled. Please contact your administrator or reach out to SOC2Start.io for assistance.")}
           </p>
@@ -130,9 +130,9 @@ function SignUpPageContent(props: { queryRef: NonNullable<ReturnType<typeof useQ
 
   return (
     <div className="space-y-6 w-full max-w-md mx-auto pt-8">
-      <div className="space-y-2 text-center">
-        <h1 className="text-3xl font-bold">{__("Sign up")}</h1>
-        <p className="text-txt-tertiary">
+      <div className="space-y-3 text-center">
+        <h1 className="text-3xl font-bold tracking-tight">{__("Sign up")}</h1>
+        <p className="text-txt-secondary">
           {__("Enter your information to create an account")}
         </p>
       </div>
@@ -165,20 +165,20 @@ function SignUpPageContent(props: { queryRef: NonNullable<ReturnType<typeof useQ
           error={formState.errors.password?.message}
         />
 
-        <Button type="submit" className="w-xs h-10 mx-auto mt-6" disabled={formState.isLoading}>
+        <Button type="submit" className="w-full h-12 mx-auto mt-6" disabled={formState.isLoading}>
           {formState.isLoading
             ? __("Creating account...")
             : __("Sign up with email")}
         </Button>
       </form>
 
-      <div className="text-center">
-        <p className="text-sm text-txt-tertiary">
+      <div className="pt-6 border-t border-border-solid text-center">
+        <p className="text-sm text-txt-secondary">
           {__("Already have an account?")}
           {" "}
           <Link
             to="/auth/login"
-            className="underline text-txt-primary hover:text-txt-secondary"
+            className="font-medium text-txt-primary hover:text-txt-accent transition-colors"
           >
             {__("Log in here")}
           </Link>

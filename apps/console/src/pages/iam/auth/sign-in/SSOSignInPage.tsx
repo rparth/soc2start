@@ -61,10 +61,10 @@ export default function SSOSignInPage() {
           <span className="text-sm">{__("Back")}</span>
         </Link>
 
-        <h1 className="text-center text-2xl font-bold">
+        <h1 className="text-center text-3xl font-bold tracking-tight">
           {__("Login with SSO")}
         </h1>
-        <p className="text-center text-txt-tertiary mt-1 mb-6">
+        <p className="text-center text-txt-secondary mt-2 mb-6">
           {__("Enter your work email to continue with SSO")}
         </p>
 
@@ -77,16 +77,16 @@ export default function SSOSignInPage() {
           autoFocus
         />
 
-        <Button className="w-xs h-10 mx-auto mt-6" disabled={checking}>
+        <Button className="w-full h-12 mx-auto mt-6" disabled={checking}>
           {checking ? __("Checking...") : __("Continue with SSO")}
         </Button>
 
-        <div className="text-center mt-6 text-sm text-txt-secondary">
+        <div className="mt-8 pt-6 border-t border-border-solid text-center text-sm text-txt-secondary">
           {__("Don't have an account ?")}
           {" "}
           <Link
             to={{ pathname: "/auth/register", search: location.search }}
-            className="underline hover:text-txt-primary"
+            className="font-medium text-txt-primary hover:text-txt-accent transition-colors"
           >
             {__("Register")}
           </Link>

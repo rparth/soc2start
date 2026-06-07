@@ -111,8 +111,8 @@ export default function ResetPasswordPage() {
   return (
     <div className="space-y-6 w-full max-w-md mx-auto pt-8">
       <div className="space-y-2 text-center">
-        <h1 className="text-3xl font-bold">{__("Reset password")}</h1>
-        <p className="text-txt-tertiary">
+        <h1 className="text-3xl font-bold tracking-tight">{__("Reset password")}</h1>
+        <p className="text-txt-secondary">
           {__("Enter your new password to reset your account")}
         </p>
       </div>
@@ -136,7 +136,7 @@ export default function ResetPasswordPage() {
           error={formState.errors.confirmPassword?.message}
         />
 
-        <Button type="submit" className="w-xs h-10 mx-auto mt-6" disabled={formState.isLoading}>
+        <Button type="submit" className="w-full h-12 mx-auto mt-6" disabled={formState.isLoading}>
           {formState.isLoading
             ? __("Resetting password...")
             : __("Reset password")}
@@ -144,12 +144,12 @@ export default function ResetPasswordPage() {
       </form>
 
       <div className="text-center">
-        <p className="text-sm text-txt-tertiary">
+        <p className="text-sm text-txt-secondary">
           {__("Remember your password?")}
           {" "}
           <Link
             to="/auth/login"
-            className="underline text-txt-primary hover:text-txt-secondary"
+            className="font-medium text-txt-primary hover:text-txt-accent transition-colors"
           >
             {__("Log in here")}
           </Link>

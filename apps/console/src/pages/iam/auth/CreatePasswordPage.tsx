@@ -97,8 +97,8 @@ export default function CreatePasswordPage() {
   return (
     <div className="space-y-6 w-full max-w-md mx-auto pt-8">
       <div className="space-y-2 text-center">
-        <h1 className="text-3xl font-bold">{__("Create a password")}</h1>
-        <p className="text-txt-tertiary">
+        <h1 className="text-3xl font-bold tracking-tight">{__("Create a password")}</h1>
+        <p className="text-txt-secondary">
           {__("Set a password for your account, with at least 8 characters")}
         </p>
       </div>
@@ -113,18 +113,18 @@ export default function CreatePasswordPage() {
           error={formState.errors.password?.message}
         />
 
-        <Button type="submit" className="w-xs h-10 mx-auto mt-6" disabled={formState.isLoading || isCreatingPassword}>
+        <Button type="submit" className="w-full h-12 mx-auto mt-6" disabled={formState.isLoading || isCreatingPassword}>
           {__("Save")}
         </Button>
       </form>
 
       <div className="text-center">
-        <p className="text-sm text-txt-tertiary">
+        <p className="text-sm text-txt-secondary">
           {__("Already have an account?")}
           {" "}
           <Link
             to="/auth/login"
-            className="underline text-txt-primary hover:text-txt-secondary"
+            className="font-medium text-txt-primary hover:text-txt-accent transition-colors"
           >
             {__("Log in here")}
           </Link>

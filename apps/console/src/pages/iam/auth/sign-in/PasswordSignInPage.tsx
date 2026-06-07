@@ -100,10 +100,10 @@ export default function PasswordSignInPage() {
         <span className="text-sm">{__("Back")}</span>
       </Link>
 
-      <h1 className="text-center text-2xl font-bold">
+      <h1 className="text-center text-3xl font-bold tracking-tight">
         {__("Login with Email")}
       </h1>
-      <p className="text-center text-txt-tertiary mt-1 mb-6">
+      <p className="text-center text-txt-secondary mt-2 mb-6">
         {__("Enter your email and password")}
       </p>
 
@@ -126,27 +126,29 @@ export default function PasswordSignInPage() {
         />
       </div>
 
-      <Button className="w-xs h-10 mx-auto mt-6" disabled={isSigningIn}>
+      <Button className="w-full h-12 mx-auto mt-6" disabled={isSigningIn}>
         {isSigningIn ? __("Logging in...") : __("Login")}
       </Button>
 
-      <div className="text-center mt-6 text-sm text-txt-secondary">
-        {__("Don't have an account ?")}
-        {" "}
-        <Link to={{ pathname: "/auth/register", search: location.search }} className="underline hover:text-txt-primary">
-          {__("Register")}
-        </Link>
-      </div>
+      <div className="mt-8 pt-6 border-t border-border-solid space-y-3">
+        <p className="text-center text-sm text-txt-secondary">
+          {__("Don't have an account ?")}
+          {" "}
+          <Link to={{ pathname: "/auth/register", search: location.search }} className="font-medium text-txt-primary hover:text-txt-accent transition-colors">
+            {__("Register")}
+          </Link>
+        </p>
 
-      <div className="text-center text-sm text-txt-secondary">
-        {__("Forgot password?")}
-        {" "}
-        <Link
-          to="/auth/forgot-password"
-          className="underline hover:text-txt-primary"
-        >
-          {__("Reset password")}
-        </Link>
+        <p className="text-center text-sm text-txt-secondary">
+          {__("Forgot password?")}
+          {" "}
+          <Link
+            to="/auth/forgot-password"
+            className="font-medium text-txt-primary hover:text-txt-accent transition-colors"
+          >
+            {__("Reset password")}
+          </Link>
+        </p>
       </div>
     </form>
   );

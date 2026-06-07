@@ -43,18 +43,18 @@ export default function SignInPage(props: Props) {
 
   return (
     <div className="w-full max-w-sm mx-auto pt-8">
-      <h1 className="text-2xl font-bold">
+      <h1 className="text-3xl font-bold tracking-tight text-center">
         {__("Sign in to your account")}
       </h1>
 
-      <div className="mt-6 space-y-4">
+      <div className="mt-8 space-y-4">
         {data.oidcProviders.map((providerRef, index) => (
           <OIDCButton key={index} providerRef={providerRef} />
         ))}
 
         <Button
           variant="secondary"
-          className="w-full h-10"
+          className="w-full h-12"
           to={{ pathname: "/auth/sso-login", search: location.search }}
         >
           {__("Sign in with SSO")}
@@ -64,23 +64,25 @@ export default function SignInPage(props: Props) {
 
         <Button
           variant="secondary"
-          className="w-full h-10"
+          className="w-full h-12"
           to={{ pathname: "/auth/password-login", search: location.search }}
         >
           {__("Sign in with email")}
         </Button>
       </div>
 
-      <p className="mt-8 text-center text-sm text-txt-secondary">
-        {__("New to SOC2Start.io?")}
-        {" "}
-        <Link
-          to={{ pathname: "/auth/register", search: location.search }}
-          className="underline hover:text-txt-primary"
-        >
-          {__("Create account")}
-        </Link>
-      </p>
+      <div className="mt-10 pt-6 border-t border-border-solid text-center">
+        <p className="text-sm text-txt-secondary">
+          {__("New to SOC2Start.io?")}
+          {" "}
+          <Link
+            to={{ pathname: "/auth/register", search: location.search }}
+            className="font-medium text-txt-primary hover:text-txt-accent transition-colors"
+          >
+            {__("Create account")}
+          </Link>
+        </p>
+      </div>
     </div>
   );
 }

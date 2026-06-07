@@ -14,11 +14,12 @@
 
 export function Divider({ children }: { children: React.ReactNode }) {
   return (
-    <div className="relative my-6 w-full">
-      <div className="border-t border-border-mid" />
-      <span className="px-4 text-xs uppercase text-txt-secondary bg-level-0 absolute top-0 left-1/2 -translate-1/2">
+    <div className="relative my-8 w-full flex items-center gap-4">
+      <div className="flex-1 h-px bg-gradient-to-r from-transparent via-border-mid to-border-mid" />
+      <span className="text-xs uppercase tracking-wider text-txt-quaternary font-medium select-none">
         {children}
       </span>
+      <div className="flex-1 h-px bg-gradient-to-l from-transparent via-border-mid to-border-mid" />
     </div>
   );
 }

@@ -49,7 +49,7 @@ export function OIDCButton({
   return (
     <Button
       variant="secondary"
-      className="w-full h-10"
+      className="w-full h-12"
       onClick={() => {
         window.location.href
           = provider.loginURL

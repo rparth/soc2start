@@ -93,19 +93,19 @@ export default function ForgotPasswordPage() {
     ? (
         <div className="space-y-6 w-full max-w-md mx-auto pt-8">
           <div className="space-y-2 text-center">
-            <h1 className="text-3xl font-bold">{__("Check your email")}</h1>
-            <p className="text-txt-tertiary">
+            <h1 className="text-3xl font-bold tracking-tight">{__("Check your email")}</h1>
+            <p className="text-txt-secondary">
               {__("We've sent password reset instructions to your email address")}
             </p>
           </div>
 
           <div className="text-center">
-            <p className="text-sm text-txt-tertiary">
+            <p className="text-sm text-txt-secondary">
               {__("Didn't receive the email?")}
               {" "}
               <button
                 onClick={() => setInstructionsSent(false)}
-                className="underline text-txt-primary hover:text-txt-secondary"
+                className="font-medium text-txt-primary hover:text-txt-accent transition-colors"
               >
                 {__("Try again")}
               </button>
@@ -113,12 +113,12 @@ export default function ForgotPasswordPage() {
           </div>
 
           <div className="text-center">
-            <p className="text-sm text-txt-tertiary">
+            <p className="text-sm text-txt-secondary">
               {__("Remember your password?")}
               {" "}
               <Link
                 to="/auth/login"
-                className="underline text-txt-primary hover:text-txt-secondary"
+                className="font-medium text-txt-primary hover:text-txt-accent transition-colors"
               >
                 {__("Back to login")}
               </Link>
@@ -129,8 +129,8 @@ export default function ForgotPasswordPage() {
     : (
         <div className="space-y-6 w-full max-w-md mx-auto pt-8">
           <div className="space-y-2 text-center">
-            <h1 className="text-3xl font-bold">{__("Forgot Password")}</h1>
-            <p className="text-txt-tertiary">
+            <h1 className="text-3xl font-bold tracking-tight">{__("Forgot Password")}</h1>
+            <p className="text-txt-secondary">
               {__(
                 "Enter your email address and we'll send you instructions to reset your password",
               )}
@@ -149,7 +149,7 @@ export default function ForgotPasswordPage() {
 
             <Button
               type="submit"
-              className="w-xs h-10 mx-auto mt-6"
+              className="w-full h-12 mx-auto mt-6"
               disabled={formState.isSubmitting}
             >
               {formState.isSubmitting
@@ -159,12 +159,12 @@ export default function ForgotPasswordPage() {
           </form>
 
           <div className="text-center">
-            <p className="text-sm text-txt-tertiary">
+            <p className="text-sm text-txt-secondary">
               {__("Remember your password?")}
               {" "}
               <Link
                 to="/auth/login"
-                className="underline text-txt-primary hover:text-txt-secondary"
+                className="font-medium text-txt-primary hover:text-txt-accent transition-colors"
               >
                 {__("Back to login")}
               </Link>
