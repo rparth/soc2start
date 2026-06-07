@@ -108,6 +108,8 @@ export {
   ArrowsClockwise as IconArrowsClockwise,
   Envelope as IconEnvelope,
   LockOpen as IconLockOpen,
+  Monitor as IconMonitor,
+  Moon as IconMoon,
   User as IconUser,
   UserCircle as IconUserCircle,
 } from "@phosphor-icons/react";

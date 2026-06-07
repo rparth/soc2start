@@ -186,6 +186,7 @@
         0 4px 16px rgba(13, 33, 55, 0.08);
 }
 
+@custom-variant dark (&:where(.dark, .dark *));
 @custom-variant document (&:where([data-theme=document] *));
 
 @layer theme {

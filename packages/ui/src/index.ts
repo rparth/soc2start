@@ -59,6 +59,7 @@ export { PriorityLevel } from "./Atoms/PriorityLevel/PriorityLevel";
 export { TaskStateIcon } from "./Atoms/Icons/TaskStateIcon";
 export { Checkbox } from "./Atoms/Checkbox/Checkbox";
 export { Toggle } from "./Atoms/Toggle/Toggle";
+export { ThemeToggle } from "./Atoms/ThemeToggle/ThemeToggle";
 export {
   Cell,
   CellHead,

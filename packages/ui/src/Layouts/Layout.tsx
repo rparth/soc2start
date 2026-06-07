@@ -28,6 +28,7 @@ import { Link, useLocation } from "react-router";
 import { IconCrossLargeX, IconListStack } from "../Atoms/Icons";
 import { Logo } from "../Atoms/Logo/Logo";
 import { Sidebar } from "../Atoms/Sidebar/Sidebar";
+import { ThemeToggle } from "../Atoms/ThemeToggle/ThemeToggle";
 import { Toasts } from "../Atoms/Toasts/Toasts";
 import { ConfirmDialog } from "../Molecules/Dialog/ConfirmDialog";
 
@@ -107,7 +108,10 @@ export function Layout({
               </div>
             </>
           )}
-          <div className="ml-auto">{headerTrailing}</div>
+          <div className="ml-auto flex items-center gap-2">
+            <ThemeToggle />
+            {headerTrailing}
+          </div>
         </header>
 
         {sidebar && mobileMenuOpen && (

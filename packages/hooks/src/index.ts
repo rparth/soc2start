@@ -21,3 +21,5 @@ export { useCleanup } from "./useCleanup";
 export { useCopy } from "./useCopy";
 export { useFavicon } from "./useFavicon";
 export { useSystemTheme } from "./useSystemTheme";
+export { useTheme, initTheme } from "./useTheme";
+export type { ThemePreference, ResolvedTheme } from "./useTheme";
