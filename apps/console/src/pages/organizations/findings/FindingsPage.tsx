@@ -31,6 +31,7 @@ import {
   Card,
   DropdownItem,
   EmptyState,
+  HelpButton,
   IconMagnifyingGlass,
   IconPageTextLine,
   IconPlusLarge,
@@ -73,6 +74,7 @@ import type { FindingsPageRowFragment$key } from "#/__generated__/core/FindingsP
 import { usePeople } from "#/hooks/graph/PeopleGraph";
 import { useOrganizationId } from "#/hooks/useOrganizationId";
 
+import { helpContent } from "#/components/help/helpContent";
 import { CreateFindingDialog } from "./dialogs/CreateFindingDialog";
 import { PublishFindingListDialog } from "./dialogs/PublishFindingListDialog";
 
@@ -272,6 +274,7 @@ export default function FindingsPage({ queryRef }: FindingsPageProps) {
         title={__("Findings")}
         description={__("Manage your organization's findings.")}
       >
+        <HelpButton content={helpContent.findings} />
         <div className="flex gap-2">
           {organization.node.findingsDocument?.id && (
             <Button variant="secondary" asChild>

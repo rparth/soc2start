@@ -23,6 +23,7 @@ import {
   Breadcrumb,
   Button,
   DropdownItem,
+  HelpButton,
   IconCheckmark1,
   IconFrame2,
   IconPageCheck,
@@ -59,6 +60,7 @@ import {
 } from "#/hooks/graph/MeasureGraph";
 import { useOrganizationId } from "#/hooks/useOrganizationId";
 
+import { helpContent } from "#/components/help/helpContent";
 import MeasureFormDialog from "./dialog/MeasureFormDialog";
 import { controlsFragment } from "./tabs/MeasureControlsTab";
 import { documentsFragment } from "./tabs/MeasureDocumentsTab";
@@ -222,6 +224,7 @@ export default function MeasureDetailPage(props: Props) {
       />
 
       <PageHeader title={measure.name} description={measure.description}>
+        <HelpButton content={helpContent.measures} />
         {!measure.canUpdate && <MeasureBadge state={measure.state!} />}
         {measure.canUpdate && (
           <>

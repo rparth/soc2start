@@ -18,6 +18,7 @@ import {
   Button,
   Card,
   EmptyState,
+  HelpButton,
   IconPageCheck,
   IconPlusLarge,
   PageHeader,
@@ -38,6 +39,7 @@ import type { StatementsOfApplicabilityPageFragment$key } from "#/__generated__/
 import type { StatementsOfApplicabilityPagePaginationQuery } from "#/__generated__/core/StatementsOfApplicabilityPagePaginationQuery.graphql";
 import type { StatementsOfApplicabilityPageQuery } from "#/__generated__/core/StatementsOfApplicabilityPageQuery.graphql";
 
+import { helpContent } from "#/components/help/helpContent";
 import { StatementOfApplicabilityRow } from "./_components/StatementOfApplicabilityRow";
 import { CreateStatementOfApplicabilityDialog } from "./dialogs/CreateStatementOfApplicabilityDialog";
 
@@ -119,6 +121,7 @@ export default function StatementsOfApplicabilityPage({
           "Manage statements of applicability for your organization's frameworks.",
         )}
       >
+        <HelpButton content={helpContent.statementsOfApplicability} />
         {organization.canCreateStatementOfApplicability && (
           <CreateStatementOfApplicabilityDialog
             connectionId={statementsOfApplicability.__id}

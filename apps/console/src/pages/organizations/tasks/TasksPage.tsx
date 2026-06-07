@@ -14,7 +14,8 @@
 
 import { usePageTitle } from "@probo/hooks";
 import { useTranslate } from "@probo/i18n";
-import { Button, IconPlusLarge, PageHeader } from "@probo/ui";
+import { Button, HelpButton, IconPlusLarge, PageHeader } from "@probo/ui";
+import { helpContent } from "#/components/help/helpContent";
 import { type PreloadedQuery, usePreloadedQuery } from "react-relay";
 import { graphql } from "relay-runtime";
 
@@ -53,6 +54,7 @@ export default function TasksPage({ queryRef }: Props) {
               "Track your assigned compliance tasks and keep progress on track.",
             )}
           >
+            <HelpButton content={helpContent.tasks} />
             {canCreateTask && (
               <TaskFormDialog connection={connectionId} onCompleted={refetch}>
                 <Button icon={IconPlusLarge}>{__("New task")}</Button>

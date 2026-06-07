@@ -25,10 +25,12 @@ import {
   IconFolderUpload,
   IconPencil,
   IconShield,
+  HelpButton,
   IconTrashCan,
   PageHeader,
   useDialogRef,
 } from "@probo/ui";
+import { helpContent } from "#/components/help/helpContent";
 import { type ChangeEventHandler, useState } from "react";
 import {
   graphql,
@@ -152,6 +154,7 @@ export default function FrameworksPage(props: Props) {
         title={__("Frameworks")}
         description={__("Manage your compliance frameworks")}
       >
+        <HelpButton content={helpContent.frameworks} />
         {data.organization.canCreateFramework && (
           <>
             <FileButton

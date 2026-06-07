@@ -29,6 +29,7 @@ import {
   Card,
   DropdownItem,
   EmptyState,
+  HelpButton,
   IconArrowInbox1,
   IconPlusLarge,
   IconTrashCan,
@@ -65,6 +66,7 @@ import {
   rightsRequestsQuery,
 } from "../../../hooks/graph/RightsRequestGraph";
 
+import { helpContent } from "#/components/help/helpContent";
 import { CreateRightsRequestDialog } from "./dialogs/CreateRightsRequestDialog";
 
 interface RightsRequestsPageProps {
@@ -138,6 +140,7 @@ export default function RightsRequestsPage({
         title={__("Rights Requests")}
         description={__("Manage data subject rights requests.")}
       >
+        <HelpButton content={helpContent.rightsRequests} />
         {organization.node.canCreateRightsRequest && (
           <CreateRightsRequestDialog
             organizationId={organizationId}

@@ -31,6 +31,7 @@ import {
   IconFolderUpload,
   IconMagnifyingGlass,
   IconPencil,
+  HelpButton,
   IconPlusLarge,
   IconTrashCan,
   Input,
@@ -72,6 +73,7 @@ import type { MeasuresPageRowFragment$key } from "#/__generated__/core/MeasuresP
 import { useMutationWithToasts } from "#/hooks/useMutationWithToasts";
 import { useOrganizationId } from "#/hooks/useOrganizationId";
 
+import { helpContent } from "#/components/help/helpContent";
 import MeasureFormDialog from "./dialog/MeasureFormDialog";
 
 export const MeasuresConnectionKey = "MeasuresPage_measures";
@@ -324,6 +326,7 @@ export default function MeasuresPage({ queryRef }: MeasuresPageProps) {
           "Measures are actions taken to reduce the risk. Add them to track their implementation status.",
         )}
       >
+        <HelpButton content={helpContent.measures} />
         {organization.canCreateMeasure && (
           <>
             <FileButton

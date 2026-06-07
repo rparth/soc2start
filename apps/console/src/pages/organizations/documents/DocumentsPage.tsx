@@ -16,12 +16,14 @@ import { usePageTitle } from "@probo/hooks";
 import { useTranslate } from "@probo/i18n";
 import {
   Button,
+  HelpButton,
   IconBell2,
   IconPlusLarge,
   PageHeader,
   TabItem,
   Tabs,
 } from "@probo/ui";
+import { helpContent } from "#/components/help/helpContent";
 import { useState } from "react";
 import {
   type PreloadedQuery,
@@ -95,6 +97,7 @@ export default function DocumentsPage(props: {
         title={__("Documents")}
         description={__("Manage your organization's documents")}
       >
+        <HelpButton content={helpContent.documents} />
         <div className="flex gap-2">
           {canSendAnySignatureNotifications && (
             <Button

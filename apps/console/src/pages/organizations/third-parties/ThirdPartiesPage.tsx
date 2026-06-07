@@ -21,6 +21,7 @@ import {
   Button,
   DropdownItem,
   EmptyState,
+  HelpButton,
   IconPageTextLine,
   IconPlusLarge,
   IconStore,
@@ -58,6 +59,7 @@ import {
 import { useOrganizationId } from "#/hooks/useOrganizationId";
 import type { NodeOf } from "#/types";
 
+import { helpContent } from "#/components/help/helpContent";
 import { CreateThirdPartyDialog } from "./dialogs/CreateThirdPartyDialog";
 import { PublishThirdPartyListDialog } from "./dialogs/PublishThirdPartyListDialog";
 
@@ -112,6 +114,7 @@ export default function ThirdPartiesPage(props: Props) {
           "Third parties are external services and providers that your company uses. Add them to keep track of their risk and compliance status.",
         )}
       >
+        <HelpButton content={helpContent.thirdParties} />
         <div className="flex gap-2">
           {thirdPartiesDocument && (
             <Button

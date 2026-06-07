@@ -14,7 +14,8 @@
 
 import { usePageTitle } from "@probo/hooks";
 import { useTranslate } from "@probo/i18n";
-import { Badge, Button, IconBell2, IconCheckmark1, IconFolder2, IconMedal, IconPageTextLine, IconPencil, IconPeopleAdd, IconSettingsGear2, IconStore, PageHeader, TabLink, Tabs } from "@probo/ui";
+import { Badge, Button, HelpButton, IconBell2, IconCheckmark1, IconFolder2, IconMedal, IconPageTextLine, IconPencil, IconPeopleAdd, IconSettingsGear2, IconStore, PageHeader, TabLink, Tabs } from "@probo/ui";
+import { helpContent } from "#/components/help/helpContent";
 import { type PreloadedQuery, usePreloadedQuery } from "react-relay";
 import { Outlet } from "react-router";
 import { graphql } from "relay-runtime";
@@ -66,6 +67,7 @@ export function CompliancePageLayout(props: { queryRef: PreloadedQuery<Complianc
           "Configure your public compliance page to showcase your security and compliance posture.",
         )}
       >
+        <HelpButton content={helpContent.compliancePage} />
         <Badge variant={organization.compliancePage?.active ? "success" : "danger"}>
           {organization.compliancePage?.active ? __("Active") : __("Inactive")}
         </Badge>

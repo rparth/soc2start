@@ -15,12 +15,14 @@
 import { usePageTitle } from "@probo/hooks";
 import { useTranslate } from "@probo/i18n";
 import {
+  HelpButton,
   IconFolder2,
   IconKey,
   PageHeader,
   TabLink,
   Tabs,
 } from "@probo/ui";
+import { helpContent } from "#/components/help/helpContent";
 import { Outlet } from "react-router";
 
 import { useOrganizationId } from "#/hooks/useOrganizationId";
@@ -38,7 +40,9 @@ export default function AccessReviewLayout() {
         description={__(
           "Review and manage user access across your organization's systems and applications.",
         )}
-      />
+      >
+        <HelpButton content={helpContent.accessReviews} />
+      </PageHeader>
 
       <Tabs>
         <TabLink to={`/organizations/${organizationId}/access-reviews`} end>

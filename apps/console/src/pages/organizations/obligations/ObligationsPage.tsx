@@ -27,6 +27,7 @@ import {
   Card,
   DropdownItem,
   EmptyState,
+  HelpButton,
   IconBook,
   IconPageTextLine,
   IconPlusLarge,
@@ -64,6 +65,7 @@ import {
   obligationsQuery,
 } from "../../../hooks/graph/ObligationGraph";
 
+import { helpContent } from "#/components/help/helpContent";
 import { CreateObligationDialog } from "./dialogs/CreateObligationDialog";
 import { PublishObligationListDialog } from "./dialogs/PublishObligationListDialog";
 
@@ -143,6 +145,7 @@ export default function ObligationsPage({ queryRef }: ObligationsPageProps) {
         title={__("Obligations")}
         description={__("Manage your organization's obligations.")}
       >
+        <HelpButton content={helpContent.obligations} />
         <div className="flex gap-2">
           {organization.node.obligationsDocument?.id && (
             <Button variant="secondary" asChild>

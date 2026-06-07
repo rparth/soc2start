@@ -12,17 +12,17 @@
 // OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 // PERFORMANCE OF THIS SOFTWARE.
 
-import { ConfirmDialog, Toasts } from "@probo/ui";
+import { ConfirmDialog, HelpPanelProvider, Toasts } from "@probo/ui";
 import { RouterProvider } from "react-router";
 
 import { router } from "./routes";
 
 export function App() {
   return (
-    <>
+    <HelpPanelProvider>
       <RouterProvider router={router} />
       <Toasts />
       <ConfirmDialog />
-    </>
+    </HelpPanelProvider>
   );
 }

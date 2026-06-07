@@ -22,6 +22,7 @@ import {
   Button,
   DropdownItem,
   EmptyState,
+  HelpButton,
   IconArchive,
   IconPageTextLine,
   IconPlusLarge,
@@ -52,6 +53,7 @@ import { SortableTable } from "#/components/SortableTable";
 import { useOrganizationId } from "#/hooks/useOrganizationId";
 import type { NodeOf } from "#/types";
 
+import { helpContent } from "#/components/help/helpContent";
 import { dataQuery, useDeleteDatum } from "../../../hooks/graph/DatumGraph";
 
 import { CreateDatumDialog } from "./dialogs/CreateDatumDialog";
@@ -152,6 +154,7 @@ export default function DataPage(props: Props) {
           "Manage your organization's data assets and their classifications.",
         )}
       >
+        <HelpButton content={helpContent.data} />
         <div className="flex gap-2">
           {data.dataListDocument?.id && (
             <Button variant="secondary" asChild>

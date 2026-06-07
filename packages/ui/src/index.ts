@@ -87,6 +87,13 @@ export {
   useDialogRef,
 } from "./Molecules/Dialog/Dialog";
 export { ConfirmDialog, useConfirm } from "./Molecules/Dialog/ConfirmDialog";
+export {
+  HelpButton,
+  HelpPanelProvider,
+  type HelpContent,
+  type HelpSection,
+  useHelpPanel,
+} from "./Molecules/HelpPanel/HelpPanel";
 export { RiskBadge } from "./Molecules/Badge/RiskBadge";
 export { SeverityBadge } from "./Molecules/Badge/SeverityBadge";
 export { DocumentVersionBadge } from "./Molecules/Badge/DocumentVersionBadge";

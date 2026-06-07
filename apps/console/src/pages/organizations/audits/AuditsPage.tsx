@@ -25,6 +25,7 @@ import {
   Button,
   DropdownItem,
   EmptyState,
+  HelpButton,
   IconMedal,
   IconPlusLarge,
   IconTrashCan,
@@ -56,6 +57,7 @@ import { SortableTable } from "#/components/SortableTable";
 import { useOrganizationId } from "#/hooks/useOrganizationId";
 import type { NodeOf } from "#/types";
 
+import { helpContent } from "#/components/help/helpContent";
 import { auditsQuery, useDeleteAudit } from "../../../hooks/graph/AuditGraph";
 
 import { CreateAuditDialog } from "./dialogs/CreateAuditDialog";
@@ -226,6 +228,7 @@ export default function AuditsPage(props: Props) {
           "Manage your organization's compliance audits and their progress.",
         )}
       >
+        <HelpButton content={helpContent.audits} />
         {canCreateAudit && (
           <CreateAuditDialog
             connection={connectionId}

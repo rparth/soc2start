@@ -21,10 +21,12 @@ import {
   DropdownItem,
   FrameworkLogo,
   IconPencil,
+  HelpButton,
   IconPlusLarge,
   IconTrashCan,
   PageHeader,
 } from "@probo/ui";
+import { helpContent } from "#/components/help/helpContent";
 import {
   type PreloadedQuery,
   useFragment,
@@ -156,6 +158,7 @@ export default function FrameworkDetailPage(props: Props) {
           </>
         )}
       >
+        <HelpButton content={helpContent.controls} />
         {framework.canUpdate && (
           <FrameworkFormDialog
             organizationId={organizationId}

@@ -17,6 +17,7 @@ import { usePageTitle } from "@probo/hooks";
 import { useTranslate } from "@probo/i18n";
 import {
   EmptyState,
+  HelpButton,
   IconFrame2,
   PageHeader,
   Tbody,
@@ -38,6 +39,7 @@ import type { RiskAssessmentsPageRefetchQuery } from "#/__generated__/core/RiskA
 import { SortableTable, SortableTh } from "#/components/SortableTable";
 import { useOrganizationId } from "#/hooks/useOrganizationId";
 
+import { helpContent } from "#/components/help/helpContent";
 import { CreateRiskAssessmentDialog } from "./_components/CreateRiskAssessmentDialog";
 
 export const riskAssessmentsPageQuery = graphql`
@@ -134,6 +136,7 @@ export default function RiskAssessmentsPage({ queryRef }: RiskAssessmentsPagePro
           "Manage risk assessments with scopes, nodes, processes, threats, and scenarios.",
         )}
       >
+        <HelpButton content={helpContent.riskAssessments} />
         {canCreate && (
           <CreateRiskAssessmentDialog
             connectionId={connectionId}

@@ -22,6 +22,7 @@ import {
   Card,
   DropdownItem,
   EmptyState,
+  HelpButton,
   IconCircleProgress,
   IconPageTextLine,
   IconPlusLarge,
@@ -76,6 +77,7 @@ import {
   processingActivitiesQuery,
 } from "../../../hooks/graph/ProcessingActivityGraph";
 
+import { helpContent } from "#/components/help/helpContent";
 import { CreateProcessingActivityDialog } from "./dialogs/CreateProcessingActivityDialog";
 import { PublishDataProtectionImpactAssessmentListDialog } from "./dialogs/PublishDataProtectionImpactAssessmentListDialog";
 import { PublishProcessingActivityListDialog } from "./dialogs/PublishProcessingActivityListDialog";
@@ -274,6 +276,7 @@ export default function ProcessingActivitiesPage({
         title={__("Processing Activities")}
         description={__("Manage your processing activities under GDPR")}
       >
+        <HelpButton content={helpContent.processingActivities} />
         {activeTab === "activities"
           && organization.node.canCreateProcessingActivity && (
           <CreateProcessingActivityDialog

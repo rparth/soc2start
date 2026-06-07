@@ -17,12 +17,14 @@ import { useTranslate } from "@probo/i18n";
 import {
   Button,
   EmptyState,
+  HelpButton,
   IconBox,
   IconPageTextLine,
   IconPlusLarge,
   IconUpload,
   PageHeader,
 } from "@probo/ui";
+import { helpContent } from "#/components/help/helpContent";
 import {
   graphql,
   type PreloadedQuery,
@@ -133,6 +135,7 @@ export default function AssetsPage(props: Props) {
           "Manage your organization's assets and their classifications.",
         )}
       >
+        <HelpButton content={helpContent.assets} />
         <div className="flex gap-2">
           {data.node.assetListDocument?.id && (
             <Button variant="secondary" asChild>

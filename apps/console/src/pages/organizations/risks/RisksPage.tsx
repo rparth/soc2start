@@ -17,6 +17,7 @@ import { useTranslate } from "@probo/i18n";
 import {
   Button,
   EmptyState,
+  HelpButton,
   IconPageTextLine,
   IconPlusLarge,
   IconUpload,
@@ -42,6 +43,7 @@ import type { RisksPageRefetchQuery } from "#/__generated__/core/RisksPageRefetc
 import { SortableTable, SortableTh } from "#/components/SortableTable";
 import { useOrganizationId } from "#/hooks/useOrganizationId";
 
+import { helpContent } from "#/components/help/helpContent";
 import { FormRiskDialog } from "./_components/FormRiskDialog";
 import { PublishRiskListDialog } from "./_components/PublishRiskListDialog";
 import { RiskRow } from "./_components/RiskRow";
@@ -181,6 +183,7 @@ export default function RisksPage(props: RisksPageProps) {
           "Risks are potential threats to your organization. Manage them by identifying, assessing, and implementing mitigation measures.",
         )}
       >
+        <HelpButton content={helpContent.risks} />
         <div className="flex gap-2">
           {risksDocument && (
             <Button
