@@ -109,7 +109,7 @@ func (s *MonitoringReportService) Create(
 	}
 
 	uploadReq := &FileUpload{
-		Content:     &buf,
+		Content:     bytes.NewReader(buf.Bytes()),
 		Filename:    fileUpload.Filename,
 		Size:        fileUpload.Size,
 		ContentType: fileUpload.ContentType,
