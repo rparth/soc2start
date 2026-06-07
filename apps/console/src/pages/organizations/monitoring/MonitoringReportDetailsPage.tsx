@@ -139,7 +139,7 @@ export default function MonitoringReportDetailsPage({
               if (errors?.length) {
                 toast({
                   title: __("Error"),
-                  description: (errors as GraphQLError[])[0]?.message,
+                  description: (errors as GraphQLError[])[0]?.message ?? __("Unknown error"),
                   variant: "error",
                 });
                 reject(new Error((errors as GraphQLError[])[0]?.message));
