@@ -148,6 +148,7 @@ export function CookieBannersOverviewPage({ queryRef }: CookieBannersOverviewPag
     return (
       <div className="space-y-6">
         <PageHeader
+          breadcrumbs={[__("Privacy")]}
           title={__("Cookie Banners")}
           description={__(
             "Manage cookie consent banners for your websites. Configure categories, cookies, and install the SDK.",
@@ -163,6 +164,7 @@ export function CookieBannersOverviewPage({ queryRef }: CookieBannersOverviewPag
   return (
     <div className="space-y-6">
       <PageHeader
+        breadcrumbs={[__("Privacy")]}
         title={__("Cookie Banners")}
         description={__(
           "Manage cookie consent banners for your websites. Configure categories, cookies, and install the SDK.",

@@ -148,6 +148,7 @@ export default function FrameworksPage(props: Props) {
         organizationId={data.organization.id!}
       />
       <PageHeader
+        breadcrumbs={[__("Governance")]}
         title={__("Frameworks")}
         description={__("Manage your compliance frameworks")}
       >

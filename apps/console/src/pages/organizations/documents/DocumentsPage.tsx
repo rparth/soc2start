@@ -91,6 +91,7 @@ export default function DocumentsPage(props: {
   return (
     <div className="space-y-6">
       <PageHeader
+        breadcrumbs={[__("Organization")]}
         title={__("Documents")}
         description={__("Manage your organization's documents")}
       >

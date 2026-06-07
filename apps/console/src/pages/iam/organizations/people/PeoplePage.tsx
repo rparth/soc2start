@@ -63,7 +63,7 @@ export function PeoplePage(props: {
 
   return (
     <div className="space-y-6">
-      <PageHeader title={__("People")}>
+      <PageHeader breadcrumbs={[__("Organization")]} title={__("People")}>
         {organization.canCreateUser
           && (
             <AddPersonDialog connectionId={connectionId}>

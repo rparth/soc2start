@@ -149,6 +149,7 @@ export default function RightsRequestDetailsPage(props: Props) {
       <div className="flex items-center justify-between">
         <Breadcrumb
           items={[
+            __("Privacy"),
             {
               label: __("Rights Requests"),
               to: breadcrumbRequestsUrl,

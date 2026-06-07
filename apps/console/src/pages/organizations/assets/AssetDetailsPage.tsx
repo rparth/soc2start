@@ -98,6 +98,7 @@ export default function AssetDetailsPage(props: Props) {
   });
 
   const breadcrumbItems = [
+    __("Organization"),
     {
       label: __("Assets"),
       to: `/organizations/${organizationId}/assets`,

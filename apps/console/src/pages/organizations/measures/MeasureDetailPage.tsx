@@ -202,6 +202,7 @@ export default function MeasureDetailPage(props: Props) {
       {/* Header */}
       <Breadcrumb
         items={[
+          __("Governance"),
           {
             label: __("Measures"),
             to: `/organizations/${organizationId}/measures`,

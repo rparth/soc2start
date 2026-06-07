@@ -122,6 +122,7 @@ export default function ThirdPartyDetailPage(props: Props) {
       )}
       <Breadcrumb
         items={[
+          __("Organization"),
           {
             label: __("Third parties"),
             to: thirdPartiesUrl,

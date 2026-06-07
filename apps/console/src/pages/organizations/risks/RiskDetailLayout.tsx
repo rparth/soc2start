@@ -165,6 +165,7 @@ export default function RiskDetailLayout(props: RiskDetailLayoutProps) {
       <div className="flex justify-between items-center mb-4">
         <Breadcrumb
           items={[
+            __("Governance"),
             {
               label: __("Risks"),
               to: risksUrl,

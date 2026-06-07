@@ -318,6 +318,7 @@ export default function MeasuresPage({ queryRef }: MeasuresPageProps) {
   return (
     <div className="space-y-6">
       <PageHeader
+        breadcrumbs={[__("Governance")]}
         title={__("Measures")}
         description={__(
           "Measures are actions taken to reduce the risk. Add them to track their implementation status.",

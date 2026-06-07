@@ -166,6 +166,7 @@ export default function ObligationDetailsPage(props: Props) {
         <div>
           <Breadcrumb
             items={[
+              __("Compliance"),
               {
                 label: __("Obligations"),
                 to: breadcrumbObligationsUrl,

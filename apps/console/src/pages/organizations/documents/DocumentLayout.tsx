@@ -191,6 +191,7 @@ export function DocumentLayout(props: { queryRef: PreloadedQuery<DocumentLayoutQ
         <div className="flex justify-between items-center mb-4">
           <Breadcrumb
             items={[
+              __("Organization"),
               {
                 label: __("Documents"),
                 to: `/organizations/${organizationId}/documents`,

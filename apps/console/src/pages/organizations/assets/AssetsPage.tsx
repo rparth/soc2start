@@ -127,6 +127,7 @@ export default function AssetsPage(props: Props) {
   return (
     <div className="space-y-6">
       <PageHeader
+        breadcrumbs={[__("Organization")]}
         title={__("Assets")}
         description={__(
           "Manage your organization's assets and their classifications.",

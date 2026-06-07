@@ -145,6 +145,10 @@ export default function FrameworkDetailPage(props: Props) {
   return (
     <div className="space-y-6">
       <PageHeader
+        breadcrumbs={[
+          __("Governance"),
+          { label: __("Frameworks"), to: `/organizations/${organizationId}/frameworks` },
+        ]}
         title={(
           <>
             <FrameworkLogo {...framework} />

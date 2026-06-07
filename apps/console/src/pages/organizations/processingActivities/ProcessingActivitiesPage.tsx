@@ -270,6 +270,7 @@ export default function ProcessingActivitiesPage({
   return (
     <div className="space-y-6">
       <PageHeader
+        breadcrumbs={[__("Privacy")]}
         title={__("Processing Activities")}
         description={__("Manage your processing activities under GDPR")}
       >

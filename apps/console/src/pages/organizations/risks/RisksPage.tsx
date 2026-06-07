@@ -175,6 +175,7 @@ export default function RisksPage(props: RisksPageProps) {
   return (
     <div className="space-y-6">
       <PageHeader
+        breadcrumbs={[__("Governance")]}
         title={__("Risks")}
         description={__(
           "Risks are potential threats to your organization. Manage them by identifying, assessing, and implementing mitigation measures.",

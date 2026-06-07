@@ -99,6 +99,7 @@ export default function CookieBannerConsentRecordPage({
     <div className="space-y-6">
       <Breadcrumb
         items={[
+          __("Privacy"),
           {
             label: __("Cookie Banners"),
             to: `/organizations/${organizationId}/cookie-banners`,

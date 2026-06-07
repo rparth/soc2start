@@ -319,6 +319,7 @@ export default function StatementOfApplicabilityDetailPage(props: Props) {
     <div className="space-y-6">
       <Breadcrumb
         items={[
+          __("Compliance"),
           {
             label: __("Statements of Applicability"),
             to: listUrl,

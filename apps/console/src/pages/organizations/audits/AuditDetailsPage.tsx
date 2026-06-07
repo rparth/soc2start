@@ -172,6 +172,7 @@ export default function AuditDetailsPage(props: Props) {
     <div className="space-y-6">
       <Breadcrumb
         items={[
+          __("Compliance"),
           {
             label: __("Audits"),
             to: `/organizations/${organizationId}/audits`,

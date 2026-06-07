@@ -148,6 +148,7 @@ export default function RiskAssessmentDetailPage({ queryRef }: RiskAssessmentDet
     <div className="space-y-6">
       <Breadcrumb
         items={[
+          __("Governance"),
           { label: __("Risk Assessments"), to: listUrl },
           { label: ra.name ?? "" },
         ]}

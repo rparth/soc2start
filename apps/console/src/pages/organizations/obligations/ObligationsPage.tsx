@@ -139,6 +139,7 @@ export default function ObligationsPage({ queryRef }: ObligationsPageProps) {
   return (
     <div className="space-y-6">
       <PageHeader
+        breadcrumbs={[__("Compliance")]}
         title={__("Obligations")}
         description={__("Manage your organization's obligations.")}
       >

@@ -106,6 +106,7 @@ export default function ThirdPartiesPage(props: Props) {
   return (
     <div className="space-y-6">
       <PageHeader
+        breadcrumbs={[__("Organization")]}
         title={__("Third parties")}
         description={__(
           "Third parties are external services and providers that your company uses. Add them to keep track of their risk and compliance status.",

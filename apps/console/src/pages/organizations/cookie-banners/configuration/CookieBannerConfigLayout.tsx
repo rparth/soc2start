@@ -167,6 +167,7 @@ export default function CookieBannerConfigLayout({ queryRef }: CookieBannerConfi
     <div className="space-y-6">
       <Breadcrumb
         items={[
+          __("Privacy"),
           {
             label: __("Cookie Banners"),
             to: `/organizations/${organizationId}/cookie-banners`,

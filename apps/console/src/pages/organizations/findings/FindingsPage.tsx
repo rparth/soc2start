@@ -268,6 +268,7 @@ export default function FindingsPage({ queryRef }: FindingsPageProps) {
   return (
     <div className="space-y-6">
       <PageHeader
+        breadcrumbs={[__("Governance")]}
         title={__("Findings")}
         description={__("Manage your organization's findings.")}
       >

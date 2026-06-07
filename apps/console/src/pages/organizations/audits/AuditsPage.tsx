@@ -220,6 +220,7 @@ export default function AuditsPage(props: Props) {
         </div>
       )}
       <PageHeader
+        breadcrumbs={[__("Compliance")]}
         title={__("Audits")}
         description={__(
           "Manage your organization's compliance audits and their progress.",

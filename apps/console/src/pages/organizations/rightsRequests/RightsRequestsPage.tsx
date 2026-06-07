@@ -134,6 +134,7 @@ export default function RightsRequestsPage({
   return (
     <div className="space-y-6">
       <PageHeader
+        breadcrumbs={[__("Privacy")]}
         title={__("Rights Requests")}
         description={__("Manage data subject rights requests.")}
       >

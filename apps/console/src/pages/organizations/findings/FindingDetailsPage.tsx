@@ -318,6 +318,7 @@ export default function FindingDetailsPage(props: Props) {
     <div className="space-y-6">
       <Breadcrumb
         items={[
+          __("Governance"),
           {
             label: __("Findings"),
             to: breadcrumbFindingsUrl,
