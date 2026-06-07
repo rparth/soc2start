@@ -25,7 +25,9 @@ import {
   Button,
   Card,
   DropdownItem,
+  EmptyState,
   FileButton,
+  IconCheckmark1,
   IconFolderUpload,
   IconMagnifyingGlass,
   IconPencil,
@@ -409,16 +411,11 @@ export default function MeasuresPage({ queryRef }: MeasuresPageProps) {
               </Card>
             )
           : (
-              <Card padded>
-                <div className="text-center py-12">
-                  <h3 className="text-lg font-semibold mb-2">
-                    {__("No measures yet")}
-                  </h3>
-                  <p className="text-txt-tertiary mb-4">
-                    {__("Create your first measure to get started.")}
-                  </p>
-                </div>
-              </Card>
+              <EmptyState
+                icon={<IconCheckmark1 size={32} />}
+                title={__("No measures yet")}
+                description={__("Define and track the security controls and measures your organization implements. Add your first measure to get started.")}
+              />
             )}
       </div>
     </div>

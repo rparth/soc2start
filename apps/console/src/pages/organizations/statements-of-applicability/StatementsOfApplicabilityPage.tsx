@@ -17,6 +17,8 @@ import { useTranslate } from "@probo/i18n";
 import {
   Button,
   Card,
+  EmptyState,
+  IconPageCheck,
   IconPlusLarge,
   PageHeader,
   Table,
@@ -165,18 +167,11 @@ export default function StatementsOfApplicabilityPage({
             </Card>
           )
         : (
-            <Card padded>
-              <div className="text-center py-12">
-                <h3 className="text-lg font-semibold mb-2">
-                  {__("No statements of applicability yet")}
-                </h3>
-                <p className="text-txt-tertiary mb-4">
-                  {__(
-                    "Create your first statement of applicability to get started.",
-                  )}
-                </p>
-              </div>
-            </Card>
+            <EmptyState
+              icon={<IconPageCheck size={32} />}
+              title={__("No statements of applicability yet")}
+              description={__("Document which controls apply to your organization and their implementation status. Create your first statement to get started.")}
+            />
           )}
     </div>
   );

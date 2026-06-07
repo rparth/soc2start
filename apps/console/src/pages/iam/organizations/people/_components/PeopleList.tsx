@@ -14,7 +14,7 @@
 
 import { getAssignableRoles } from "@probo/helpers";
 import { useTranslate } from "@probo/i18n";
-import { Tbody, Td, Th, Thead, Tr } from "@probo/ui";
+import { EmptyState, IconGroup1, Tbody, Th, Thead, Tr } from "@probo/ui";
 import type { ComponentProps } from "react";
 import { use } from "react";
 import { ConnectionHandler, graphql, usePaginationFragment } from "react-relay";
@@ -89,6 +89,16 @@ export function PeopleList(props: {
     );
   };
 
+  if (peoplePagination.data.profiles.totalCount === 0) {
+    return (
+      <EmptyState
+        icon={<IconGroup1 size={32} />}
+        title={__("No people")}
+        description={__("Manage the people in your organization, their roles, and access. Invite your first team member to get started.")}
+      />
+    );
+  }
+
   return (
     <SortableTable
       {...peoplePagination}
@@ -110,24 +120,14 @@ export function PeopleList(props: {
         </Tr>
       </Thead>
       <Tbody>
-        {peoplePagination.data.profiles.totalCount === 0
-          ? (
-              <Tr>
-                <Td colSpan={7} className="text-center text-txt-secondary">
-                  {__("No people")}
-                </Td>
-              </Tr>
-            )
-          : (
-              peoplePagination.data.profiles.edges.map(({ node: profile }) => (
-                <PeopleListItem
-                  connectionId={peoplePagination.data.profiles.__id}
-                  key={profile.id}
-                  fKey={profile}
-                  onRefetch={refetchPeople}
-                />
-              ))
-            )}
+        {peoplePagination.data.profiles.edges.map(({ node: profile }) => (
+          <PeopleListItem
+            connectionId={peoplePagination.data.profiles.__id}
+            key={profile.id}
+            fKey={profile}
+            onRefetch={refetchPeople}
+          />
+        ))}
       </Tbody>
     </SortableTable>
   );

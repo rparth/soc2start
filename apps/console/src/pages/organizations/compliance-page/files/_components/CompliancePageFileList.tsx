@@ -13,7 +13,7 @@
 // PERFORMANCE OF THIS SOFTWARE.
 
 import { useTranslate } from "@probo/i18n";
-import { Table, Tbody, Td, Th, Thead, Tr, useDialogRef } from "@probo/ui";
+import { EmptyState, IconFolder2, Table, Tbody, Th, Thead, Tr, useDialogRef } from "@probo/ui";
 import { useCallback, useState } from "react";
 import { useFragment } from "react-relay";
 import { graphql } from "relay-runtime";
@@ -66,6 +66,16 @@ export function CompliancePageFileList(props: { fragmentRef: CompliancePageFileL
     [deleteDialogRef],
   );
 
+  if (files.edges.length === 0) {
+    return (
+      <EmptyState
+        icon={<IconFolder2 size={32} />}
+        title={__("No files available")}
+        description={__("Upload files like certifications, reports, or other documents to share on your trust center.")}
+      />
+    );
+  }
+
   return (
     <div className="space-y-[10px]">
       <Table>
@@ -79,13 +89,6 @@ export function CompliancePageFileList(props: { fragmentRef: CompliancePageFileL
           </Tr>
         </Thead>
         <Tbody>
-          {files.edges.length === 0 && (
-            <Tr>
-              <Td colSpan={5} className="text-center text-txt-secondary">
-                {__("No files available")}
-              </Td>
-            </Tr>
-          )}
           {files.edges.map(({ node: file }) => (
             <CompliancePageFileListItem
               key={file.id}

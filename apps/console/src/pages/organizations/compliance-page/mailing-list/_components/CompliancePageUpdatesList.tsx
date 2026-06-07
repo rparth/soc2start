@@ -13,7 +13,7 @@
 // PERFORMANCE OF THIS SOFTWARE.
 
 import { useTranslate } from "@probo/i18n";
-import { Badge, Button, IconChevronDown, IconPageTextLine, IconPencil, IconSend, IconTrashCan, Spinner, Table, Tbody, Td, Th, Thead, Tr, useDialogRef } from "@probo/ui";
+import { Badge, Button, EmptyState, IconBell2, IconChevronDown, IconPageTextLine, IconPencil, IconSend, IconTrashCan, Spinner, Table, Tbody, Th, Thead, Tr, useDialogRef } from "@probo/ui";
 import { useState } from "react";
 import { usePaginationFragment } from "react-relay";
 import { graphql } from "relay-runtime";
@@ -110,15 +110,11 @@ export function CompliancePageUpdatesList(props: {
       <SendUpdateDialog ref={sendDialogRef} update={updateToSend} />
       {connection.edges.length === 0
         ? (
-            <Table>
-              <Tbody>
-                <Tr>
-                  <Td className="text-center text-txt-tertiary py-8">
-                    {__("No updates yet")}
-                  </Td>
-                </Tr>
-              </Tbody>
-            </Table>
+            <EmptyState
+              icon={<IconBell2 size={32} />}
+              title={__("No updates yet")}
+              description={__("Compose and send compliance updates to your mailing list subscribers.")}
+            />
           )
         : (
             <>

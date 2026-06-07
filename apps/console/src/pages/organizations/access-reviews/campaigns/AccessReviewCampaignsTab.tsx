@@ -20,7 +20,9 @@ import {
   Button,
   Card,
   DropdownItem,
+  EmptyState,
   IconPlusLarge,
+  IconShield,
   IconTrashCan,
   Table,
   Tbody,
@@ -266,13 +268,11 @@ export default function AccessReviewCampaignsTab({ queryRef }: Props) {
             </Card>
           )
         : (
-            <Card padded>
-              <div className="text-center py-8">
-                <p className="text-txt-tertiary">
-                  {__("No access review campaigns yet. Create your first campaign to start reviewing access.")}
-                </p>
-              </div>
-            </Card>
+            <EmptyState
+              icon={<IconShield size={32} />}
+              title={__("No access review campaigns yet")}
+              description={__("Create campaigns to periodically review who has access to what across your organization. Start your first campaign to begin.")}
+            />
           )}
     </div>
   );

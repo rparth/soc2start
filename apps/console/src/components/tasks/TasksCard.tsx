@@ -17,10 +17,12 @@ import { useTranslate } from "@probo/i18n";
 import {
   Button,
   Card,
+  EmptyState,
   IconArrowCornerDownLeft,
   IconCircleCheck,
   IconCircleProgress,
   IconPencil,
+  IconTodo,
   IconTrashCan,
   PriorityLevel,
   TabBadge,
@@ -407,7 +409,11 @@ export function TasksCard({ tasks, connectionId, canReorder, refetch }: Props) {
     <div className="space-y-6">
       {tasks.length === 0
         ? (
-            <p className="text-center py-6 text-txt-secondary">{__("No tasks")}</p>
+            <EmptyState
+              icon={<IconTodo size={32} />}
+              title={__("No tasks")}
+              description={__("Tasks help you track the work needed to maintain compliance. They will appear here as you set up controls and measures.")}
+            />
           )
         : (
             <Card>

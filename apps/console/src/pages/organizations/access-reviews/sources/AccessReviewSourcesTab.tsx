@@ -17,6 +17,8 @@ import { useTranslate } from "@probo/i18n";
 import {
   Button,
   Card,
+  EmptyState,
+  IconArrowLink,
   IconPlusLarge,
   Table,
   Tbody,
@@ -293,13 +295,11 @@ export default function AccessReviewSourcesTab({ queryRef }: Props) {
             </Card>
           )
         : (
-            <Card padded>
-              <div className="text-center py-8">
-                <p className="text-txt-tertiary">
-                  {__("No access sources configured yet. Add your first source to start reviewing access.")}
-                </p>
-              </div>
-            </Card>
+            <EmptyState
+              icon={<IconArrowLink size={32} />}
+              title={__("No access sources configured yet")}
+              description={__("Connect identity providers and applications to import user access data for review. Add your first source to get started.")}
+            />
           )}
     </div>
   );

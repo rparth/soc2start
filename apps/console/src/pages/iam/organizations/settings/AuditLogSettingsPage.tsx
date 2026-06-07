@@ -17,7 +17,9 @@ import { useTranslate } from "@probo/i18n";
 import {
   Badge,
   Button,
+  EmptyState,
   IconChevronDown,
+  IconClock,
   Spinner,
   Table,
   Tbody,
@@ -205,11 +207,11 @@ export function AuditLogSettingsPage(props: {
 
       {entries.length === 0
         ? (
-            <div className="text-center py-8">
-              <p className="text-sm text-txt-tertiary">
-                {__("No audit log entries yet.")}
-              </p>
-            </div>
+            <EmptyState
+              icon={<IconClock size={32} />}
+              title={__("No audit log entries yet")}
+              description={__("All actions performed in your organization are recorded here. Entries will appear as your team starts using the platform.")}
+            />
           )
         : (
             <div className="space-y-4">

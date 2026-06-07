@@ -21,6 +21,8 @@ import {
   Button,
   Card,
   DropdownItem,
+  EmptyState,
+  IconCircleProgress,
   IconPageTextLine,
   IconPlusLarge,
   IconTrashCan,
@@ -442,18 +444,11 @@ export default function ProcessingActivitiesPage({
                 </Card>
               )
             : (
-                <Card padded>
-                  <div className="text-center py-12">
-                    <h3 className="text-lg font-semibold mb-2">
-                      {__("No processing activities yet")}
-                    </h3>
-                    <p className="text-txt-tertiary mb-4">
-                      {__(
-                        "Create your first processing activity to get started with GDPR compliance.",
-                      )}
-                    </p>
-                  </div>
-                </Card>
+                <EmptyState
+                  icon={<IconCircleProgress size={32} />}
+                  title={__("No processing activities yet")}
+                  description={__("Document how your organization processes personal data for GDPR compliance. Add your first processing activity to get started.")}
+                />
               )}
         </>
       )}
@@ -495,20 +490,11 @@ export default function ProcessingActivitiesPage({
                 </Card>
               )
             : (
-                <Card padded>
-                  <div className="text-center py-12">
-                    <h3 className="text-lg font-semibold mb-2">
-                      {__(
-                        "No Data Protection Impact Assessments yet",
-                      )}
-                    </h3>
-                    <p className="text-txt-tertiary mb-4">
-                      {__(
-                        "DPIAs are created from within individual processing activities.",
-                      )}
-                    </p>
-                  </div>
-                </Card>
+                <EmptyState
+                  icon={<IconCircleProgress size={32} />}
+                  title={__("No Data Protection Impact Assessments yet")}
+                  description={__("DPIAs are created from within individual processing activities.")}
+                />
               )}
         </>
       )}
@@ -550,18 +536,11 @@ export default function ProcessingActivitiesPage({
                 </Card>
               )
             : (
-                <Card padded>
-                  <div className="text-center py-12">
-                    <h3 className="text-lg font-semibold mb-2">
-                      {__("No Transfer Impact Assessments yet")}
-                    </h3>
-                    <p className="text-txt-tertiary mb-4">
-                      {__(
-                        "TIAs are created from within individual processing activities.",
-                      )}
-                    </p>
-                  </div>
-                </Card>
+                <EmptyState
+                  icon={<IconCircleProgress size={32} />}
+                  title={__("No Transfer Impact Assessments yet")}
+                  description={__("TIAs are created from within individual processing activities.")}
+                />
               )}
         </>
       )}

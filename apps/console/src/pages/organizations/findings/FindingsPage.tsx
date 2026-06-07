@@ -30,6 +30,8 @@ import {
   Button,
   Card,
   DropdownItem,
+  EmptyState,
+  IconMagnifyingGlass,
   IconPageTextLine,
   IconPlusLarge,
   IconTrashCan,
@@ -389,16 +391,11 @@ export default function FindingsPage({ queryRef }: FindingsPageProps) {
               </Card>
             )
           : (
-              <Card padded>
-                <div className="text-center py-12">
-                  <h3 className="text-lg font-semibold mb-2">
-                    {__("No findings yet")}
-                  </h3>
-                  <p className="text-txt-tertiary mb-4">
-                    {__("Create your first finding to get started.")}
-                  </p>
-                </div>
-              </Card>
+              <EmptyState
+                icon={<IconMagnifyingGlass size={32} />}
+                title={__("No findings yet")}
+                description={__("Track audit findings, gaps, and non-conformities identified during reviews. Add your first finding to get started.")}
+              />
             )}
       </div>
     </div>

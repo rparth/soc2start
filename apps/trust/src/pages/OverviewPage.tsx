@@ -19,7 +19,7 @@ import {
   sprintf,
 } from "@probo/helpers";
 import { useTranslate } from "@probo/i18n";
-import { Card, IconChevronRight } from "@probo/ui";
+import { Card, EmptyState, IconChevronRight, IconShield } from "@probo/ui";
 import { Fragment } from "react";
 import { useFragment } from "react-relay";
 import { Link, useOutletContext } from "react-router";
@@ -86,7 +86,23 @@ export function OverviewPage() {
     trustCenter: OverviewPageFragment$key
       & TrustGraphCurrentQuery$data["currentTrustCenter"];
   }>();
+  const { __ } = useTranslate();
   const fragment = useFragment(overviewFragment, trustCenter);
+
+  const hasReferences = fragment.references.edges.length > 0;
+  const hasDocuments = trustCenter.audits.edges.length > 0 || fragment.documents.edges.length > 0 || fragment.trustCenterFiles.edges.length > 0;
+  const hasSubprocessors = fragment.subprocessors.edges.length > 0;
+
+  if (!hasReferences && !hasDocuments && !hasSubprocessors) {
+    return (
+      <EmptyState
+        icon={<IconShield size={32} />}
+        title={__("Trust center is being set up")}
+        description={__("Compliance documents, audit reports, and subprocessor information will be published here soon.")}
+      />
+    );
+  }
+
   return (
     <div>
       <References

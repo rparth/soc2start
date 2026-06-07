@@ -26,6 +26,8 @@ import {
   Button,
   Card,
   DropdownItem,
+  EmptyState,
+  IconBook,
   IconPageTextLine,
   IconPlusLarge,
   IconTrashCan,
@@ -179,16 +181,11 @@ export default function ObligationsPage({ queryRef }: ObligationsPageProps) {
 
       {obligations.length === 0
         ? (
-            <Card padded>
-              <div className="text-center py-12">
-                <h3 className="text-lg font-semibold mb-2">
-                  {__("No obligations yet")}
-                </h3>
-                <p className="text-txt-tertiary mb-4">
-                  {__("Create your first obligation to get started.")}
-                </p>
-              </div>
-            </Card>
+            <EmptyState
+              icon={<IconBook size={32} />}
+              title={__("No obligations yet")}
+              description={__("Track regulatory and contractual obligations your organization must fulfill. Add your first obligation to get started.")}
+            />
           )
         : (
             <Card>

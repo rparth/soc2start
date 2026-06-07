@@ -28,6 +28,8 @@ import {
   Button,
   Card,
   DropdownItem,
+  EmptyState,
+  IconArrowInbox1,
   IconPlusLarge,
   IconTrashCan,
   PageHeader,
@@ -189,18 +191,11 @@ export default function RightsRequestsPage({
             </Card>
           )
         : (
-            <Card padded>
-              <div className="text-center py-12">
-                <h3 className="text-lg font-semibold mb-2">
-                  {__("No rights requests yet")}
-                </h3>
-                <p className="text-txt-tertiary mb-4">
-                  {__(
-                    "Create your first rights request to get started.",
-                  )}
-                </p>
-              </div>
-            </Card>
+            <EmptyState
+              icon={<IconArrowInbox1 size={32} />}
+              title={__("No rights requests yet")}
+              description={__("Manage data subject access requests and other privacy rights. Add your first request to get started.")}
+            />
           )}
     </div>
   );

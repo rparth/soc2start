@@ -15,7 +15,7 @@
 import { documentClassifications, documentTypes, documentWriteModes, getDocumentClassificationLabel, getDocumentTypeLabel, getDocumentWriteModeLabel, sprintf } from "@probo/helpers";
 import { useList } from "@probo/hooks";
 import { useTranslate } from "@probo/i18n";
-import { Button, Card, Checkbox, IconArchive, IconArrowDown, IconCrossLargeX, IconSignature, IconTrashCan, IconUpload, Option, Select, Tbody, Th, Thead, Tr, useConfirm } from "@probo/ui";
+import { Button, Card, Checkbox, EmptyState, IconArchive, IconArrowDown, IconCrossLargeX, IconPageTextLine, IconSignature, IconTrashCan, IconUpload, Option, Select, Tbody, Th, Thead, Tr, useConfirm } from "@probo/ui";
 import { type ComponentProps, use, useEffect, useRef, useState, useTransition } from "react";
 import { usePaginationFragment } from "react-relay";
 import { ConnectionHandler, graphql } from "relay-runtime";
@@ -534,18 +534,13 @@ export function DocumentList(props: {
               </SortableTable>
             )
           : (
-              <Card padded>
-                <div className="text-center py-12">
-                  <h3 className="text-lg font-semibold mb-2">
-                    {tab === "ARCHIVED" ? __("No archived documents") : __("No documents yet")}
-                  </h3>
-                  {tab !== "ARCHIVED" && (
-                    <p className="text-txt-tertiary mb-4">
-                      {__("Create your first document to get started.")}
-                    </p>
-                  )}
-                </div>
-              </Card>
+              <EmptyState
+                icon={<IconPageTextLine size={32} />}
+                title={tab === "ARCHIVED" ? __("No archived documents") : __("No documents yet")}
+                description={tab === "ARCHIVED"
+                  ? __("Archived documents will appear here.")
+                  : __("Create policies, procedures, and other compliance documents. Add your first document to get started.")}
+              />
             )}
       </div>
     </div>
