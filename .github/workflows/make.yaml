@@ -106,9 +106,9 @@ jobs:
           path: "dist/"
           retention-days: 1
 
-  # ── Snapshot: build probo-agent binaries (matrix by GOOS/GOARCH) ───
-  build-snapshot-probo-agent:
-    name: "probo-agent (${{ matrix.goos }}/${{ matrix.goarch }})"
+  # ── Snapshot: build soc2start-agent binaries (matrix by GOOS/GOARCH) ───
+  build-snapshot-soc2start-agent:
+    name: "soc2start-agent (${{ matrix.goos }}/${{ matrix.goarch }})"
     if: github.event_name == 'push'
     runs-on: "runs-on=${{ github.run_id }}/runner=4cpu-linux-x64/extras=s3-cache"
     permissions:
@@ -133,7 +133,7 @@ jobs:
       - uses: "./.github/actions/setup"
         with:
           node: "false"
-      - name: "Build probo-agent"
+      - name: "Build soc2start-agent"
         env:
           CGO_ENABLED: "0"
           GOOS: "${{ matrix.goos }}"
@@ -143,7 +143,7 @@ jobs:
           if [ "$GOOS" = "windows" ]; then EXT=".exe"; fi
 
           go build -ldflags "-s -w -X 'main.version=snapshot'" \
-            -gcflags="-e" -o "dist/probo-agent${EXT}" ./cmd/probo-agent/main.go
+            -gcflags="-e" -o "dist/soc2start-agent${EXT}" ./cmd/soc2start-agent/main.go
 
   # ── Snapshot: build Docker images (matrix by architecture) ─────────
   build-snapshot-docker:
@@ -268,8 +268,8 @@ jobs:
             -gcflags="-e" -o bin/prb ./cmd/prb/main.go & pids+=($!)
           for pid in "${pids[@]}"; do wait "$pid"; done
 
-  build-probo-agent:
-    name: "build-probo-agent"
+  build-soc2start-agent:
+    name: "build-soc2start-agent"
     runs-on: "runs-on=${{ github.run_id }}/runner=4cpu-linux-x64/extras=s3-cache"
     permissions:
       contents: "read"
@@ -281,12 +281,12 @@ jobs:
       - uses: "./.github/actions/setup"
         with:
           node: "false"
-      - name: "Build probo-agent"
+      - name: "Build soc2start-agent"
         env:
           CGO_ENABLED: "0"
         run: |
           go build -ldflags "-s -w -X 'main.version=snapshot'" \
-            -gcflags="-e" -o bin/probo-agent ./cmd/probo-agent/main.go
+            -gcflags="-e" -o bin/soc2start-agent ./cmd/soc2start-agent/main.go
 
   lint-go:
     name: "lint-go"

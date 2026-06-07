@@ -31,14 +31,14 @@ func TestLayoutFor(t *testing.T) {
 		binary       string
 		isZip        bool
 	}{
-		{"linux", "amd64", "probo-agent_Linux_x86_64.tar.gz", "probo-agent_Linux_x86_64", "probo-agent", false},
-		{"linux", "arm64", "probo-agent_Linux_arm64.tar.gz", "probo-agent_Linux_arm64", "probo-agent", false},
-		{"darwin", "amd64", "probo-agent_Darwin_x86_64.tar.gz", "probo-agent_Darwin_x86_64", "probo-agent", false},
-		{"darwin", "arm64", "probo-agent_Darwin_arm64.tar.gz", "probo-agent_Darwin_arm64", "probo-agent", false},
-		{"windows", "amd64", "probo-agent_Windows_x86_64.zip", "probo-agent_Windows_x86_64", "probo-agent.exe", true},
-		{"windows", "arm64", "probo-agent_Windows_arm64.zip", "probo-agent_Windows_arm64", "probo-agent.exe", true},
-		{"freebsd", "amd64", "probo-agent_Freebsd_x86_64.tar.gz", "probo-agent_Freebsd_x86_64", "probo-agent", false},
-		{"freebsd", "arm64", "probo-agent_Freebsd_arm64.tar.gz", "probo-agent_Freebsd_arm64", "probo-agent", false},
+		{"linux", "amd64", "soc2start-agent_Linux_x86_64.tar.gz", "soc2start-agent_Linux_x86_64", "soc2start-agent", false},
+		{"linux", "arm64", "soc2start-agent_Linux_arm64.tar.gz", "soc2start-agent_Linux_arm64", "soc2start-agent", false},
+		{"darwin", "amd64", "soc2start-agent_Darwin_x86_64.tar.gz", "soc2start-agent_Darwin_x86_64", "soc2start-agent", false},
+		{"darwin", "arm64", "soc2start-agent_Darwin_arm64.tar.gz", "soc2start-agent_Darwin_arm64", "soc2start-agent", false},
+		{"windows", "amd64", "soc2start-agent_Windows_x86_64.zip", "soc2start-agent_Windows_x86_64", "soc2start-agent.exe", true},
+		{"windows", "arm64", "soc2start-agent_Windows_arm64.zip", "soc2start-agent_Windows_arm64", "soc2start-agent.exe", true},
+		{"freebsd", "amd64", "soc2start-agent_Freebsd_x86_64.tar.gz", "soc2start-agent_Freebsd_x86_64", "soc2start-agent", false},
+		{"freebsd", "arm64", "soc2start-agent_Freebsd_arm64.tar.gz", "soc2start-agent_Freebsd_arm64", "soc2start-agent", false},
 	}
 
 	for _, tc := range cases {

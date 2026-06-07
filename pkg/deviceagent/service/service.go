@@ -12,7 +12,7 @@
 // OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 // PERFORMANCE OF THIS SOFTWARE.
 
-// Package service installs and uninstalls OS service units for probo-agent.
+// Package service installs and uninstalls OS service units for soc2start-agent.
 package service
 
 // Config carries installation parameters shared across platforms.
@@ -28,6 +28,6 @@ type Config struct {
 // Default service identifiers by platform.
 const (
 	DefaultLabel       = "com.probo.agent"
-	DefaultUnixName    = "probo-agent"
+	DefaultUnixName    = "soc2start-agent"
 	DefaultWindowsName = "ProboAgent"
 )

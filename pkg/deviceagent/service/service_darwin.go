@@ -46,9 +46,9 @@ const launchdPlistTmpl = `<?xml version="1.0" encoding="UTF-8"?>
     <key>KeepAlive</key>
     <true/>
     <key>StandardOutPath</key>
-    <string>/var/log/probo-agent.log</string>
+    <string>/var/log/soc2start-agent.log</string>
     <key>StandardErrorPath</key>
-    <string>/var/log/probo-agent.log</string>
+    <string>/var/log/soc2start-agent.log</string>
     <key>UserName</key>
     <string>root</string>
     <key>GroupName</key>

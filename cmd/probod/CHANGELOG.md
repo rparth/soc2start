@@ -209,7 +209,7 @@ No user-facing changes; tag-only release.
 
 ### Added
 
-- Add `probo-agent` CLI and device agent library for endpoint compliance checks
+- Add `soc2start-agent` CLI and device agent library for endpoint compliance checks
 - Add screen lock detection support for i3, KDE, and more Linux desktop environments
 
 ### Fixed

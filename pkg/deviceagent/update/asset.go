@@ -21,16 +21,16 @@ import (
 
 // AssetLayout describes the names used by the release pipeline for a
 // (goos, goarch) combination. The fields mirror what the
-// release-probo-agent.yaml workflow produces.
+// release-soc2start-agent.yaml workflow produces.
 type AssetLayout struct {
 	// ArchiveName is the file name of the published archive
-	// (e.g. probo-agent_Linux_x86_64.tar.gz).
+	// (e.g. soc2start-agent_Linux_x86_64.tar.gz).
 	ArchiveName string
 	// ArchiveDir is the top-level directory inside the archive
-	// (e.g. probo-agent_Linux_x86_64).
+	// (e.g. soc2start-agent_Linux_x86_64).
 	ArchiveDir string
 	// BinaryName is the agent binary file name inside the archive
-	// (e.g. probo-agent or probo-agent.exe).
+	// (e.g. soc2start-agent or soc2start-agent.exe).
 	BinaryName string
 	// IsZip is true for Windows builds, which ship as zip archives.
 	// Other platforms ship as gzipped tar.
@@ -49,9 +49,9 @@ func LayoutFor(goos, goarch string) (AssetLayout, error) {
 	}
 
 	archLabel := archLabel(goarch)
-	dir := fmt.Sprintf("probo-agent_%s_%s", osLabel, archLabel)
+	dir := fmt.Sprintf("soc2start-agent_%s_%s", osLabel, archLabel)
 
-	binary := "probo-agent"
+	binary := "soc2start-agent"
 	isZip := false
 	ext := "tar.gz"
 

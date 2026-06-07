@@ -1,15 +1,15 @@
 #!/bin/bash
 #
 # Build a Probo device posture agent macOS installer (.pkg) from a
-# pre-built `probo-agent` binary.
+# pre-built `soc2start-agent` binary.
 #
 # Required arguments:
-#   --binary  PATH    Path to a compiled probo-agent binary.
+#   --binary  PATH    Path to a compiled soc2start-agent binary.
 #   --arch    ARCH    Target architecture: amd64 or arm64.
 #   --version VER     Agent version, e.g. 0.1.0. Defaults to the
-#                     content of cmd/probo-agent/VERSION.
+#                     content of cmd/soc2start-agent/VERSION.
 #   --output  PATH    Output .pkg path. Defaults to
-#                     dist/probo-agent_${VER}_${OS}.pkg.
+#                     dist/soc2start-agent_${VER}_${OS}.pkg.
 #
 # The resulting flat distribution package is unsigned. Apple
 # Developer ID signing + notarization are out of scope for this
@@ -46,7 +46,7 @@ while [ $# -gt 0 ]; do
 done
 
 if [ -z "${BINARY}" ] || [ ! -x "${BINARY}" ]; then
-    echo "error: --binary <path-to-probo-agent> is required and must be executable" >&2
+    echo "error: --binary <path-to-soc2start-agent> is required and must be executable" >&2
     exit 2
 fi
 case "${ARCH}" in
@@ -56,11 +56,11 @@ case "${ARCH}" in
     *)     echo "error: unsupported --arch '${ARCH}' (want amd64 or arm64)" >&2; exit 2 ;;
 esac
 if [ -z "${VERSION}" ]; then
-    VERSION="$(cat "${REPO_ROOT}/cmd/probo-agent/VERSION")"
+    VERSION="$(cat "${REPO_ROOT}/cmd/soc2start-agent/VERSION")"
 fi
 if [ -z "${OUTPUT}" ]; then
     mkdir -p "${REPO_ROOT}/dist"
-    OUTPUT="${REPO_ROOT}/dist/probo-agent_${VERSION}_darwin_${PKG_ARCH}.pkg"
+    OUTPUT="${REPO_ROOT}/dist/soc2start-agent_${VERSION}_darwin_${PKG_ARCH}.pkg"
 fi
 
 if ! command -v pkgbuild >/dev/null 2>&1 || ! command -v productbuild >/dev/null 2>&1; then
@@ -68,7 +68,7 @@ if ! command -v pkgbuild >/dev/null 2>&1 || ! command -v productbuild >/dev/null
     exit 1
 fi
 
-STAGE="$(mktemp -d -t probo-agent-pkg)"
+STAGE="$(mktemp -d -t soc2start-agent-pkg)"
 trap 'rm -rf "${STAGE}"' EXIT
 
 PAYLOAD="${STAGE}/payload"
@@ -76,7 +76,7 @@ SCRIPTS="${STAGE}/scripts"
 RESOURCES="${STAGE}/Resources"
 mkdir -p "${PAYLOAD}/usr/local/bin" "${SCRIPTS}" "${RESOURCES}"
 
-install -m 0755 "${BINARY}" "${PAYLOAD}/usr/local/bin/probo-agent"
+install -m 0755 "${BINARY}" "${PAYLOAD}/usr/local/bin/soc2start-agent"
 
 install -m 0755 "${SCRIPT_DIR}/scripts/postinstall" "${SCRIPTS}/postinstall"
 
@@ -85,7 +85,7 @@ cp "${SCRIPT_DIR}/Resources/conclusion.html" "${RESOURCES}/conclusion.html"
 cp "${REPO_ROOT}/LICENSE"                    "${RESOURCES}/license.txt"
 
 # Component package: payload + scripts only.
-COMPONENT_PKG="${STAGE}/probo-agent-component.pkg"
+COMPONENT_PKG="${STAGE}/soc2start-agent-component.pkg"
 pkgbuild \
     --root "${PAYLOAD}" \
     --scripts "${SCRIPTS}" \

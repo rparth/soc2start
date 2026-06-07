@@ -19,5 +19,5 @@ package deviceagent
 // DefaultConfigDir returns the directory under which the agent's config
 // and keystore live on non-Windows hosts.
 func DefaultConfigDir() string {
-	return "/var/lib/probo-agent"
+	return "/var/lib/soc2start-agent"
 }

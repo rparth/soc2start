@@ -1,9 +1,9 @@
-name: "Release probo-agent"
+name: "Release soc2start-agent"
 
 on:
   push:
     tags:
-      - "probo-agent/v*"
+      - "soc2start-agent/v*"
 
 permissions:
   contents: "read"
@@ -45,7 +45,7 @@ jobs:
           if [ "$GOOS" = "windows" ]; then EXT=".exe"; fi
 
           go build -ldflags "-s -w -X 'main.version=${VERSION}'" \
-            -gcflags="-e" -o "dist/probo-agent${EXT}" ./cmd/probo-agent/main.go
+            -gcflags="-e" -o "dist/soc2start-agent${EXT}" ./cmd/soc2start-agent/main.go
       - name: "Create archive"
         env:
           GOOS: "${{ matrix.goos }}"
@@ -65,11 +65,11 @@ jobs:
           if [ "$GOOS" = "windows" ]; then EXT=".exe"; fi
 
           mkdir -p archives
-          AGENT_DIR="probo-agent_${OS}_${ARCH}"
+          AGENT_DIR="soc2start-agent_${OS}_${ARCH}"
           mkdir -p "staging/${AGENT_DIR}"
-          cp "dist/probo-agent${EXT}" README.md LICENSE "staging/${AGENT_DIR}/"
-          if [ -f cmd/probo-agent/CHANGELOG.md ]; then
-            cp cmd/probo-agent/CHANGELOG.md "staging/${AGENT_DIR}/"
+          cp "dist/soc2start-agent${EXT}" README.md LICENSE "staging/${AGENT_DIR}/"
+          if [ -f cmd/soc2start-agent/CHANGELOG.md ]; then
+            cp cmd/soc2start-agent/CHANGELOG.md "staging/${AGENT_DIR}/"
           fi
           if [ "$GOOS" = "windows" ]; then
             (cd staging && zip -r "../archives/${AGENT_DIR}.zip" "${AGENT_DIR}")
@@ -109,7 +109,7 @@ jobs:
       - name: "Generate SBOM"
         uses: "anchore/sbom-action@e22c389904149dbc22b58101806040fa8d37a610" # v0.24.0
         with:
-          path: ./cmd/probo-agent
+          path: ./cmd/soc2start-agent
           format: cyclonedx-json
           output-file: sbom.json
       - name: "Run vulnerability scan"
@@ -130,13 +130,13 @@ jobs:
       - name: "Extract release notes"
         run: |
           VERSION="${GITHUB_REF_NAME##*/v}"
-          if [ -f cmd/probo-agent/CHANGELOG.md ]; then
+          if [ -f cmd/soc2start-agent/CHANGELOG.md ]; then
             awk -v ver="$VERSION" '
               /^## \[/ { if (found) exit; if ($0 ~ "\\[" ver "\\]") found=1 }
               found
-            ' cmd/probo-agent/CHANGELOG.md > release-notes.md
+            ' cmd/soc2start-agent/CHANGELOG.md > release-notes.md
           else
-            echo "probo-agent ${VERSION}" > release-notes.md
+            echo "soc2start-agent ${VERSION}" > release-notes.md
           fi
       - name: "Create GitHub release"
         env:

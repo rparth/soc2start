@@ -57,16 +57,16 @@ func main() {
 			os.Exit(restartExitCode)
 		}
 
-		fmt.Fprintf(os.Stderr, "probo-agent: %s\n", err)
+		fmt.Fprintf(os.Stderr, "soc2start-agent: %s\n", err)
 		os.Exit(1)
 	}
 }
 
 func newRootCmd() *cobra.Command {
 	root := &cobra.Command{
-		Use:           "probo-agent",
+		Use:           "soc2start-agent",
 		Short:         "Probo device posture agent",
-		Long:          "probo-agent runs as a managed OS service, reporting device posture to Probo.",
+		Long:          "soc2start-agent runs as a managed OS service, reporting device posture to Probo.",
 		SilenceUsage:  true,
 		SilenceErrors: true,
 		Version:       version,
@@ -98,7 +98,7 @@ func newUpdater(logger *log.Logger, dir string) *update.Updater {
 	return update.New(
 		version,
 		exePath,
-		fmt.Sprintf("probo-agent/%s", version),
+		fmt.Sprintf("soc2start-agent/%s", version),
 		filepath.Join(dir, "sigstore-cache"),
 		logger,
 	)
@@ -115,7 +115,7 @@ func resolveDir(cmd *cobra.Command) string {
 
 func newAgentLogger() *log.Logger {
 	return log.NewLogger(
-		log.WithName("probo-agent"),
+		log.WithName("soc2start-agent"),
 		log.WithOutput(os.Stderr),
 	)
 }
@@ -359,7 +359,7 @@ func newUpdateCmd() *cobra.Command {
 			rel, err := updater.CheckLatest(ctx)
 			if err != nil {
 				if errors.Is(err, update.ErrNoUpdateAvailable) {
-					fmt.Printf("probo-agent is up to date (version %s).\n", version)
+					fmt.Printf("soc2start-agent is up to date (version %s).\n", version)
 					return nil
 				}
 
@@ -376,7 +376,7 @@ func newUpdateCmd() *cobra.Command {
 				return fmt.Errorf("cannot apply update: %w", err)
 			}
 
-			fmt.Printf("Installed probo-agent %s. Restart the service to use it.\n", rel.Version)
+			fmt.Printf("Installed soc2start-agent %s. Restart the service to use it.\n", rel.Version)
 
 			return nil
 		},

@@ -46,12 +46,12 @@ func TestParseTag(t *testing.T) {
 		want   string
 		ok     bool
 	}{
-		{"probo-agent/v0.1.0", "probo-agent/v", "0.1.0", true},
-		{"probo-agent/v1.2.3", "probo-agent/v", "1.2.3", true},
-		{"v1.2.3", "probo-agent/v", "", false},
-		{"probo-agent/vlatest", "probo-agent/v", "", false},
-		{"probo-agent/v", "probo-agent/v", "", false},
-		{"unrelated/v0.1.0", "probo-agent/v", "", false},
+		{"soc2start-agent/v0.1.0", "soc2start-agent/v", "0.1.0", true},
+		{"soc2start-agent/v1.2.3", "soc2start-agent/v", "1.2.3", true},
+		{"v1.2.3", "soc2start-agent/v", "", false},
+		{"soc2start-agent/vlatest", "soc2start-agent/v", "", false},
+		{"soc2start-agent/v", "soc2start-agent/v", "", false},
+		{"unrelated/v0.1.0", "soc2start-agent/v", "", false},
 	}
 
 	for _, tc := range cases {
@@ -82,11 +82,11 @@ func TestReadChecksum(t *testing.T) {
 			dir := t.TempDir()
 			file := filepath.Join(dir, "checksums.txt")
 			content := "" +
-				"deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef  probo-agent_Linux_x86_64.tar.gz\n" +
-				"abc123abc123abc123abc123abc123abc123abc123abc123abc123abc123abcd  probo-agent_Darwin_arm64.tar.gz\n"
+				"deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef  soc2start-agent_Linux_x86_64.tar.gz\n" +
+				"abc123abc123abc123abc123abc123abc123abc123abc123abc123abc123abcd  soc2start-agent_Darwin_arm64.tar.gz\n"
 			require.NoError(t, os.WriteFile(file, []byte(content), 0o600))
 
-			got, err := readChecksum(file, "probo-agent_Darwin_arm64.tar.gz")
+			got, err := readChecksum(file, "soc2start-agent_Darwin_arm64.tar.gz")
 			require.NoError(t, err)
 			assert.Equal(t, "abc123abc123abc123abc123abc123abc123abc123abc123abc123abc123abcd", got)
 		},
@@ -99,10 +99,10 @@ func TestReadChecksum(t *testing.T) {
 
 			dir := t.TempDir()
 			file := filepath.Join(dir, "checksums.txt")
-			content := "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef *probo-agent_Linux_x86_64.tar.gz\n"
+			content := "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef *soc2start-agent_Linux_x86_64.tar.gz\n"
 			require.NoError(t, os.WriteFile(file, []byte(content), 0o600))
 
-			got, err := readChecksum(file, "probo-agent_Linux_x86_64.tar.gz")
+			got, err := readChecksum(file, "soc2start-agent_Linux_x86_64.tar.gz")
 			require.NoError(t, err)
 			assert.Equal(t, "deadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeefdeadbeef", got)
 		},
@@ -117,7 +117,7 @@ func TestReadChecksum(t *testing.T) {
 			file := filepath.Join(dir, "checksums.txt")
 			require.NoError(t, os.WriteFile(file, []byte("deadbeef  other.tar.gz\n"), 0o600))
 
-			_, err := readChecksum(file, "probo-agent_Linux_x86_64.tar.gz")
+			_, err := readChecksum(file, "soc2start-agent_Linux_x86_64.tar.gz")
 			require.Error(t, err)
 		},
 	)
@@ -287,7 +287,7 @@ func newTestUpdater(server *fakeReleaseServer, currentVersion, exePath, goos, go
 		AssetBaseURL:   server.URL(),
 		CurrentVersion: currentVersion,
 		ExePath:        exePath,
-		UserAgent:      "probo-agent-test/0.0.0",
+		UserAgent:      "soc2start-agent-test/0.0.0",
 		Logger:         log.NewLogger(log.WithName("update-test")),
 		HTTP: &http.Client{
 			Transport: httpclient.DefaultPooledTransport(
@@ -313,9 +313,9 @@ func TestUpdater_CheckLatest(t *testing.T) {
 
 			layout, err := LayoutFor("linux", "amd64")
 			require.NoError(t, err)
-			fake := newFakeReleaseServer(t, "probo-agent/v0.2.0", "0.2.0", layout, []byte("new"))
+			fake := newFakeReleaseServer(t, "soc2start-agent/v0.2.0", "0.2.0", layout, []byte("new"))
 
-			u := newTestUpdater(fake, "0.1.0", filepath.Join(t.TempDir(), "probo-agent"), "linux", "amd64")
+			u := newTestUpdater(fake, "0.1.0", filepath.Join(t.TempDir(), "soc2start-agent"), "linux", "amd64")
 			rel, err := u.CheckLatest(context.Background())
 			require.NoError(t, err)
 			assert.Equal(t, "0.2.0", rel.Version)
@@ -330,9 +330,9 @@ func TestUpdater_CheckLatest(t *testing.T) {
 
 			layout, err := LayoutFor("darwin", "arm64")
 			require.NoError(t, err)
-			fake := newFakeReleaseServer(t, "probo-agent/v0.1.0", "0.1.0", layout, []byte("same"))
+			fake := newFakeReleaseServer(t, "soc2start-agent/v0.1.0", "0.1.0", layout, []byte("same"))
 
-			u := newTestUpdater(fake, "0.1.0", filepath.Join(t.TempDir(), "probo-agent"), "darwin", "arm64")
+			u := newTestUpdater(fake, "0.1.0", filepath.Join(t.TempDir(), "soc2start-agent"), "darwin", "arm64")
 			_, err = u.CheckLatest(context.Background())
 			assert.ErrorIs(t, err, ErrNoUpdateAvailable)
 		},
@@ -345,10 +345,10 @@ func TestUpdater_CheckLatest(t *testing.T) {
 
 			layout, err := LayoutFor("linux", "amd64")
 			require.NoError(t, err)
-			fake := newFakeReleaseServer(t, "probo-agent/v0.2.0-rc.1", "0.2.0-rc.1", layout, []byte("rc"))
+			fake := newFakeReleaseServer(t, "soc2start-agent/v0.2.0-rc.1", "0.2.0-rc.1", layout, []byte("rc"))
 			fake.prerelease = true
 
-			u := newTestUpdater(fake, "0.1.0", filepath.Join(t.TempDir(), "probo-agent"), "linux", "amd64")
+			u := newTestUpdater(fake, "0.1.0", filepath.Join(t.TempDir(), "soc2start-agent"), "linux", "amd64")
 			_, err = u.CheckLatest(context.Background())
 			assert.ErrorIs(t, err, ErrNoUpdateAvailable)
 		},
@@ -361,9 +361,9 @@ func TestUpdater_CheckLatest(t *testing.T) {
 
 			layout, err := LayoutFor("linux", "amd64")
 			require.NoError(t, err)
-			fake := newFakeReleaseServer(t, "probo-agent/v0.1.0", "0.1.0", layout, []byte("rel"))
+			fake := newFakeReleaseServer(t, "soc2start-agent/v0.1.0", "0.1.0", layout, []byte("rel"))
 
-			u := newTestUpdater(fake, "dev", filepath.Join(t.TempDir(), "probo-agent"), "linux", "amd64")
+			u := newTestUpdater(fake, "dev", filepath.Join(t.TempDir(), "soc2start-agent"), "linux", "amd64")
 			rel, err := u.CheckLatest(context.Background())
 			require.NoError(t, err)
 			assert.Equal(t, "0.1.0", rel.Version)
@@ -379,12 +379,12 @@ func TestUpdater_Apply(t *testing.T) {
 	}
 
 	dir := t.TempDir()
-	exePath := filepath.Join(dir, "probo-agent")
+	exePath := filepath.Join(dir, "soc2start-agent")
 	require.NoError(t, os.WriteFile(exePath, []byte("old-binary"), 0o755))
 
 	layout, err := LayoutFor("linux", "amd64")
 	require.NoError(t, err)
-	fake := newFakeReleaseServer(t, "probo-agent/v0.2.0", "0.2.0", layout, []byte("new-binary"))
+	fake := newFakeReleaseServer(t, "soc2start-agent/v0.2.0", "0.2.0", layout, []byte("new-binary"))
 
 	u := newTestUpdater(fake, "0.1.0", exePath, "linux", "amd64")
 	rel, err := u.CheckLatest(context.Background())
@@ -406,10 +406,10 @@ func TestUpdater_CheckLatest_SkipsUnsignedRelease(t *testing.T) {
 
 	layout, err := LayoutFor("linux", "amd64")
 	require.NoError(t, err)
-	fake := newFakeReleaseServer(t, "probo-agent/v0.2.0", "0.2.0", layout, []byte("new"))
+	fake := newFakeReleaseServer(t, "soc2start-agent/v0.2.0", "0.2.0", layout, []byte("new"))
 	fake.omitBundle = true
 
-	u := newTestUpdater(fake, "0.1.0", filepath.Join(t.TempDir(), "probo-agent"), "linux", "amd64")
+	u := newTestUpdater(fake, "0.1.0", filepath.Join(t.TempDir(), "soc2start-agent"), "linux", "amd64")
 	_, err = u.CheckLatest(context.Background())
 	assert.ErrorIs(t, err, ErrNoUpdateAvailable, "release without a sigstore bundle must be ignored")
 }
@@ -418,12 +418,12 @@ func TestUpdater_Apply_RejectsBadSignature(t *testing.T) {
 	t.Parallel()
 
 	dir := t.TempDir()
-	exePath := filepath.Join(dir, "probo-agent")
+	exePath := filepath.Join(dir, "soc2start-agent")
 	require.NoError(t, os.WriteFile(exePath, []byte("old-binary"), 0o755))
 
 	layout, err := LayoutFor("linux", "amd64")
 	require.NoError(t, err)
-	fake := newFakeReleaseServer(t, "probo-agent/v0.2.0", "0.2.0", layout, []byte("new-binary"))
+	fake := newFakeReleaseServer(t, "soc2start-agent/v0.2.0", "0.2.0", layout, []byte("new-binary"))
 
 	u := newTestUpdater(fake, "0.1.0", exePath, "linux", "amd64")
 	u.Verifier = rejectAllVerifier{err: fmt.Errorf("test: signer identity mismatch")}
@@ -444,12 +444,12 @@ func TestUpdater_Apply_RejectsCorruptedArchive(t *testing.T) {
 	t.Parallel()
 
 	dir := t.TempDir()
-	exePath := filepath.Join(dir, "probo-agent")
+	exePath := filepath.Join(dir, "soc2start-agent")
 	require.NoError(t, os.WriteFile(exePath, []byte("old-binary"), 0o755))
 
 	layout, err := LayoutFor("linux", "amd64")
 	require.NoError(t, err)
-	fake := newFakeReleaseServer(t, "probo-agent/v0.2.0", "0.2.0", layout, []byte("new-binary"))
+	fake := newFakeReleaseServer(t, "soc2start-agent/v0.2.0", "0.2.0", layout, []byte("new-binary"))
 
 	// Corrupt the archive without updating checksums.
 	fake.archiveBytes = append(fake.archiveBytes, 0xff)

@@ -35,7 +35,7 @@ const (
 // returns the absolute path of the written binary.
 func extractBinary(archivePath string, layout AssetLayout, workDir string) (string, error) {
 	wantPath := path.Join(layout.ArchiveDir, layout.BinaryName)
-	dest := filepath.Join(workDir, "probo-agent.new")
+	dest := filepath.Join(workDir, "soc2start-agent.new")
 
 	if layout.IsZip {
 		if err := extractZipFile(archivePath, wantPath, dest); err != nil {

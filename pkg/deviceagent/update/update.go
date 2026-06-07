@@ -12,11 +12,11 @@
 // OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 // PERFORMANCE OF THIS SOFTWARE.
 
-// Package update self-updates the probo-agent binary from GitHub
+// Package update self-updates the soc2start-agent binary from GitHub
 // Releases. The update flow is:
 //
 //  1. List the latest releases for the configured repo, filtering on a
-//     tag prefix (`probo-agent/v` by default).
+//     tag prefix (`soc2start-agent/v` by default).
 //  2. Pick the highest semver newer than the agent's current version.
 //  3. Download the matching archive plus checksums.txt, verify SHA-256.
 //  4. Extract the archive and atomically replace the running binary.
@@ -47,12 +47,12 @@ import (
 )
 
 const (
-	// DefaultRepo is the GitHub repository hosting probo-agent
+	// DefaultRepo is the GitHub repository hosting soc2start-agent
 	// releases.
 	DefaultRepo = "getprobo/probo"
 	// DefaultTagPrefix is the tag prefix used by the agent's release
-	// pipeline. Releases look like `probo-agent/v0.1.0`.
-	DefaultTagPrefix = "probo-agent/v"
+	// pipeline. Releases look like `soc2start-agent/v0.1.0`.
+	DefaultTagPrefix = "soc2start-agent/v"
 
 	defaultAPIBaseURL      = "https://api.github.com"
 	defaultAssetBaseURL    = "https://github.com"
@@ -87,7 +87,7 @@ type (
 		// Verifier validates the Sigstore bundle that accompanies
 		// every release. When nil, the default cosign Verifier is
 		// constructed lazily on first Apply, pinned to the
-		// probo-agent release workflow.
+		// soc2start-agent release workflow.
 		Verifier Verifier
 
 		// GOOS/GOARCH override the values used to compute the
@@ -281,7 +281,7 @@ func (u *Updater) Apply(ctx context.Context, rel *Release) error {
 		return err
 	}
 
-	workDir, err := os.MkdirTemp("", "probo-agent-update-")
+	workDir, err := os.MkdirTemp("", "soc2start-agent-update-")
 	if err != nil {
 		return fmt.Errorf("cannot create update workdir: %w", err)
 	}
@@ -470,7 +470,7 @@ func (u *Updater) userAgent() string {
 		return u.UserAgent
 	}
 
-	return "probo-agent-updater"
+	return "soc2start-agent-updater"
 }
 
 func (u *Updater) goos() string {
@@ -490,7 +490,7 @@ func (u *Updater) goarch() string {
 }
 
 // parseTag returns the version (e.g. "0.2.0") for a tag whose value
-// starts with prefix (e.g. "probo-agent/v").
+// starts with prefix (e.g. "soc2start-agent/v").
 func parseTag(tag, prefix string) (string, bool) {
 	if !strings.HasPrefix(tag, prefix) {
 		return "", false

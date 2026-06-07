@@ -26,13 +26,13 @@ PRB_VERSION=             $(shell cat cmd/prb/VERSION)
 PROBOD_VERSION=          $(shell cat cmd/probod/VERSION)
 PROBOD_BOOTSTRAP_VERSION=$(shell cat cmd/probod-bootstrap/VERSION)
 PROBOCTL_VERSION=        $(shell cat cmd/proboctl/VERSION)
-PROBO_AGENT_VERSION=     $(shell cat cmd/probo-agent/VERSION)
+SOC2START_AGENT_VERSION=     $(shell cat cmd/soc2start-agent/VERSION)
 
 PRB_LDFLAGS=             -ldflags "-X 'main.version=$(PRB_VERSION)'"
 PROBOD_LDFLAGS=          -ldflags "-X 'main.version=$(PROBOD_VERSION)' -X 'main.env=prod'"
 PROBOD_BOOTSTRAP_LDFLAGS=-ldflags "-X 'main.version=$(PROBOD_BOOTSTRAP_VERSION)'"
 PROBOCTL_LDFLAGS=        -ldflags "-X 'main.version=$(PROBOCTL_VERSION)'"
-PROBO_AGENT_LDFLAGS=     -ldflags "-X 'main.version=$(PROBO_AGENT_VERSION)'"
+SOC2START_AGENT_LDFLAGS=     -ldflags "-X 'main.version=$(SOC2START_AGENT_VERSION)'"
 
 GCFLAGS=	-gcflags="-e"
 
@@ -87,8 +87,8 @@ PROBOD_BOOTSTRAP_SRC=	cmd/probod-bootstrap/main.go
 PROBOCTL_BIN=	bin/proboctl
 PROBOCTL_SRC=	cmd/proboctl/main.go
 
-PROBO_AGENT_BIN=	bin/probo-agent
-PROBO_AGENT_SRC=	cmd/probo-agent/main.go
+SOC2START_AGENT_BIN=	bin/soc2start-agent
+SOC2START_AGENT_SRC=	cmd/soc2start-agent/main.go
 
 ifdef WITH_APPS
 GENERATED += relay
@@ -189,7 +189,7 @@ coverage-combined: coverage-report test-e2e-coverage ## Generate combined covera
 	$(GO) tool cover -html=coverage-combined.out -o=coverage-combined.html
 
 .PHONY: build
-build: $(PROBOD_BIN) bin/prb bin/probod-bootstrap bin/proboctl $(PROBO_AGENT_BIN)
+build: $(PROBOD_BIN) bin/prb bin/probod-bootstrap bin/proboctl $(SOC2START_AGENT_BIN)
 
 CFG_DEV_OAUTH2_KEY = cfg/.dev-oauth2-signing-key.pem
 DEV_ENV            = .env
@@ -274,9 +274,9 @@ $(PROBOD_BOOTSTRAP_BIN):
 bin/proboctl:
 	$(GO_BUILD) $(PROBOCTL_LDFLAGS) -o $(PROBOCTL_BIN) $(PROBOCTL_SRC)
 
-.PHONY: $(PROBO_AGENT_BIN)
-$(PROBO_AGENT_BIN):
-	$(GO_BUILD) $(PROBO_AGENT_LDFLAGS) -o $(PROBO_AGENT_BIN) $(PROBO_AGENT_SRC)
+.PHONY: $(SOC2START_AGENT_BIN)
+$(SOC2START_AGENT_BIN):
+	$(GO_BUILD) $(SOC2START_AGENT_LDFLAGS) -o $(SOC2START_AGENT_BIN) $(SOC2START_AGENT_SRC)
 
 .PHONY: @probo/emails
 @probo/emails:
