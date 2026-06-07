@@ -215,7 +215,7 @@ export function OrganizationSidebar({
 
   return (
     <Card className="p-6 relative overflow-hidden border-b border-border-low isolate">
-      <div className="h-21 bg-[#044E4114] absolute top-0 left-0 right-0 -z-1"></div>
+      <div className="h-21 bg-subtle absolute top-0 left-0 right-0 -z-1"></div>
       {logoFileUrl
         ? (
             <img
