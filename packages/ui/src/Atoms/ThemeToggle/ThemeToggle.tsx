@@ -13,10 +13,9 @@
 // PERFORMANCE OF THIS SOFTWARE.
 
 import { useTheme, type ThemePreference } from "@probo/hooks";
-import { Monitor, Moon, Sun } from "@phosphor-icons/react";
-import type { ComponentType } from "react";
+import { Monitor, Moon, Sun, type Icon } from "@phosphor-icons/react";
 
-const options: { value: ThemePreference; icon: ComponentType<{ size: number; weight: string }>; label: string }[] = [
+const options: { value: ThemePreference; icon: Icon; label: string }[] = [
   { value: "light", icon: Sun, label: "Light" },
   { value: "dark", icon: Moon, label: "Dark" },
   { value: "system", icon: Monitor, label: "System" },
