@@ -12,9 +12,17 @@
 // OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 // PERFORMANCE OF THIS SOFTWARE.
 
+import type { FC } from "react";
 import { tv } from "tailwind-variants";
 import { create } from "zustand";
 import { combine } from "zustand/middleware";
+
+import { IconCircleCheck } from "../Icons/IconCircleCheck";
+import { IconCircleInfo } from "../Icons/IconCircleInfo";
+import { IconCircleX } from "../Icons/IconCircleX";
+import { IconCrossLargeX } from "../Icons/IconCrossLargeX";
+import { IconWarning } from "../Icons/IconWarning";
+import type { IconProps } from "../Icons/type";
 
 type Toast = {
   title: string;
@@ -23,7 +31,7 @@ type Toast = {
   id: string;
 };
 
-const duration = 3000;
+const duration = 4000;
 
 const useToasts = create(
   combine({ toasts: [] as Toast[] }, set => ({
@@ -62,7 +70,7 @@ export function useToast() {
 export function Toasts() {
   const { toasts, remove } = useToasts();
   return (
-    <div className="fixed z-100 bottom-4 left-4 right-4 sm:left-auto sm:w-85 space-y-2">
+    <div className="fixed z-100 bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:bottom-6 sm:w-96 space-y-3">
       {toasts.map(toast => (
         <div key={toast.id}>
           <Toast {...toast} onClose={() => remove(toast.id)} />
@@ -72,32 +80,38 @@ export function Toasts() {
   );
 }
 
-const toast = tv({
+const variantIcon: Record<string, FC<IconProps>> = {
+  success: IconCircleCheck,
+  error: IconCircleX,
+  warning: IconWarning,
+  info: IconCircleInfo,
+};
+
+const toastStyles = tv({
   slots: {
     wrapper:
-            "p-3 border rounded-lg relative animate-in slide-in-from-right w-full cursor-pointer shadow-mid",
-    timer: "absolute bottom-0 left-0 w-full h-0.5 rounded-b-lg starting:scale-x-0 scale-x-100 origin-left transition-all ease-linear",
+            "relative overflow-hidden bg-level-1 border border-border-solid rounded-xl shadow-dialog animate-in slide-in-from-bottom-3 fade-in-0 duration-200 ease-[var(--ease-out-expo)]",
+    icon: "flex-none mt-0.5",
+    timer: "absolute bottom-0 left-0 h-[2px] starting:scale-x-0 scale-x-100 origin-left transition-transform ease-linear rounded-b-xl",
+    close: "flex-none p-1 rounded-md text-txt-quaternary hover:text-txt-secondary hover:bg-subtle transition-colors duration-150 cursor-pointer",
   },
   variants: {
     variant: {
       success: {
-        wrapper:
-                    "bg-success text-invert text-txt-success border-border-success",
-        timer: "bg-border-success",
+        icon: "text-txt-success",
+        timer: "bg-txt-success/40",
       },
       error: {
-        wrapper:
-                    "bg-danger text-invert text-txt-danger border-border-danger",
-        timer: "bg-border-danger",
+        icon: "text-txt-danger",
+        timer: "bg-txt-danger/40",
       },
       warning: {
-        wrapper:
-                    "bg-warning text-invert text-txt-warning border-border-warning",
-        timer: "bg-border-warning",
+        icon: "text-txt-warning",
+        timer: "bg-txt-warning/40",
       },
       info: {
-        wrapper: "bg-info text-invert text-txt-info border-border-info",
-        timer: "bg-border-info",
+        icon: "text-txt-info",
+        timer: "bg-txt-info/40",
       },
     },
   },
@@ -107,11 +121,29 @@ const toast = tv({
 });
 
 export function Toast({ onClose, ...props }: Toast & { onClose: () => void }) {
-  const { wrapper, timer } = toast(props);
+  const { wrapper, icon, timer, close } = toastStyles(props);
+  const IconComponent = variantIcon[props.variant ?? "success"];
+
   return (
-    <div className={wrapper()} onClick={onClose}>
-      <div className="font-semibold">{props.title}</div>
-      <div className="text-sm opacity-80">{props.description}</div>
+    <div className={wrapper()}>
+      <div className="flex items-start gap-3 p-4">
+        <div className={icon()}>
+          <IconComponent size={20} />
+        </div>
+        <div className="flex-1 min-w-0">
+          <div className="text-sm font-semibold text-txt-primary">{props.title}</div>
+          {props.description && (
+            <div className="text-sm text-txt-secondary mt-0.5 leading-snug">{props.description}</div>
+          )}
+        </div>
+        <button
+          type="button"
+          onClick={onClose}
+          className={close()}
+        >
+          <IconCrossLargeX size={14} />
+        </button>
+      </div>
       <div
         className={timer()}
         style={{ transitionDuration: `${duration}ms` }}
