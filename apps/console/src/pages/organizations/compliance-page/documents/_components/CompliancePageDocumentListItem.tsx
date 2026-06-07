@@ -113,13 +113,13 @@ export function CompliancePageDocumentListItem(props: {
       <Td>
         {latestVersion && <DocumentTypeBadge type={latestVersion.documentType} />}
       </Td>
-      <Td noLink width={130} className="pr-0">
+      <Td noLink width={150} className="pr-0">
         <Field
           type="select"
           value={document.trustCenterVisibility}
           onValueChange={value => void handleVsibilityChange(value)}
           disabled={isUpdatingDocumentVisibility || !compliancePage.canUpdate}
-          className="w-[105px]"
+          className="w-[130px]"
         >
           {visibilityOptions.map(option => (
             <Option key={option.value} value={option.value}>

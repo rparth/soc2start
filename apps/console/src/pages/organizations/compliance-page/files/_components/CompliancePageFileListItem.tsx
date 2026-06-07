@@ -101,13 +101,13 @@ export function CompliancePageFileListItem(props: {
       </Td>
       <Td>{file.category}</Td>
       <Td>{formatDate(file.createdAt)}</Td>
-      <Td noLink width={130} className="pr-0">
+      <Td noLink width={150} className="pr-0">
         <Field
           type="select"
           value={file.trustCenterVisibility}
           onValueChange={value => void handleValueChange(value)}
           disabled={isUpdating || !compliancePage.canUpdate}
-          className="w-[105px]"
+          className="w-[130px]"
         >
           {visibilityOptions.map(option => (
             <Option key={option.value} value={option.value}>

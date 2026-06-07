@@ -205,13 +205,13 @@ function CompliancePageFrameworkListItem(props: {
           {framework.name}
         </div>
       </Td>
-      <Td noLink width={130} className="pr-0">
+      <Td noLink width={150} className="pr-0">
         <Field
           type="select"
           value={visibility}
           onValueChange={value => void handleVisibilityChange(value)}
           disabled={isLoading || !compliancePage.canUpdate}
-          className="w-[105px]"
+          className="w-[130px]"
         >
           {visibilityOptions.map(option => (
             <Option key={option.value} value={option.value}>
