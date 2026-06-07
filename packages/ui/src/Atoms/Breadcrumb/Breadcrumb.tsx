@@ -55,7 +55,7 @@ function BreadcrumbItem({ label, to, active }: ItemProps) {
         to={to}
         className={clsx(
           className,
-          "hover:bg-tertiary-hover active:bg-tertiary-pressed",
+          "hover:bg-tertiary-hover active:bg-tertiary-pressed transition-colors duration-150",
         )}
       >
         {label}

@@ -21,7 +21,8 @@ export function Skeleton({
   return (
     <div
       className={clsx(
-        "animate-pulse rounded-md bg-border-low",
+        "rounded-md bg-border-low relative overflow-hidden",
+        "before:absolute before:inset-0 before:bg-gradient-to-r before:from-transparent before:via-border-mid before:to-transparent before:animate-[shimmer_1.5s_ease-in-out_infinite]",
         className,
       )}
       {...props}

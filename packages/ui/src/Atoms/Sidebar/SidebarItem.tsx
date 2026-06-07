@@ -19,7 +19,7 @@ import { tv } from "tailwind-variants";
 import { useSidebarCollapsed } from "./Sidebar";
 
 const sidebarItem = tv({
-  base: "flex items-center gap-2 w-full py-2 rounded-full",
+  base: "flex items-center gap-2 w-full py-2 rounded-full transition-colors duration-150",
   variants: {
     active: {
       true: "bg-active hover:bg-active-hover active:bg-active-pressed text-txt-primary font-medium",

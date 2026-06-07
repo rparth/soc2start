@@ -88,7 +88,7 @@ export function Cell({
       data-cell
       {...props}
       className={clsx(
-        "first:pl-6 p-3 text-sm text-txt-primary bg-tertiary border-t border-border-low flex flex-col justify-center",
+        "first:pl-6 p-3 text-sm text-txt-primary bg-tertiary border-t border-border-low flex flex-col justify-center transition-colors duration-150",
         props.className,
       )}
     />

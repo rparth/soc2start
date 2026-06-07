@@ -75,8 +75,8 @@ export function Toasts() {
 const toast = tv({
   slots: {
     wrapper:
-            "p-2 border rounded relative animate-in slide-in-from-right w-full cursor-pointer ",
-    timer: "absolute bottom-0 left-0 w-full h-1 starting:scale-x-0 scale-x-100 origin-left transition-all ease-linear",
+            "p-3 border rounded-lg relative animate-in slide-in-from-right w-full cursor-pointer shadow-mid",
+    timer: "absolute bottom-0 left-0 w-full h-0.5 rounded-b-lg starting:scale-x-0 scale-x-100 origin-left transition-all ease-linear",
   },
   variants: {
     variant: {

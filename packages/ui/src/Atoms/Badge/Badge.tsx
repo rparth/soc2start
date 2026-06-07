@@ -39,7 +39,7 @@ const dotColor: Record<string, string> = {
 };
 
 const badge = tv({
-  base: "font-semibold rounded-full w-max flex gap-1.5 items-center group whitespace-nowrap",
+  base: "font-semibold rounded-full w-max flex gap-1.5 items-center group whitespace-nowrap transition-colors duration-150",
   variants: {
     variant: {
       success: "bg-success text-txt-success",

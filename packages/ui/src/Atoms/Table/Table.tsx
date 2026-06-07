@@ -93,8 +93,8 @@ export function Tr({
       <tr
         {...props}
         className={clsx(
-          "border-border-low border-y first:border-none last:border-none",
-          (to || props.onClick) && "hover:bg-subtle",
+          "border-border-low border-y first:border-none last:border-none transition-colors duration-150",
+          (to || props.onClick) && "hover:bg-subtle cursor-pointer",
           className,
         )}
       />
