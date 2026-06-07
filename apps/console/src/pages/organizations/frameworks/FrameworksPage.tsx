@@ -210,7 +210,7 @@ function FrameworkCard(props: FrameworkCardProps) {
   const { __ } = useTranslate();
   const dialogRef = useDialogRef();
   return (
-    <Card padded className="p-6 bg-white rounded shadow relative">
+    <Card padded className="p-6 bg-level-1 rounded shadow relative">
       <FrameworkFormDialog
         ref={dialogRef}
         connectionId={props.connectionId}

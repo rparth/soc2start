@@ -141,10 +141,10 @@ export function SAMLConfigurationList(props: {
     return (
       <Card padded>
         <div className="text-center py-12">
-          <h3 className="text-lg font-medium text-gray-900 mb-2">
+          <h3 className="text-lg font-medium text-txt-primary mb-2">
             {__("No SAML Configurations")}
           </h3>
-          <p className="text-gray-600 mb-6">
+          <p className="text-txt-secondary mb-6">
             {__(
               "Set up SAML 2.0 single sign-on for your organization by adding a configuration for each email domain.",
             )}
@@ -173,7 +173,7 @@ export function SAMLConfigurationList(props: {
             <Td>
               <button
                 onClick={() => copyId(config.id)}
-                className="font-mono text-xs text-gray-600 hover:text-gray-900"
+                className="font-mono text-xs text-txt-secondary hover:text-txt-primary"
                 title={__("Click to copy")}
               >
                 {copiedId === config.id ? __("Copied!") : config.id}
@@ -205,7 +205,7 @@ export function SAMLConfigurationList(props: {
                 className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
                   config.enforcementPolicy !== "OFF"
                     ? "bg-green-100 text-green-800"
-                    : "bg-gray-100 text-gray-800"
+                    : "bg-highlight text-txt-primary"
                 }`}
               >
                 {config.enforcementPolicy !== "OFF"
@@ -225,7 +225,7 @@ export function SAMLConfigurationList(props: {
                     </button>
                   )
                 : (
-                    <span className="text-gray-400">—</span>
+                    <span className="text-txt-tertiary">—</span>
                   )}
             </Td>
             <Td width={180} className="text-end">

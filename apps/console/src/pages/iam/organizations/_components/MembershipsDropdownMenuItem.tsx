@@ -69,7 +69,7 @@ export function MembershipsDropdownMenuItem(props: {
           <IconCheckmark1 size={16} className="text-green-600" />
         )}
         {isExpired && <IconClock size={16} className="text-orange-600" />}
-        {!lastSession && <IconLock size={16} className="text-gray-400" />}
+        {!lastSession && <IconLock size={16} className="text-txt-tertiary" />}
       </Link>
     </DropdownItem>
   );

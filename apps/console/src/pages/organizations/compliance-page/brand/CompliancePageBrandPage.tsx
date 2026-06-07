@@ -301,7 +301,7 @@ export function CompliancePageBrandPage(props: { queryRef: PreloadedQuery<Compli
               {currentDarkLogoUrl
                 ? (
                     <div className="flex items-center gap-4">
-                      <div className="border border-border-solid rounded-md p-4 bg-gray-900">
+                      <div className="border border-border-solid rounded-md p-4 bg-level-3">
                         <img
                           src={currentDarkLogoUrl}
                           alt={__("Compliance page dark logo")}

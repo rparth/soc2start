@@ -88,7 +88,7 @@ export function VersionRow({
               ? "bg-green-100 text-green-800"
               : isSelected
                 ? "bg-blue-100 text-blue-800"
-                : "bg-gray-100 text-gray-700",
+                : "bg-highlight text-txt-primary",
           )}
         >
           {isVersionSigned

@@ -97,7 +97,7 @@ export function MembershipsDropdown(props: {
           {queryRef && (
             <Suspense
               fallback={(
-                <div className="px-3 py-2 text-gray-500">
+                <div className="px-3 py-2 text-txt-secondary">
                   {__("Loading organizations...")}
                 </div>
               )}

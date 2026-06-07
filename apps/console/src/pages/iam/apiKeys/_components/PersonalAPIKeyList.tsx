@@ -192,10 +192,10 @@ export function PersonalAPIKeyList(props: {
           ? (
               <Card padded>
                 <div className="text-center py-12">
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">
+                  <h3 className="text-lg font-medium text-txt-primary mb-2">
                     {__("No API keys")}
                   </h3>
-                  <p className="text-gray-600 mb-6">
+                  <p className="text-txt-secondary mb-6">
                     {__("Create an API key to authenticate programmatic access.")}
                   </p>
                 </div>

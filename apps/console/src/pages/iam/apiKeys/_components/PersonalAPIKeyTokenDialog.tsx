@@ -37,7 +37,7 @@ export function PersonalAPIKeyTokenDialog(props: {
       title={<Breadcrumb items={[__("API Keys"), __("Token")]} />}
     >
       <DialogContent padded className="space-y-4">
-        <div className="bg-gray-100 p-4 rounded-lg flex items-center gap-2">
+        <div className="bg-highlight p-4 rounded-lg flex items-center gap-2">
           <code className="text-sm font-mono break-all flex-1">{token}</code>
           <Button
             variant="secondary"

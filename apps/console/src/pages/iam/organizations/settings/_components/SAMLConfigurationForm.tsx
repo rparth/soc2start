@@ -128,7 +128,7 @@ export function SAMLConfigurationForm(props: {
                 disabled={isEditing}
                 error={form.formState.errors.emailDomain?.message}
               />
-              <p className="text-xs text-gray-600 mt-1">
+              <p className="text-xs text-txt-secondary mt-1">
                 {isEditing
                   ? __("Email domain cannot be changed after creation")
                   : __(
@@ -158,7 +158,7 @@ export function SAMLConfigurationForm(props: {
                   )}
                 />
                 {form.watch("enforcementPolicy") && (
-                  <p className="text-xs text-gray-600 mt-2">
+                  <p className="text-xs text-txt-secondary mt-2">
                     {getEnforcementPolicyLabel(
                       form.watch("enforcementPolicy"),
                       __,

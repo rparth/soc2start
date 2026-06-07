@@ -33,34 +33,34 @@ export function SAMLDomainVerifyDialog(props: {
           <h3 className="text-base font-medium mb-4">
             {__("Verify Domain Ownership")}
           </h3>
-          <p className="text-sm text-gray-600 mb-4">
+          <p className="text-sm text-txt-secondary mb-4">
             {__(
               "Add the following TXT record to your domain's DNS configuration to verify ownership:",
             )}
           </p>
-          <div className="bg-gray-50 rounded-lg p-4 mb-4">
+          <div className="bg-subtle rounded-lg p-4 mb-4">
             <div className="space-y-2">
               <div>
                 <span className="font-semibold text-sm">
                   {__("Host/Name:")}
                 </span>
-                <code className="ml-2 bg-white px-2 py-1 rounded text-sm">
+                <code className="ml-2 bg-level-1 px-2 py-1 rounded text-sm">
                   @
                 </code>
-                <span className="ml-2 text-xs text-gray-600">
+                <span className="ml-2 text-xs text-txt-secondary">
                   {__("or use your domain name")}
                 </span>
               </div>
               <div>
                 <span className="font-semibold text-sm">{__("Type:")}</span>
-                <code className="ml-2 bg-white px-2 py-1 rounded text-sm">
+                <code className="ml-2 bg-level-1 px-2 py-1 rounded text-sm">
                   TXT
                 </code>
               </div>
               <div>
                 <span className="font-semibold text-sm">{__("Value:")}</span>
                 <div className="mt-1 flex items-center gap-2">
-                  <code className="flex-1 bg-white px-2 py-1 rounded text-sm break-all font-mono">
+                  <code className="flex-1 bg-level-1 px-2 py-1 rounded text-sm break-all font-mono">
                     {dnsRecord}
                   </code>
                   <Button
