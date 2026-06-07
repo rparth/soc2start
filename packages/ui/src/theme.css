@@ -80,6 +80,16 @@
     --color-active-pressed: #C0EBD0;
     --color-danger-pressed: #A93226;
 
+    /* Data visualization */
+    --color-chart-1: #27AE60;
+    --color-chart-2: #3498DB;
+    --color-chart-3: #F39C12;
+    --color-chart-4: #E74C3C;
+    --color-chart-5: #2D5A8A;
+    --color-chart-6: #9B59B6;
+    --color-chart-7: #1ABC9C;
+    --color-chart-8: #E67E22;
+
     /* text-5xl */
     --text-5xl: 3rem;
     --text-5xl--line-height: 3rem;
@@ -252,6 +262,16 @@
             --color-accent-pressed: rgba(39, 174, 96, 0.94);
             --color-active-pressed: rgba(39, 174, 96, 0.22);
             --color-danger-pressed: rgba(231, 76, 60, 0.5);
+
+            /* Data visualization */
+            --color-chart-1: #34D278;
+            --color-chart-2: #52A9FF;
+            --color-chart-3: #F5B041;
+            --color-chart-4: #FF6B6B;
+            --color-chart-5: #5B8DBF;
+            --color-chart-6: #BB77D4;
+            --color-chart-7: #2ED8B6;
+            --color-chart-8: #F0944D;
 
             /* Shadows */
             --shadow-base:
