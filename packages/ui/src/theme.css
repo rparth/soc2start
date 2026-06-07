@@ -170,6 +170,10 @@
     --shadow-mid:
         0px 2px 4px 0px rgba(13, 33, 55, 0.08),
         0px 2px 12px 0px rgba(13, 33, 55, 0.06);
+    --shadow-card-hover: 0 8px 30px rgba(13, 33, 55, 0.06);
+    --shadow-dialog:
+        0 16px 48px rgba(13, 33, 55, 0.16),
+        0 4px 16px rgba(13, 33, 55, 0.08);
 }
 
 @custom-variant document (&:where([data-theme=document] *));
@@ -248,6 +252,21 @@
             --color-accent-pressed: rgba(39, 174, 96, 0.94);
             --color-active-pressed: rgba(39, 174, 96, 0.22);
             --color-danger-pressed: rgba(231, 76, 60, 0.5);
+
+            /* Shadows */
+            --shadow-base:
+                0px 1px 3px 0px rgba(0, 0, 0, 0.3),
+                0px -1px 0px 0px rgba(0, 0, 0, 0.2) inset;
+            --shadow-hover:
+                0px 2px 6px 0px rgba(0, 0, 0, 0.3),
+                0px -1px 0px 0px rgba(0, 0, 0, 0.2) inset;
+            --shadow-mid:
+                0px 2px 4px 0px rgba(0, 0, 0, 0.2),
+                0px 2px 12px 0px rgba(0, 0, 0, 0.15);
+            --shadow-card-hover: 0 8px 30px rgba(0, 0, 0, 0.2);
+            --shadow-dialog:
+                0 16px 48px rgba(0, 0, 0, 0.4),
+                0 4px 16px rgba(0, 0, 0, 0.2);
         }
     }
 
