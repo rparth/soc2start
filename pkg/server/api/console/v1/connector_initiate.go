@@ -18,6 +18,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 
 	"go.gearno.de/kit/httpserver"
 	"go.gearno.de/kit/log"
@@ -46,10 +47,16 @@ func handleConnectorInitiate(
 
 		if _, err := connectorRegistry.Get(provider); err != nil {
 			if continueURL := r.URL.Query().Get("continue"); continueURL != "" {
-				redirectURL := continueURL + "?error=provider_not_configured&provider=" + provider
-				http.Redirect(w, r, redirectURL, http.StatusSeeOther)
+				parsed, parseErr := url.Parse(continueURL)
+				if parseErr == nil && parsed.Host == "" && parsed.Scheme == "" {
+					q := parsed.Query()
+					q.Set("error", "provider_not_configured")
+					q.Set("provider", provider)
+					parsed.RawQuery = q.Encode()
+					http.Redirect(w, r, parsed.String(), http.StatusSeeOther)
 
-				return
+					return
+				}
 			}
 
 			httpserver.RenderError(w, http.StatusBadRequest, fmt.Errorf("unsupported provider: %q", provider))
