@@ -22,7 +22,7 @@ import {
   Markdown,
   Textarea,
 } from "@probo/ui";
-import { useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useFragment } from "react-relay";
 import { graphql } from "relay-runtime";
 
@@ -150,7 +150,10 @@ function ContextSection({
   const [isEditing, setIsEditing] = useState(false);
   const [text, setText] = useState(value ?? "");
   const [displayedValue, setDisplayedValue] = useState(value ?? "");
-  const justSavedRef = useRef(false);
+
+  useEffect(() => {
+    setDisplayedValue(value ?? "");
+  }, [value]);
 
   const [updateContext, isUpdating]
     = useMutationWithToasts<ContextPage_UpdateMutation>(
@@ -165,7 +168,6 @@ function ContextSection({
     const valueToSave = text.trim();
     const previousValue = value ?? "";
     setDisplayedValue(valueToSave);
-    justSavedRef.current = true;
 
     const valueToSend = valueToSave.length > 0 ? valueToSave : null;
 
@@ -178,12 +180,12 @@ function ContextSection({
       },
       onError: () => {
         setDisplayedValue(previousValue);
-        justSavedRef.current = false;
+
       },
       onCompleted: (_, errors) => {
         if (errors?.length) {
           setDisplayedValue(previousValue);
-          justSavedRef.current = false;
+  
         }
 
         setIsEditing(false);
@@ -192,7 +194,7 @@ function ContextSection({
   };
 
   const handleCancel = () => {
-    setText(value ?? "");
+    setText(displayedValue || (value ?? ""));
     setIsEditing(false);
   };
 
@@ -247,7 +249,7 @@ function ContextSection({
                     variant="quaternary"
                     icon={IconPencil}
                     onClick={() => {
-                      setText(value ?? "");
+                      setText(displayedValue || (value ?? ""));
                       setIsEditing(true);
                     }}
                   >
