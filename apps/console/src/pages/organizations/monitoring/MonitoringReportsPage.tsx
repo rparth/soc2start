@@ -22,7 +22,6 @@ import {
   DropdownItem,
   EmptyState,
   HelpButton,
-  IconPlusLarge,
   IconTrashCan,
   IconUpload,
   PageHeader,
@@ -35,7 +34,6 @@ import {
   useConfirm,
   useToast,
 } from "@probo/ui";
-import { useTransition } from "react";
 import {
   ConnectionHandler,
   graphql,
@@ -45,7 +43,7 @@ import {
   usePaginationFragment,
   usePreloadedQuery,
 } from "react-relay";
-import { Link, useLocation } from "react-router";
+import { Link } from "react-router";
 
 import type { MonitoringReportsPageDeleteMutation } from "#/__generated__/core/MonitoringReportsPageDeleteMutation.graphql";
 import type { MonitoringReportsPageFragment$key } from "#/__generated__/core/MonitoringReportsPageFragment.graphql";
@@ -148,7 +146,6 @@ export default function MonitoringReportsPage({
 }: MonitoringReportsPageProps) {
   const { __ } = useTranslate();
   const organizationId = useOrganizationId();
-  const location = useLocation();
 
   const title = reportType === "PROWLER" ? __("Prowler") : __("Pentesting");
   const basePath =
@@ -159,8 +156,6 @@ export default function MonitoringReportsPage({
   usePageTitle(title);
 
   const organization = usePreloadedQuery(monitoringReportsPageQuery, queryRef);
-
-  const [, startTransition] = useTransition();
 
   const { data, loadNext, hasNext, isLoadingNext } =
     usePaginationFragment<
@@ -210,7 +205,7 @@ export default function MonitoringReportsPage({
 
       {reports.length === 0 ? (
         <EmptyState
-          icon={IconUpload}
+          icon={<IconUpload size={32} />}
           title={__("No reports yet")}
           description={
             reportType === "PROWLER"
@@ -274,7 +269,7 @@ function ReportRow({
 }) {
   const { __ } = useTranslate();
   const { toast } = useToast();
-  const { confirm } = useConfirm();
+  const confirm = useConfirm();
   const organizationId = useOrganizationId();
 
   const report = useFragment(reportRowFragment, fKey);
@@ -298,22 +293,18 @@ function ReportRow({
                   description: (errors as GraphQLError[])[0]?.message,
                   variant: "error",
                 });
-                reject();
-              } else {
-                toast({
-                  title: __("Report deleted"),
-                  variant: "success",
-                });
-                resolve();
+                reject(new Error((errors as GraphQLError[])[0]?.message));
+                return;
               }
+              resolve();
             },
-            onError() {
+            onError(error) {
               toast({
                 title: __("Error"),
                 description: __("Failed to delete report"),
                 variant: "error",
               });
-              reject();
+              reject(error);
             },
           });
         }),
@@ -344,10 +335,11 @@ function ReportRow({
           <ActionDropdown>
             <DropdownItem
               icon={IconTrashCan}
-              label={__("Delete")}
               variant="danger"
-              onSelect={handleDelete}
-            />
+              onClick={handleDelete}
+            >
+              {__("Delete")}
+            </DropdownItem>
           </ActionDropdown>
         )}
       </Td>

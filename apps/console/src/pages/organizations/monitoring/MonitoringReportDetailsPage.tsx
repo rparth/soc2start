@@ -26,7 +26,6 @@ import {
   PageHeader,
   Table,
   Tabs,
-  TabLink,
   Tbody,
   Td,
   Th,
@@ -42,7 +41,7 @@ import {
   useMutation,
   usePreloadedQuery,
 } from "react-relay";
-import { useLocation, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 
 import type { MonitoringReportDetailsPageDeleteMutation } from "#/__generated__/core/MonitoringReportDetailsPageDeleteMutation.graphql";
 import type { MonitoringReportDetailsPageQuery } from "#/__generated__/core/MonitoringReportDetailsPageQuery.graphql";
@@ -105,21 +104,21 @@ export default function MonitoringReportDetailsPage({
   const { __ } = useTranslate();
   const organizationId = useOrganizationId();
   const navigate = useNavigate();
-  const location = useLocation();
   const { toast } = useToast();
-  const { confirm } = useConfirm();
+  const confirm = useConfirm();
 
   const data = usePreloadedQuery(monitoringReportDetailsPageQuery, queryRef);
   const report = data.node;
 
-  const reportType = report.reportType;
+  const reportType = report.reportType ?? "PROWLER";
   const basePath =
     reportType === "PROWLER"
       ? "monitoring/prowler"
       : "monitoring/pentesting";
   const title = reportType === "PROWLER" ? __("Prowler") : __("Pentesting");
+  const reportName = report.name ?? "";
 
-  usePageTitle(report.name);
+  usePageTitle(reportName);
 
   const [activeTab, setActiveTab] = useState<"summary" | "raw">("summary");
 
@@ -134,7 +133,7 @@ export default function MonitoringReportDetailsPage({
         new Promise<void>((resolve, reject) => {
           deleteReport({
             variables: {
-              input: { monitoringReportId: report.id },
+              input: { monitoringReportId: report.id! },
             },
             onCompleted(_, errors) {
               if (errors?.length) {
@@ -143,38 +142,35 @@ export default function MonitoringReportDetailsPage({
                   description: (errors as GraphQLError[])[0]?.message,
                   variant: "error",
                 });
-                reject();
-              } else {
-                toast({
-                  title: __("Report deleted"),
-                  variant: "success",
-                });
-                void navigate(
-                  `/organizations/${organizationId}/${basePath}`,
-                );
-                resolve();
+                reject(new Error((errors as GraphQLError[])[0]?.message));
+                return;
               }
+              void navigate(
+                `/organizations/${organizationId}/${basePath}`,
+              );
+              resolve();
             },
-            onError() {
+            onError(error) {
               toast({
                 title: __("Error"),
                 description: __("Failed to delete report"),
                 variant: "error",
               });
-              reject();
+              reject(error);
             },
           });
         }),
       {
         message: sprintf(
           __("Are you sure you want to delete '%s'?"),
-          report.name,
+          reportName,
         ),
       },
     );
   };
 
   const summary: SummaryData | null = useMemo(() => {
+    if (!report.summary) return null;
     try {
       return JSON.parse(report.summary) as SummaryData;
     } catch {
@@ -186,21 +182,22 @@ export default function MonitoringReportDetailsPage({
     <div className="space-y-6">
       <PageHeader
         breadcrumbs={[__("Monitoring"), title]}
-        title={report.name}
+        title={reportName}
         description={sprintf(
           __("Uploaded %s • %s rows"),
-          formatDate(report.createdAt),
-          report.rowCount.toLocaleString(),
+          formatDate(report.createdAt ?? ""),
+          (report.rowCount ?? 0).toLocaleString(),
         )}
       >
         {report.canDelete && (
           <ActionDropdown>
             <DropdownItem
               icon={IconTrashCan}
-              label={__("Delete")}
               variant="danger"
-              onSelect={handleDelete}
-            />
+              onClick={handleDelete}
+            >
+              {__("Delete")}
+            </DropdownItem>
           </ActionDropdown>
         )}
       </PageHeader>
@@ -242,11 +239,6 @@ export default function MonitoringReportDetailsPage({
 
 function SummaryTab({ summary }: { summary: SummaryData }) {
   const { __ } = useTranslate();
-
-  const passRate =
-    summary.totalRows > 0
-      ? ((summary.passCount / summary.totalRows) * 100).toFixed(1)
-      : "0";
 
   return (
     <div className="space-y-6">
@@ -310,7 +302,7 @@ function SummaryTab({ summary }: { summary: SummaryData }) {
                             ? "danger"
                             : severity.toLowerCase() === "medium"
                               ? "warning"
-                              : "default"
+                              : "neutral"
                         }
                       >
                         {severity}
@@ -566,7 +558,6 @@ function RawDataTab({ downloadUrl }: { downloadUrl: string }) {
         <div className="flex items-center justify-center gap-2">
           <Button
             variant="secondary"
-            size="sm"
             disabled={page === 0}
             onClick={() => setPage((p) => p - 1)}
           >
@@ -581,7 +572,6 @@ function RawDataTab({ downloadUrl }: { downloadUrl: string }) {
           </span>
           <Button
             variant="secondary"
-            size="sm"
             disabled={page >= totalPages - 1}
             onClick={() => setPage((p) => p + 1)}
           >
