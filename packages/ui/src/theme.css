@@ -384,7 +384,7 @@ button[data-cell]:focus-visible {
     position: absolute;
     inset: -16px;
     border-radius: 9999px;
-    background: conic-gradient(from var(--glow-angle), transparent 0%, rgba(39, 174, 96, 0.12) 25%, transparent 50%, rgba(39, 174, 96, 0.08) 75%, transparent 100%);
+    background: conic-gradient(from var(--glow-angle), transparent 0%, color-mix(in srgb, var(--color-accent) 12%, transparent) 25%, transparent 50%, color-mix(in srgb, var(--color-accent) 8%, transparent) 75%, transparent 100%);
     animation: glow-rotate 12s linear infinite;
     z-index: -1;
 }
