@@ -113,9 +113,11 @@ export default function CreatePasswordPage() {
           error={formState.errors.password?.message}
         />
 
-        <Button type="submit" className="w-full h-12 mx-auto mt-6" disabled={formState.isLoading || isCreatingPassword}>
-          {__("Save")}
-        </Button>
+        <div className="auth-btn-hover rounded-lg mt-6">
+          <Button type="submit" className="w-full h-12 mx-auto" disabled={formState.isLoading || isCreatingPassword}>
+            {__("Save")}
+          </Button>
+        </div>
       </form>
 
       <div className="text-center">

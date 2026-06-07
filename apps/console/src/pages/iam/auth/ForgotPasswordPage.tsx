@@ -147,15 +147,17 @@ export default function ForgotPasswordPage() {
               error={formState.errors.email?.message}
             />
 
-            <Button
-              type="submit"
-              className="w-full h-12 mx-auto mt-6"
-              disabled={formState.isSubmitting}
-            >
-              {formState.isSubmitting
-                ? __("Sending instructions...")
-                : __("Send reset instructions")}
-            </Button>
+            <div className="auth-btn-hover rounded-lg mt-6">
+              <Button
+                type="submit"
+                className="w-full h-12 mx-auto"
+                disabled={formState.isSubmitting}
+              >
+                {formState.isSubmitting
+                  ? __("Sending instructions...")
+                  : __("Send reset instructions")}
+              </Button>
+            </div>
           </form>
 
           <div className="text-center">

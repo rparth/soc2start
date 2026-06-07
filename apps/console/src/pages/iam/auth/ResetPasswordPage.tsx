@@ -136,11 +136,13 @@ export default function ResetPasswordPage() {
           error={formState.errors.confirmPassword?.message}
         />
 
-        <Button type="submit" className="w-full h-12 mx-auto mt-6" disabled={formState.isLoading}>
-          {formState.isLoading
-            ? __("Resetting password...")
-            : __("Reset password")}
-        </Button>
+        <div className="auth-btn-hover rounded-lg mt-6">
+          <Button type="submit" className="w-full h-12 mx-auto" disabled={formState.isLoading}>
+            {formState.isLoading
+              ? __("Resetting password...")
+              : __("Reset password")}
+          </Button>
+        </div>
       </form>
 
       <div className="text-center">

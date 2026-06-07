@@ -77,9 +77,11 @@ export default function SSOSignInPage() {
           autoFocus
         />
 
-        <Button className="w-full h-12 mx-auto mt-6" disabled={checking}>
-          {checking ? __("Checking...") : __("Continue with SSO")}
-        </Button>
+        <div className="auth-btn-hover rounded-lg mt-6">
+          <Button className="w-full h-12 mx-auto" disabled={checking}>
+            {checking ? __("Checking...") : __("Continue with SSO")}
+          </Button>
+        </div>
 
         <div className="mt-8 pt-6 border-t border-border-solid text-center text-sm text-txt-secondary">
           {__("Don't have an account ?")}

@@ -49,26 +49,32 @@ export default function SignInPage(props: Props) {
 
       <div className="mt-8 space-y-4">
         {data.oidcProviders.map((providerRef, index) => (
-          <OIDCButton key={index} providerRef={providerRef} />
+          <div key={index} className="auth-btn-hover rounded-lg">
+            <OIDCButton providerRef={providerRef} />
+          </div>
         ))}
 
-        <Button
-          variant="secondary"
-          className="w-full h-12"
-          to={{ pathname: "/auth/sso-login", search: location.search }}
-        >
-          {__("Sign in with SSO")}
-        </Button>
+        <div className="auth-btn-hover rounded-lg">
+          <Button
+            variant="secondary"
+            className="w-full h-12"
+            to={{ pathname: "/auth/sso-login", search: location.search }}
+          >
+            {__("Sign in with SSO")}
+          </Button>
+        </div>
 
         <Divider>{__("Or")}</Divider>
 
-        <Button
-          variant="secondary"
-          className="w-full h-12"
-          to={{ pathname: "/auth/password-login", search: location.search }}
-        >
-          {__("Sign in with email")}
-        </Button>
+        <div className="auth-btn-hover rounded-lg">
+          <Button
+            variant="secondary"
+            className="w-full h-12"
+            to={{ pathname: "/auth/password-login", search: location.search }}
+          >
+            {__("Sign in with email")}
+          </Button>
+        </div>
       </div>
 
       <div className="mt-10 pt-6 border-t border-border-solid text-center">
@@ -77,7 +83,7 @@ export default function SignInPage(props: Props) {
           {" "}
           <Link
             to={{ pathname: "/auth/register", search: location.search }}
-            className="font-medium text-txt-primary hover:text-txt-accent transition-colors"
+            className="font-medium text-txt-primary hover:text-txt-accent transition-colors underline decoration-accent/40 decoration-1 underline-offset-4 hover:decoration-accent"
           >
             {__("Create account")}
           </Link>

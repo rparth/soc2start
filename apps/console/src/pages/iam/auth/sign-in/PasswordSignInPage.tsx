@@ -126,9 +126,11 @@ export default function PasswordSignInPage() {
         />
       </div>
 
-      <Button className="w-full h-12 mx-auto mt-6" disabled={isSigningIn}>
-        {isSigningIn ? __("Logging in...") : __("Login")}
-      </Button>
+      <div className="auth-btn-hover rounded-lg mt-6">
+        <Button className="w-full h-12 mx-auto" disabled={isSigningIn}>
+          {isSigningIn ? __("Logging in...") : __("Login")}
+        </Button>
+      </div>
 
       <div className="mt-8 pt-6 border-t border-border-solid space-y-3">
         <p className="text-center text-sm text-txt-secondary">

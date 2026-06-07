@@ -165,11 +165,13 @@ function SignUpPageContent(props: { queryRef: NonNullable<ReturnType<typeof useQ
           error={formState.errors.password?.message}
         />
 
-        <Button type="submit" className="w-full h-12 mx-auto mt-6" disabled={formState.isLoading}>
-          {formState.isLoading
-            ? __("Creating account...")
-            : __("Sign up with email")}
-        </Button>
+        <div className="auth-btn-hover rounded-lg mt-6">
+          <Button type="submit" className="w-full h-12 mx-auto" disabled={formState.isLoading}>
+            {formState.isLoading
+              ? __("Creating account...")
+              : __("Sign up with email")}
+          </Button>
+        </div>
       </form>
 
       <div className="pt-6 border-t border-border-solid text-center">

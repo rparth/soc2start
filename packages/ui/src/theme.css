@@ -348,6 +348,69 @@ button[data-cell]:focus-visible {
     --z-toast: 100;
 }
 
+/* Auth page entry animations (Direction A: Cinematic Entry) */
+@keyframes auth-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes auth-draw-line {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+}
+
+@keyframes auth-slide-up {
+    from { opacity: 0; transform: translateY(12px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Auth logo glow (Direction B: Ambient Shield) */
+@property --glow-angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+}
+
+@keyframes glow-rotate {
+    to { --glow-angle: 360deg; }
+}
+
+.auth-logo-glow {
+    position: relative;
+}
+
+.auth-logo-glow::before {
+    content: '';
+    position: absolute;
+    inset: -16px;
+    border-radius: 9999px;
+    background: conic-gradient(from var(--glow-angle), transparent 0%, rgba(39, 174, 96, 0.12) 25%, transparent 50%, rgba(39, 174, 96, 0.08) 75%, transparent 100%);
+    animation: glow-rotate 12s linear infinite;
+    z-index: -1;
+}
+
+/* Auth button hover micro-interaction */
+.auth-btn-hover {
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-btn-hover::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 1px;
+    background: var(--color-accent);
+    transition: width 250ms var(--ease-out-expo), left 250ms var(--ease-out-expo);
+}
+
+.auth-btn-hover:hover::after {
+    width: 100%;
+    left: 0;
+}
+
 @keyframes shimmer {
     0% {
         transform: translateX(-100%);

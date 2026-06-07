@@ -24,14 +24,22 @@ export default function AuthLayout(props: PropsWithChildren) {
   return (
     <div className="relative min-h-dvh text-txt-primary bg-level-0 flex flex-col items-center justify-center bg-[radial-gradient(ellipse_at_top,_var(--color-level-1)_0%,_var(--color-level-0)_70%)]">
       <div className="absolute inset-0 bg-[radial-gradient(circle,_var(--color-border-low)_1px,_transparent_1px)] [background-size:24px_24px]" />
+      <div
+        className="absolute inset-0 opacity-[0.03]"
+        style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='a'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23a)'/%3E%3C/svg%3E\")" }}
+      />
       <Card className="relative w-full max-w-lg px-12 py-12 flex flex-col items-center justify-center shadow-mid">
         <div className="w-full flex flex-col items-center justify-center gap-10">
-          <Logo withPicto />
-          <div className="w-full border-t border-t-border-solid" />
+          <div className="auth-logo-glow [animation:auth-fade-in_200ms_var(--ease-out-expo)_backwards]">
+            <Logo withPicto />
+          </div>
+          <div className="w-full border-t border-t-border-solid origin-left [animation:auth-draw-line_150ms_var(--ease-out-expo)_200ms_backwards]" />
         </div>
-        <IAMRelayProvider>
-          {children ?? <Outlet />}
-        </IAMRelayProvider>
+        <div className="w-full [animation:auth-slide-up_300ms_var(--ease-out-expo)_350ms_backwards]">
+          <IAMRelayProvider>
+            {children ?? <Outlet />}
+          </IAMRelayProvider>
+        </div>
       </Card>
     </div>
   );
