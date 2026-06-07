@@ -370,6 +370,8 @@ function RawDataTab({ downloadUrl }: { downloadUrl: string }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState<string>("FAIL");
+  const [severityFilter, setSeverityFilter] = useState<string>("ALL");
   const [page, setPage] = useState(0);
   const pageSize = 50;
 
@@ -400,13 +402,55 @@ function RawDataTab({ downloadUrl }: { downloadUrl: string }) {
     void fetchCSV();
   }, [downloadUrl]);
 
-  const filteredRows = useMemo(() => {
-    if (!search) return rows;
-    const lower = search.toLowerCase();
-    return rows.filter((row) =>
-      row.some((cell) => cell.toLowerCase().includes(lower)),
+  const statusIdx = useMemo(
+    () => headers.findIndex((h) => h.toUpperCase() === "STATUS"),
+    [headers],
+  );
+  const severityIdx = useMemo(
+    () => headers.findIndex((h) => h.toUpperCase() === "SEVERITY"),
+    [headers],
+  );
+
+  const uniqueStatuses = useMemo(() => {
+    if (statusIdx < 0) return [];
+    const set = new Set(rows.map((r) => r[statusIdx]).filter(Boolean));
+    return Array.from(set).sort();
+  }, [rows, statusIdx]);
+
+  const uniqueSeverities = useMemo(() => {
+    if (severityIdx < 0) return [];
+    const set = new Set(rows.map((r) => r[severityIdx]).filter(Boolean));
+    const order = ["critical", "high", "medium", "low", "informational"];
+    return Array.from(set).sort(
+      (a, b) =>
+        order.indexOf(a.toLowerCase()) - order.indexOf(b.toLowerCase()),
     );
-  }, [rows, search]);
+  }, [rows, severityIdx]);
+
+  const filteredRows = useMemo(() => {
+    let result = rows;
+
+    if (statusFilter !== "ALL" && statusIdx >= 0) {
+      result = result.filter(
+        (row) => row[statusIdx]?.toUpperCase() === statusFilter,
+      );
+    }
+
+    if (severityFilter !== "ALL" && severityIdx >= 0) {
+      result = result.filter(
+        (row) => row[severityIdx]?.toUpperCase() === severityFilter.toUpperCase(),
+      );
+    }
+
+    if (search) {
+      const lower = search.toLowerCase();
+      result = result.filter((row) =>
+        row.some((cell) => cell.toLowerCase().includes(lower)),
+      );
+    }
+
+    return result;
+  }, [rows, search, statusFilter, severityFilter, statusIdx, severityIdx]);
 
   const paginatedRows = useMemo(() => {
     const start = page * pageSize;
@@ -439,14 +483,48 @@ function RawDataTab({ downloadUrl }: { downloadUrl: string }) {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between gap-4">
+      <div className="flex flex-wrap items-center gap-4">
         <Input
           placeholder={__("Search across all columns...")}
           value={search}
           onChange={handleSearchChange}
           className="max-w-sm"
         />
-        <p className="text-sm text-txt-secondary">
+        {statusIdx >= 0 && (
+          <select
+            value={statusFilter}
+            onChange={(e) => {
+              setStatusFilter(e.target.value);
+              setPage(0);
+            }}
+            className="rounded-md border border-primary bg-primary px-3 py-1.5 text-sm text-txt-primary"
+          >
+            <option value="ALL">{__("All statuses")}</option>
+            {uniqueStatuses.map((s) => (
+              <option key={s} value={s.toUpperCase()}>
+                {s}
+              </option>
+            ))}
+          </select>
+        )}
+        {severityIdx >= 0 && (
+          <select
+            value={severityFilter}
+            onChange={(e) => {
+              setSeverityFilter(e.target.value);
+              setPage(0);
+            }}
+            className="rounded-md border border-primary bg-primary px-3 py-1.5 text-sm text-txt-primary"
+          >
+            <option value="ALL">{__("All severities")}</option>
+            {uniqueSeverities.map((s) => (
+              <option key={s} value={s.toUpperCase()}>
+                {s}
+              </option>
+            ))}
+          </select>
+        )}
+        <p className="ml-auto text-sm text-txt-secondary">
           {sprintf(
             __("%s of %s rows"),
             filteredRows.length.toLocaleString(),
