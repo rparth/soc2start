@@ -61,7 +61,7 @@ export function CompliancePageDomainPage(props: {
         : (
             <Card padded>
               <div className="text-center py-8">
-                <h3 className="text-lg font-semibold mb-2">
+                <h3 className="text-lg font-bold mb-2">
                   {__("No custom domain configured")}
                 </h3>
                 <p className="text-txt-tertiary mb-4">

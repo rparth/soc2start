@@ -78,7 +78,7 @@ export function TrackerPatternDetectedTrackersSection({
 
   return (
     <>
-      <h3 className="text-lg font-semibold">{__("Detected Trackers")}</h3>
+      <h3 className="text-lg font-bold">{__("Detected Trackers")}</h3>
 
       {trackers.length > 0
         ? (

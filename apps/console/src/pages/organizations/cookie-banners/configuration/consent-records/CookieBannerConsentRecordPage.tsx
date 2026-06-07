@@ -173,7 +173,7 @@ export default function CookieBannerConsentRecordPage({
       </Card>
 
       <Card padded>
-        <h3 className="text-lg font-semibold mb-4">{__("Consent Data")}</h3>
+        <h3 className="text-lg font-bold mb-4">{__("Consent Data")}</h3>
         {categories.length > 0
           ? (
               <div className="space-y-4">

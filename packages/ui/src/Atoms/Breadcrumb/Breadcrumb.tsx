@@ -47,7 +47,7 @@ export function Breadcrumb({ items }: Props) {
 function BreadcrumbItem({ label, to, active }: ItemProps) {
   const className = clsx(
     "text-sm px-1 rounded-sm h-5",
-    active && "text-txt-primary font-medium",
+    active && "text-txt-primary font-semibold",
   );
   if (to) {
     return (

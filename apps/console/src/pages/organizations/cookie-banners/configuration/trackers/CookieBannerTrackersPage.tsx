@@ -291,7 +291,7 @@ export default function CookieBannerTrackersPage({
           : (
               <Card padded>
                 <div className="text-center py-12">
-                  <h3 className="text-lg font-semibold mb-2">
+                  <h3 className="text-lg font-bold mb-2">
                     {__("No tracker patterns")}
                   </h3>
                   <p className="text-txt-tertiary">

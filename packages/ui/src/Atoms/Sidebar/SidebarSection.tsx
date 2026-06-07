@@ -106,7 +106,7 @@ const FlyoutPanel = forwardRef<HTMLDivElement, FlyoutProps>(
         )}
         style={{ left: leftPx }}
       >
-        <div className="px-3 py-1.5 text-xs font-medium text-txt-tertiary uppercase tracking-wider">
+        <div className="px-3 py-1.5 text-xs font-semibold text-txt-secondary uppercase tracking-wider">
           {label}
         </div>
         {children}
@@ -202,7 +202,7 @@ export function SidebarSection({ icon: Icon, label, basePaths, children }: Props
         className={sectionHeader({ hasActiveChild, isCollapsed: false, isHovered })}
       >
         <Icon size={16} />
-        <span className="flex-1 text-left text-sm">{label}</span>
+        <span className="flex-1 text-left text-sm font-semibold">{label}</span>
         <IconChevronRight
           size={12}
           className={clsx(

@@ -32,7 +32,7 @@ export function PageHeader({ title, description, breadcrumbs, children }: Props)
       )}
       <div className="flex flex-col gap-3 sm:flex-row sm:justify-between sm:items-start w-full">
         <div className="space-y-1 min-w-0">
-          <h1 className="text-xl sm:text-2xl flex gap-3 sm:gap-4 font-semibold items-center">
+          <h1 className="text-2xl sm:text-3xl flex gap-3 sm:gap-4 font-bold items-center tracking-tight">
             {title}
           </h1>
           {description && (

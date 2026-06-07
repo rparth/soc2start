@@ -29,8 +29,8 @@ export function EmptyState({ icon, title, description, action }: Props) {
       {icon && (
         <div className="mb-3 text-txt-tertiary">{icon}</div>
       )}
-      <h3 className="text-lg font-semibold">{title}</h3>
-      <p className="text-sm text-txt-tertiary mt-1 max-w-sm">{description}</p>
+      <h3 className="text-xl font-bold">{title}</h3>
+      <p className="text-base text-txt-secondary mt-2 max-w-sm">{description}</p>
       {action && <div className="mt-4">{action}</div>}
     </Card>
   );

@@ -64,7 +64,7 @@ export function CellHead({
     <div
       {...props}
       className={clsx(
-        "text-xs text-txt-tertiary font-semibold ",
+        "text-xs text-txt-tertiary font-semibold uppercase tracking-wider ",
         "first:pl-6 p-3 whitespace-nowrap",
         className,
       )}

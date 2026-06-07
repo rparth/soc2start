@@ -180,7 +180,7 @@
     --shadow-mid:
         0px 2px 4px 0px rgba(13, 33, 55, 0.08),
         0px 2px 12px 0px rgba(13, 33, 55, 0.06);
-    --shadow-card-hover: 0 8px 30px rgba(13, 33, 55, 0.06);
+    --shadow-card-hover: 0 8px 30px rgba(13, 33, 55, 0.1);
     --shadow-dialog:
         0 16px 48px rgba(13, 33, 55, 0.16),
         0 4px 16px rgba(13, 33, 55, 0.08);

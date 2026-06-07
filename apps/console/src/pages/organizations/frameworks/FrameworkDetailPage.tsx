@@ -193,7 +193,7 @@ export default function FrameworkDetailPage(props: Props) {
           </ActionDropdown>
         )}
       </PageHeader>
-      <div className="text-lg font-semibold">
+      <div className="text-lg font-bold">
         {__("Requirement categories")}
       </div>
       <div className="divide-x divide-border-low grid grid-cols-[264px_1fr]">

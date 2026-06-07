@@ -45,7 +45,7 @@ export function Thead({
   return (
     <thead
       className={clsx(
-        "text-xs text-txt-tertiary font-semibold border-border-low border-b",
+        "text-xs text-txt-tertiary font-semibold uppercase tracking-wider border-border-low border-b",
         className,
       )}
     >
