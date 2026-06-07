@@ -222,11 +222,11 @@ export default function DevicePosturePage({
 function statusVariant(status: string) {
   switch (status) {
     case "ONLINE":
-      return "positive" as const;
+      return "success" as const;
     case "OFFLINE":
       return "neutral" as const;
     case "REVOKED":
-      return "negative" as const;
+      return "danger" as const;
     default:
       return "neutral" as const;
   }
@@ -301,8 +301,8 @@ function DeviceRow({
     postureSummary.total === 0
       ? ("neutral" as const)
       : postureSummary.fail > 0
-        ? ("negative" as const)
-        : ("positive" as const);
+        ? ("danger" as const)
+        : ("success" as const);
 
   return (
     <Tr>

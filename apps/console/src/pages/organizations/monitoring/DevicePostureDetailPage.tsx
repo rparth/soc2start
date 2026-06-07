@@ -72,11 +72,11 @@ interface DevicePostureDetailPageProps {
 function statusVariant(status: string) {
   switch (status) {
     case "ONLINE":
-      return "positive" as const;
+      return "success" as const;
     case "OFFLINE":
       return "neutral" as const;
     case "REVOKED":
-      return "negative" as const;
+      return "danger" as const;
     default:
       return "neutral" as const;
   }
@@ -85,9 +85,9 @@ function statusVariant(status: string) {
 function checkStatusVariant(status: string) {
   switch (status) {
     case "PASS":
-      return "positive" as const;
+      return "success" as const;
     case "FAIL":
-      return "negative" as const;
+      return "danger" as const;
     case "UNKNOWN":
       return "neutral" as const;
     case "NOT_APPLICABLE":
@@ -117,7 +117,13 @@ export default function DevicePostureDetailPage({
     return null;
   }
 
-  const { postureSummary, postureChecks } = device;
+  const postureSummary = device.postureSummary ?? {
+    total: 0,
+    pass: 0,
+    fail: 0,
+    unknown: 0,
+  };
+  const postureChecks = device.postureChecks ?? [];
 
   return (
     <div className="space-y-6">
@@ -129,11 +135,11 @@ export default function DevicePostureDetailPage({
             to: `/organizations/${organizationId}/monitoring/devices`,
           },
         ]}
-        title={device.hostname}
-        description={`${device.platform} · ${device.osVersion} · Agent ${device.agentVersion}`}
+        title={device.hostname ?? ""}
+        description={`${device.platform ?? ""} · ${device.osVersion ?? ""} · Agent ${device.agentVersion ?? ""}`}
       >
-        <Badge variant={statusVariant(device.status)}>
-          {device.status}
+        <Badge variant={statusVariant(device.status ?? "OFFLINE")}>
+          {device.status ?? "OFFLINE"}
         </Badge>
       </PageHeader>
 
