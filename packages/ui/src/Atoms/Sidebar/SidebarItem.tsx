@@ -22,7 +22,7 @@ const sidebarItem = tv({
   base: "flex items-center gap-2 w-full py-2 rounded-full transition-colors duration-150",
   variants: {
     active: {
-      true: "bg-active hover:bg-active-hover active:bg-active-pressed text-txt-primary font-medium",
+      true: "bg-active hover:bg-active-hover active:bg-active-pressed text-txt-accent font-medium",
       false: "hover:bg-subtle-hover active:bg-subtle-pressed text-txt-tertiary",
     },
     isCollapsed: {

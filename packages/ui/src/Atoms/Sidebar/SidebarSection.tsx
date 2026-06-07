@@ -34,7 +34,7 @@ const sectionHeader = tv({
   base: "flex items-center gap-2 w-full py-2 rounded-full cursor-pointer select-none transition-colors",
   variants: {
     hasActiveChild: {
-      true: "text-txt-primary",
+      true: "text-txt-accent",
       false: "text-txt-tertiary",
     },
     isCollapsed: {

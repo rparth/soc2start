@@ -32,8 +32,8 @@ const classNames = tv({
   variants: {
     active: {
       true: {
-        wrapper: "bg-tertiary-pressed",
-        id: "bg-active",
+        wrapper: "bg-active",
+        id: "bg-accent text-txt-invert",
       },
       false: {
         wrapper: "hover:bg-tertiary-hover",

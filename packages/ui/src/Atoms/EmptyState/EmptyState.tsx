@@ -27,7 +27,7 @@ export function EmptyState({ icon, title, description, action }: Props) {
   return (
     <Card className="flex flex-col items-center justify-center py-12 px-6 text-center">
       {icon && (
-        <div className="mb-4 flex items-center justify-center size-14 rounded-full bg-subtle text-txt-secondary">{icon}</div>
+        <div className="mb-4 flex items-center justify-center size-14 rounded-full bg-active text-txt-accent">{icon}</div>
       )}
       <h3 className="text-xl font-bold">{title}</h3>
       <p className="text-base text-txt-secondary mt-2 max-w-sm">{description}</p>
