@@ -26,7 +26,7 @@ import { tv } from "tailwind-variants";
 
 import { IconChevronRight } from "../Icons";
 
-import { useSidebarCollapsed } from "./Sidebar";
+import { sidebarContext, useSidebarCollapsed } from "./Sidebar";
 
 const sectionHeader = tv({
   base: "flex items-center gap-2 w-full py-2 rounded-full cursor-pointer select-none transition-colors",
@@ -131,9 +131,11 @@ export function SidebarSection({ icon: Icon, label, basePaths, children }: Props
             <div className="px-3 py-1.5 text-xs font-medium text-txt-tertiary uppercase tracking-wider">
               {label}
             </div>
-            <ul className="space-y-[2px]">
-              {children}
-            </ul>
+            <sidebarContext.Provider value={{ open: true }}>
+              <ul className="space-y-[2px]">
+                {children}
+              </ul>
+            </sidebarContext.Provider>
           </div>
         )}
       </li>

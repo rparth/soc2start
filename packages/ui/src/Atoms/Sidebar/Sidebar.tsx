@@ -23,7 +23,7 @@ import {
 import { Button } from "../Button/Button";
 import { IconCollapse, IconExpand } from "../Icons";
 
-const sidebarContext = createContext({ open: true });
+export const sidebarContext = createContext({ open: true });
 
 function useSidebarState() {
   const [open, setOpenState] = useState<boolean>(() => {

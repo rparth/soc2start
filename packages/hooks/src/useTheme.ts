@@ -26,7 +26,7 @@ function getStoredPreference(): ThemePreference {
       return stored;
     }
   } catch {}
-  return "system";
+  return "light";
 }
 
 function getSystemTheme(): ResolvedTheme {
