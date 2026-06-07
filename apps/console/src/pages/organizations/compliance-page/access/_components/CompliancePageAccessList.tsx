@@ -13,7 +13,7 @@
 // PERFORMANCE OF THIS SOFTWARE.
 
 import { useTranslate } from "@probo/i18n";
-import { Button, IconChevronDown, Spinner, Table, Tbody, Td, Th, Thead, Tr } from "@probo/ui";
+import { Button, EmptyState, IconChevronDown, IconKey, Spinner, Table, Tbody, Th, Thead, Tr } from "@probo/ui";
 import { usePaginationFragment } from "react-relay";
 import { graphql } from "relay-runtime";
 
@@ -70,15 +70,11 @@ export function CompliancePageAccessList(props: {
 
   return accesses.edges.length === 0
     ? (
-        <Table>
-          <Tbody>
-            <Tr>
-              <Td className="text-center text-txt-tertiary py-8">
-                {__("No external access granted yet")}
-              </Td>
-            </Tr>
-          </Tbody>
-        </Table>
+        <EmptyState
+          icon={<IconKey size={32} />}
+          title={__("No external access granted yet")}
+          description={__("Grant access to external parties so they can view your trust center documents and compliance artifacts. Access requests will appear here.")}
+        />
       )
     : (
         <>

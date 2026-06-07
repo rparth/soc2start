@@ -13,7 +13,7 @@
 // PERFORMANCE OF THIS SOFTWARE.
 
 import { useTranslate } from "@probo/i18n";
-import { Table, Tbody, Td, Th, Thead, Tr } from "@probo/ui";
+import { EmptyState, IconPageTextLine, Table, Tbody, Th, Thead, Tr } from "@probo/ui";
 import { useFragment } from "react-relay";
 import { graphql } from "relay-runtime";
 
@@ -46,6 +46,16 @@ export function CompliancePageDocumentList(props: { fragmentRef: CompliancePageD
   const { compliancePage, documents } = useFragment<CompliancePageDocumentListFragment$key>(fragment, fragmentRef);
   const publishedDocuments = documents.edges.filter(({ node }) => node.currentPublishedMajor != null);
 
+  if (publishedDocuments.length === 0) {
+    return (
+      <EmptyState
+        icon={<IconPageTextLine size={32} />}
+        title={__("No documents available")}
+        description={__("Published compliance documents like policies and procedures will appear here. Publish a document to make it available on your trust center.")}
+      />
+    );
+  }
+
   return (
     <div className="space-y-[10px]">
       <Table>
@@ -57,13 +67,6 @@ export function CompliancePageDocumentList(props: { fragmentRef: CompliancePageD
           </Tr>
         </Thead>
         <Tbody>
-          {publishedDocuments.length === 0 && (
-            <Tr>
-              <Td colSpan={3} className="text-center text-txt-secondary">
-                {__("No documents available")}
-              </Td>
-            </Tr>
-          )}
           {publishedDocuments.map(({ node: document }) => (
             <CompliancePageDocumentListItem
               key={document.id}

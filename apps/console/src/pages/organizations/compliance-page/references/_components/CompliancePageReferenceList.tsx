@@ -13,7 +13,7 @@
 // PERFORMANCE OF THIS SOFTWARE.
 
 import { useTranslate } from "@probo/i18n";
-import { Table, Tbody, Td, Th, Thead, Tr } from "@probo/ui";
+import { EmptyState, IconGroup1, Table, Tbody, Th, Thead, Tr } from "@probo/ui";
 import { useState } from "react";
 import { useRefetchableFragment } from "react-relay";
 import { graphql } from "relay-runtime";
@@ -105,6 +105,16 @@ export function CompliancePageReferenceList(props: {
     setDragOverIndex(null);
   };
 
+  if (references.edges.length === 0) {
+    return (
+      <EmptyState
+        icon={<IconGroup1 size={32} />}
+        title={__("No references available")}
+        description={__("Add customer or partner references to showcase on your trust center. References help prospective customers validate your compliance posture.")}
+      />
+    );
+  }
+
   return (
     <>
       <Table>
@@ -116,13 +126,6 @@ export function CompliancePageReferenceList(props: {
           </Tr>
         </Thead>
         <Tbody>
-          {references.edges.length === 0 && (
-            <Tr>
-              <Td colSpan={3} className="text-center text-txt-secondary">
-                {__("No references available")}
-              </Td>
-            </Tr>
-          )}
           {references.edges.map(({ node: reference }, index: number) => (
             <CompliancePageReferenceListItem
               key={reference.id}

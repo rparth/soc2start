@@ -13,7 +13,7 @@
 // PERFORMANCE OF THIS SOFTWARE.
 
 import { useTranslate } from "@probo/i18n";
-import { Table, Tbody, Td, Th, Thead, Tr } from "@probo/ui";
+import { EmptyState, IconMedal, Table, Tbody, Th, Thead, Tr } from "@probo/ui";
 import { useFragment } from "react-relay";
 import { graphql } from "relay-runtime";
 
@@ -44,6 +44,16 @@ export function CompliancePageAuditList(props: { fragmentRef: CompliancePageAudi
 
   const { audits, compliancePage } = useFragment<CompliancePageAuditListFragment$key>(fragment, fragmentRef);
 
+  if (audits.edges.length === 0) {
+    return (
+      <EmptyState
+        icon={<IconMedal size={32} />}
+        title={__("No audits available")}
+        description={__("Display your compliance certifications and audit reports on your trust center. Add audits to build confidence with prospective customers.")}
+      />
+    );
+  }
+
   return (
     <div className="space-y-[10px]">
       <Table>
@@ -57,13 +67,6 @@ export function CompliancePageAuditList(props: { fragmentRef: CompliancePageAudi
           </Tr>
         </Thead>
         <Tbody>
-          {audits.edges.length === 0 && (
-            <Tr>
-              <Td colSpan={6} className="text-center text-txt-secondary">
-                {__("No audits available")}
-              </Td>
-            </Tr>
-          )}
           {audits.edges.map(({ node: audit }) => (
             <CompliancePageAuditListItem
               key={audit.id}

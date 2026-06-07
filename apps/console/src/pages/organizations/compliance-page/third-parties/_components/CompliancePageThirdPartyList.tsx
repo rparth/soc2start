@@ -13,7 +13,7 @@
 // PERFORMANCE OF THIS SOFTWARE.
 
 import { useTranslate } from "@probo/i18n";
-import { Table, Tbody, Td, Th, Thead, Tr } from "@probo/ui";
+import { EmptyState, IconStore, Table, Tbody, Th, Thead, Tr } from "@probo/ui";
 import { useFragment } from "react-relay";
 import { graphql } from "relay-runtime";
 
@@ -41,6 +41,16 @@ export function CompliancePageThirdPartyList(props: { fragmentRef: CompliancePag
 
   const { thirdParties } = useFragment<CompliancePageThirdPartyListFragment$key>(fragment, fragmentRef);
 
+  if (thirdParties.edges.length === 0) {
+    return (
+      <EmptyState
+        icon={<IconStore size={32} />}
+        title={__("No subprocessors available")}
+        description={__("List the third-party subprocessors that handle data on your behalf. This helps customers understand your data processing chain.")}
+      />
+    );
+  }
+
   return (
     <div className="space-y-[10px]">
       <Table>
@@ -53,13 +63,6 @@ export function CompliancePageThirdPartyList(props: { fragmentRef: CompliancePag
           </Tr>
         </Thead>
         <Tbody>
-          {thirdParties.edges.length === 0 && (
-            <Tr>
-              <Td colSpan={4} className="text-center text-txt-secondary">
-                {__("No subprocessors available")}
-              </Td>
-            </Tr>
-          )}
           {thirdParties.edges.map(({ node: thirdParty }) => (
             <CompliancePageThirdPartyListItem
               key={thirdParty.id}
