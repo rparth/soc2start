@@ -124,6 +124,7 @@ type (
 		CustomDomains                         *CustomDomainService
 		SlackMessages                         *slack.Service
 		MonitoringReports                     *MonitoringReportService
+		Devices                               *DeviceService
 	}
 )
 
@@ -275,6 +276,7 @@ func NewService(
 			),
 		),
 	}
+	svc.Devices = &DeviceService{svc: svc}
 
 	return svc, nil
 }

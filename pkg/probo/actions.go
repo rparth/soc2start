@@ -490,4 +490,10 @@ const (
 	ActionMonitoringReportList   = "core:monitoring-report:list"
 	ActionMonitoringReportCreate = "core:monitoring-report:create"
 	ActionMonitoringReportDelete = "core:monitoring-report:delete"
+
+	// Device actions
+	ActionDeviceGet    = "core:device:get"
+	ActionDeviceList   = "core:device:list"
+	ActionDeviceCreate = "core:device:create"
+	ActionDeviceDelete = "core:device:delete"
 )

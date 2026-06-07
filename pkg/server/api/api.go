@@ -38,6 +38,7 @@ import (
 	"go.probo.inc/probo/pkg/probo"
 	"go.probo.inc/probo/pkg/riskmanagement"
 	"go.probo.inc/probo/pkg/securecookie"
+	agent_v1 "go.probo.inc/probo/pkg/server/api/agent/v1"
 	connect_v1 "go.probo.inc/probo/pkg/server/api/connect/v1"
 	console_v1 "go.probo.inc/probo/pkg/server/api/console/v1"
 	cookiebanner_v1 "go.probo.inc/probo/pkg/server/api/cookiebanner/v1"
@@ -83,6 +84,7 @@ type (
 	Server struct {
 		cfg                   Config
 		csrf                  *http.CrossOriginProtection
+		agentHandler          http.Handler
 		compliancePageHandler http.Handler
 		consoleHandler        http.Handler
 		cookieBannerHandler   http.Handler
@@ -153,6 +155,9 @@ func NewServer(cfg Config) (*Server, error) {
 	// POST explicitly since it comes from customer origins.
 	csrf.AddInsecureBypassPattern("POST /cookie-banner/v1/{rest...}")
 
+	// Device agent API uses Bearer token auth, not browser sessions.
+	csrf.AddInsecureBypassPattern("POST /agent/v1/{rest...}")
+
 	// OAuth2 token, introspection, revocation, and device authorization
 	// endpoints receive cross-origin POSTs from external clients.
 	csrf.AddInsecureBypassPattern("POST /connect/v1/oauth2/token")
@@ -173,6 +178,10 @@ func NewServer(cfg Config) (*Server, error) {
 	return &Server{
 		cfg:  cfg,
 		csrf: csrf,
+		agentHandler: agent_v1.NewMux(
+			cfg.Logger.Named("agent.v1"),
+			cfg.Probo.Devices,
+		),
 		compliancePageHandler: trust_v1.NewMux(
 			cfg.Logger.Named("trust.v1"),
 			cfg.IAM,
@@ -273,6 +282,11 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	router := chi.NewRouter()
 	router.MethodNotAllowed(methodNotAllowed)
 	router.NotFound(notFound)
+
+	// Device agent API receives machine-to-machine POSTs using Bearer
+	// token auth. Mount outside the CORS handler since agents are not
+	// browser clients.
+	router.Mount("/agent/v1", http.StripPrefix("/agent/v1", s.agentHandler))
 
 	// Cookie banner has its own per-banner CORS middleware; mount it
 	// outside the global CORS handler so OPTIONS preflights from

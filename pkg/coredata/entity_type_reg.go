@@ -125,6 +125,8 @@ const (
 	RiskAssessmentScopeEntityType                  uint16 = 99
 	RiskAssessmentScenarioEntityType               uint16 = 100
 	MonitoringReportEntityType                     uint16 = 101
+	DeviceEntityType                               uint16 = 102
+	DevicePostureCheckEntityType                   uint16 = 103
 )
 
 func NewEntityFromID(id gid.GID) (any, bool) {
@@ -315,6 +317,10 @@ func NewEntityFromID(id gid.GID) (any, bool) {
 		return &RiskAssessmentScenario{ID: id}, true
 	case MonitoringReportEntityType:
 		return &MonitoringReport{ID: id}, true
+	case DeviceEntityType:
+		return &Device{ID: id}, true
+	case DevicePostureCheckEntityType:
+		return &DevicePostureCheck{ID: id}, true
 	default:
 		return nil, false
 	}
