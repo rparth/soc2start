@@ -20,8 +20,10 @@ import {
   Avatar,
   Button,
   DropdownItem,
+  EmptyState,
   IconPageTextLine,
   IconPlusLarge,
+  IconStore,
   IconTrashCan,
   IconUpload,
   PageHeader,
@@ -158,28 +160,38 @@ export default function ThirdPartiesPage(props: Props) {
           {__("All")}
         </TabItem>
       </Tabs>
-      <SortableTable {...pagination}>
-        <Thead>
-          <Tr>
-            <SortableTh field="NAME">{__("Third party")}</SortableTh>
-            <Th>{__("Accessed At")}</Th>
-            <Th>{__("Data Risk")}</Th>
-            <Th>{__("Business Risk")}</Th>
-            {hasAnyAction && <Th></Th>}
-          </Tr>
-        </Thead>
-        <Tbody>
-          {thirdParties?.map(thirdParty => (
-            <ThirdPartyRow
-              key={thirdParty.id}
-              thirdParty={thirdParty}
-              organizationId={organizationId}
-              connectionId={connectionId}
-              hasAnyAction={hasAnyAction}
+      {thirdParties.length === 0
+        ? (
+            <EmptyState
+              icon={<IconStore size={32} />}
+              title={__("No third parties yet")}
+              description={__("Track external vendors and service providers your organization relies on. Add your first third party to manage vendor risk.")}
             />
-          ))}
-        </Tbody>
-      </SortableTable>
+          )
+        : (
+            <SortableTable {...pagination}>
+              <Thead>
+                <Tr>
+                  <SortableTh field="NAME">{__("Third party")}</SortableTh>
+                  <Th>{__("Accessed At")}</Th>
+                  <Th>{__("Data Risk")}</Th>
+                  <Th>{__("Business Risk")}</Th>
+                  {hasAnyAction && <Th></Th>}
+                </Tr>
+              </Thead>
+              <Tbody>
+                {thirdParties?.map(thirdParty => (
+                  <ThirdPartyRow
+                    key={thirdParty.id}
+                    thirdParty={thirdParty}
+                    organizationId={organizationId}
+                    connectionId={connectionId}
+                    hasAnyAction={hasAnyAction}
+                  />
+                ))}
+              </Tbody>
+            </SortableTable>
+          )}
     </div>
   );
 }

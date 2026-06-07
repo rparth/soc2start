@@ -18,11 +18,13 @@ import {
   ActionDropdown,
   Card,
   DropdownItem,
+  EmptyState,
   FileButton,
   FrameworkLogo,
   FrameworkSelector,
   IconFolderUpload,
   IconPencil,
+  IconShield,
   IconTrashCan,
   PageHeader,
   useDialogRef,
@@ -167,17 +169,27 @@ export default function FrameworksPage(props: Props) {
         )}
       </PageHeader>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {frameworks.map(framework => (
-          <FrameworkCard
-            organizationId={data.organization.id!}
-            connectionId={connectionId}
-            key={framework.id}
-            framework={framework}
-            hasAnyAction={hasAnyAction}
-          />
-        ))}
-      </div>
+      {frameworks.length === 0
+        ? (
+            <EmptyState
+              icon={<IconShield size={32} />}
+              title={__("No frameworks yet")}
+              description={__("Compliance frameworks define the controls your organization must implement. Import a standard framework like SOC 2 or ISO 27001 to get started.")}
+            />
+          )
+        : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {frameworks.map(framework => (
+                <FrameworkCard
+                  organizationId={data.organization.id!}
+                  connectionId={connectionId}
+                  key={framework.id}
+                  framework={framework}
+                  hasAnyAction={hasAnyAction}
+                />
+              ))}
+            </div>
+          )}
     </div>
   );
 }

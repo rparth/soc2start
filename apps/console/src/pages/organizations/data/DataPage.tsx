@@ -21,6 +21,8 @@ import {
   Badge,
   Button,
   DropdownItem,
+  EmptyState,
+  IconArchive,
   IconPageTextLine,
   IconPlusLarge,
   IconTrashCan,
@@ -186,27 +188,37 @@ export default function DataPage(props: Props) {
           )}
         </div>
       </PageHeader>
-      <SortableTable {...pagination} refetch={refetch} pageSize={10}>
-        <Thead>
-          <Tr>
-            <Th>{__("Name")}</Th>
-            <Th>{__("Classification")}</Th>
-            <Th>{__("Owner")}</Th>
-            <Th>{__("Third parties")}</Th>
-            {hasAnyAction && <Th></Th>}
-          </Tr>
-        </Thead>
-        <Tbody>
-          {dataEntries.map(entry => (
-            <DataRow
-              key={entry.id}
-              entry={entry}
-              connectionId={connectionId}
-              hasAnyAction={hasAnyAction}
+      {dataEntries.length === 0
+        ? (
+            <EmptyState
+              icon={<IconArchive size={32} />}
+              title={__("No data entries yet")}
+              description={__("Document the types of data your organization processes, their classification, and who has access. Add your first data entry to build your data inventory.")}
             />
-          ))}
-        </Tbody>
-      </SortableTable>
+          )
+        : (
+            <SortableTable {...pagination} refetch={refetch} pageSize={10}>
+              <Thead>
+                <Tr>
+                  <Th>{__("Name")}</Th>
+                  <Th>{__("Classification")}</Th>
+                  <Th>{__("Owner")}</Th>
+                  <Th>{__("Third parties")}</Th>
+                  {hasAnyAction && <Th></Th>}
+                </Tr>
+              </Thead>
+              <Tbody>
+                {dataEntries.map(entry => (
+                  <DataRow
+                    key={entry.id}
+                    entry={entry}
+                    connectionId={connectionId}
+                    hasAnyAction={hasAnyAction}
+                  />
+                ))}
+              </Tbody>
+            </SortableTable>
+          )}
     </div>
   );
 }

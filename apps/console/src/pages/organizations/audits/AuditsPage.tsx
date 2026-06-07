@@ -24,6 +24,8 @@ import {
   Badge,
   Button,
   DropdownItem,
+  EmptyState,
+  IconMedal,
   IconPlusLarge,
   IconTrashCan,
   IconUpload,
@@ -232,29 +234,39 @@ export default function AuditsPage(props: Props) {
           </CreateAuditDialog>
         )}
       </PageHeader>
-      <SortableTable {...pagination} pageSize={10}>
-        <Thead>
-          <Tr>
-            <Th>{__("Name")}</Th>
-            <Th>{__("Framework")}</Th>
-            <Th>{__("State")}</Th>
-            <Th>{__("Valid From")}</Th>
-            <Th>{__("Valid Until")}</Th>
-            <Th>{__("Report")}</Th>
-            {hasAnyAction && <Th></Th>}
-          </Tr>
-        </Thead>
-        <Tbody>
-          {audits.map(entry => (
-            <AuditRow
-              key={entry.id}
-              entry={entry}
-              connectionId={connectionId}
-              hasAnyAction={hasAnyAction}
+      {audits.length === 0
+        ? (
+            <EmptyState
+              icon={<IconMedal size={32} />}
+              title={__("No audits yet")}
+              description={__("Track your compliance audits, their progress, and certification status. Add your first audit to start managing your audit program.")}
             />
-          ))}
-        </Tbody>
-      </SortableTable>
+          )
+        : (
+            <SortableTable {...pagination} pageSize={10}>
+              <Thead>
+                <Tr>
+                  <Th>{__("Name")}</Th>
+                  <Th>{__("Framework")}</Th>
+                  <Th>{__("State")}</Th>
+                  <Th>{__("Valid From")}</Th>
+                  <Th>{__("Valid Until")}</Th>
+                  <Th>{__("Report")}</Th>
+                  {hasAnyAction && <Th></Th>}
+                </Tr>
+              </Thead>
+              <Tbody>
+                {audits.map(entry => (
+                  <AuditRow
+                    key={entry.id}
+                    entry={entry}
+                    connectionId={connectionId}
+                    hasAnyAction={hasAnyAction}
+                  />
+                ))}
+              </Tbody>
+            </SortableTable>
+          )}
       {canCreateAudit && (
         <CreateAuditDialog
           ref={dropDialogRef}

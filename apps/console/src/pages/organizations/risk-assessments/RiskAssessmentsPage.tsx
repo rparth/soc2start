@@ -16,6 +16,8 @@ import { formatDate } from "@probo/helpers";
 import { usePageTitle } from "@probo/hooks";
 import { useTranslate } from "@probo/i18n";
 import {
+  EmptyState,
+  IconFrame2,
   PageHeader,
   Tbody,
   Td,
@@ -139,31 +141,41 @@ export default function RiskAssessmentsPage({ queryRef }: RiskAssessmentsPagePro
         )}
       </PageHeader>
 
-      <SortableTable {...pagination} refetch={refetch}>
-        <Thead>
-          <Tr>
-            <SortableTh field="NAME">{__("Name")}</SortableTh>
-            <Th>{__("Description")}</Th>
-            <SortableTh field="CREATED_AT">{__("Created")}</SortableTh>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {riskAssessments.map(ra => (
-            <Tr
-              key={ra.id}
-              to={`/organizations/${organizationId}/risk-assessments/${ra.id}`}
-            >
-              <Td className="font-medium">{ra.name}</Td>
-              <Td className="text-txt-secondary truncate max-w-xs">
-                {ra.description || "—"}
-              </Td>
-              <Td className="text-txt-secondary">
-                {formatDate(ra.createdAt)}
-              </Td>
-            </Tr>
-          ))}
-        </Tbody>
-      </SortableTable>
+      {riskAssessments.length === 0
+        ? (
+            <EmptyState
+              icon={<IconFrame2 size={32} />}
+              title={__("No risk assessments yet")}
+              description={__("Evaluate and document risks across your organization with structured assessments. Add your first risk assessment to begin.")}
+            />
+          )
+        : (
+            <SortableTable {...pagination} refetch={refetch}>
+              <Thead>
+                <Tr>
+                  <SortableTh field="NAME">{__("Name")}</SortableTh>
+                  <Th>{__("Description")}</Th>
+                  <SortableTh field="CREATED_AT">{__("Created")}</SortableTh>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {riskAssessments.map(ra => (
+                  <Tr
+                    key={ra.id}
+                    to={`/organizations/${organizationId}/risk-assessments/${ra.id}`}
+                  >
+                    <Td className="font-medium">{ra.name}</Td>
+                    <Td className="text-txt-secondary truncate max-w-xs">
+                      {ra.description || "—"}
+                    </Td>
+                    <Td className="text-txt-secondary">
+                      {formatDate(ra.createdAt)}
+                    </Td>
+                  </Tr>
+                ))}
+              </Tbody>
+            </SortableTable>
+          )}
     </div>
   );
 }

@@ -16,9 +16,11 @@ import { usePageTitle } from "@probo/hooks";
 import { useTranslate } from "@probo/i18n";
 import {
   Button,
+  EmptyState,
   IconPageTextLine,
   IconPlusLarge,
   IconUpload,
+  IconWarning,
   PageHeader,
   RisksChart,
   Tbody,
@@ -227,33 +229,43 @@ export default function RisksPage(props: RisksPageProps) {
           risks={chartRisks}
         />
       </div>
-      <SortableTable {...pagination} refetch={refetch}>
-        <Thead>
-          <Tr>
-            <SortableTh field="NAME">{__("Risk name")}</SortableTh>
-            <SortableTh field="CATEGORY">{__("Category")}</SortableTh>
-            <SortableTh field="TREATMENT">{__("Treatment")}</SortableTh>
-            <SortableTh field="INHERENT_RISK_SCORE">
-              {__("Initial Risk")}
-            </SortableTh>
-            <SortableTh field="RESIDUAL_RISK_SCORE">
-              {__("Residual Risk")}
-            </SortableTh>
-            <SortableTh field="OWNER_FULL_NAME">{__("Owner")}</SortableTh>
-            {hasAnyAction && <Th></Th>}
-          </Tr>
-        </Thead>
-        <Tbody>
-          {risks.map(risk => (
-            <RiskRow
-              key={risk.id}
-              riskKey={risk}
-              connectionId={connectionId}
-              hasAnyAction={hasAnyAction}
+      {risks.length === 0
+        ? (
+            <EmptyState
+              icon={<IconWarning size={32} />}
+              title={__("No risks yet")}
+              description={__("Identify and track risks to your organization. Add your first risk to start building your risk register.")}
             />
-          ))}
-        </Tbody>
-      </SortableTable>
+          )
+        : (
+            <SortableTable {...pagination} refetch={refetch}>
+              <Thead>
+                <Tr>
+                  <SortableTh field="NAME">{__("Risk name")}</SortableTh>
+                  <SortableTh field="CATEGORY">{__("Category")}</SortableTh>
+                  <SortableTh field="TREATMENT">{__("Treatment")}</SortableTh>
+                  <SortableTh field="INHERENT_RISK_SCORE">
+                    {__("Initial Risk")}
+                  </SortableTh>
+                  <SortableTh field="RESIDUAL_RISK_SCORE">
+                    {__("Residual Risk")}
+                  </SortableTh>
+                  <SortableTh field="OWNER_FULL_NAME">{__("Owner")}</SortableTh>
+                  {hasAnyAction && <Th></Th>}
+                </Tr>
+              </Thead>
+              <Tbody>
+                {risks.map(risk => (
+                  <RiskRow
+                    key={risk.id}
+                    riskKey={risk}
+                    connectionId={connectionId}
+                    hasAnyAction={hasAnyAction}
+                  />
+                ))}
+              </Tbody>
+            </SortableTable>
+          )}
     </div>
   );
 }

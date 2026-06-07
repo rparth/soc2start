@@ -16,6 +16,8 @@ import { usePageTitle } from "@probo/hooks";
 import { useTranslate } from "@probo/i18n";
 import {
   Button,
+  EmptyState,
+  IconBox,
   IconPageTextLine,
   IconPlusLarge,
   IconUpload,
@@ -166,17 +168,25 @@ export default function AssetsPage(props: Props) {
           )}
         </div>
       </PageHeader>
-      {!canWrite
+      {assets.length === 0
         ? (
-            <ReadOnlyAssetsTable pagination={pagination} assets={assets} />
-          )
-        : (
-            <AssetsTable
-              connectionId={connectionId}
-              pagination={pagination}
-              assets={assets}
+            <EmptyState
+              icon={<IconBox size={32} />}
+              title={__("No assets yet")}
+              description={__("Track the systems, applications, and infrastructure your organization relies on. Add your first asset to build your asset inventory.")}
             />
-          )}
+          )
+        : !canWrite
+          ? (
+              <ReadOnlyAssetsTable pagination={pagination} assets={assets} />
+            )
+          : (
+              <AssetsTable
+                connectionId={connectionId}
+                pagination={pagination}
+                assets={assets}
+              />
+            )}
     </div>
   );
 }
