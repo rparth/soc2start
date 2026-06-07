@@ -29,6 +29,7 @@ export * from "./Atoms/Icons";
 export { Logo } from "./Atoms/Logo/Logo";
 export { FrameworkLogo } from "./Atoms/FrameworkLogo/FrameworkLogo";
 export { SidebarItem } from "./Atoms/Sidebar/SidebarItem";
+export { SidebarSection } from "./Atoms/Sidebar/SidebarSection";
 export { Button } from "./Atoms/Button/Button";
 export { Card } from "./Atoms/Card/Card";
 export { Breadcrumb } from "./Atoms/Breadcrumb/Breadcrumb";
