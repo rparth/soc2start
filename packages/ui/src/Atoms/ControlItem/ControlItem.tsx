@@ -26,7 +26,7 @@ type Props = {
 const classNames = tv({
   slots: {
     wrapper: "block p-4 space-y-[6px] rounded-xl cursor-pointer text-start transition-colors duration-150",
-    id: "px-[6px] py-[2px] text-base font-medium border border-border-low rounded-lg w-max",
+    id: "px-[6px] py-[2px] text-base font-medium border border-border-low rounded-lg w-max max-w-full",
     description: "text-sm text-txt-tertiary line-clamp-3",
   },
   variants: {

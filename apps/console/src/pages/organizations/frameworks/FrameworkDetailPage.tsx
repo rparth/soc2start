@@ -198,7 +198,7 @@ export default function FrameworkDetailPage(props: Props) {
       </div>
       <div className="divide-x divide-border-low grid grid-cols-[264px_1fr]">
         <div
-          className="space-y-1 overflow-y-auto pr-6 mr-6 sticky top-0"
+          className="space-y-1 overflow-y-auto overflow-x-hidden pr-6 mr-6 sticky top-0 min-w-0"
           style={{ maxHeight: "calc(100dvh - 48px)" }}
         >
           {controls.map(control => (

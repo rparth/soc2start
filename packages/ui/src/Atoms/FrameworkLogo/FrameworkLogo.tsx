@@ -13,6 +13,7 @@
 // PERFORMANCE OF THIS SOFTWARE.
 
 import { clsx } from "clsx";
+import { useState } from "react";
 
 import { Avatar } from "../Avatar/Avatar";
 
@@ -25,27 +26,30 @@ interface FrameworkLogoProps {
 
 export function FrameworkLogo(props: FrameworkLogoProps) {
   const { className, lightLogoURL, darkLogoURL, name } = props;
+  const [hasError, setHasError] = useState(false);
 
-  return lightLogoURL || darkLogoURL
-    ? (
-        <>
-          {lightLogoURL && (
-            <img
-              src={lightLogoURL}
-              className={clsx("size-12 block dark:hidden", className)}
-              alt={name}
-            />
-          )}
-          {darkLogoURL && (
-            <img
-              src={darkLogoURL}
-              className={clsx("size-12 hidden dark:block", className)}
-              alt={name}
-            />
-          )}
-        </>
-      )
-    : (
-        <Avatar name={name} size="l" className={clsx("size-12", className)} />
-      );
+  if (hasError || (!lightLogoURL && !darkLogoURL)) {
+    return <Avatar name={name} size="l" className={clsx("size-12", className)} />;
+  }
+
+  return (
+    <>
+      {lightLogoURL && (
+        <img
+          src={lightLogoURL}
+          className={clsx("size-12 block dark:hidden", className)}
+          alt={name}
+          onError={() => setHasError(true)}
+        />
+      )}
+      {darkLogoURL && (
+        <img
+          src={darkLogoURL}
+          className={clsx("size-12 hidden dark:block", className)}
+          alt={name}
+          onError={() => setHasError(true)}
+        />
+      )}
+    </>
+  );
 }
