@@ -1,0 +1,127 @@
+enum DeviceStatus
+    @goModel(model: "go.probo.inc/probo/pkg/coredata.DeviceStatus") {
+    ONLINE
+        @goEnum(value: "go.probo.inc/probo/pkg/coredata.DeviceStatusOnline")
+    OFFLINE
+        @goEnum(value: "go.probo.inc/probo/pkg/coredata.DeviceStatusOffline")
+    REVOKED
+        @goEnum(value: "go.probo.inc/probo/pkg/coredata.DeviceStatusRevoked")
+}
+
+enum PostureCheckStatus
+    @goModel(
+        model: "go.probo.inc/probo/pkg/coredata.PostureCheckStatus"
+    ) {
+    PASS
+        @goEnum(
+            value: "go.probo.inc/probo/pkg/coredata.PostureCheckStatusPass"
+        )
+    FAIL
+        @goEnum(
+            value: "go.probo.inc/probo/pkg/coredata.PostureCheckStatusFail"
+        )
+    UNKNOWN
+        @goEnum(
+            value: "go.probo.inc/probo/pkg/coredata.PostureCheckStatusUnknown"
+        )
+    NOT_APPLICABLE
+        @goEnum(
+            value: "go.probo.inc/probo/pkg/coredata.PostureCheckStatusNotApplicable"
+        )
+}
+
+type Device implements Node {
+    id: ID!
+    organization: Organization @goField(forceResolver: true)
+    owner: Profile @goField(forceResolver: true)
+    hostname: String!
+    platform: String!
+    osVersion: String!
+    agentVersion: String!
+    status: DeviceStatus!
+    lastHeartbeatAt: Datetime
+    enrolledAt: Datetime!
+    createdAt: Datetime!
+    updatedAt: Datetime!
+    postureChecks: [DevicePostureCheck!]! @goField(forceResolver: true)
+    postureSummary: DevicePostureSummary! @goField(forceResolver: true)
+    permission(action: String!): Boolean! @goField(forceResolver: true)
+}
+
+type DevicePostureCheck {
+    id: ID!
+    checkKey: String!
+    status: PostureCheckStatus!
+    evidence: String!
+    observedAt: Datetime!
+}
+
+type DevicePostureSummary {
+    total: Int!
+    pass: Int!
+    fail: Int!
+    unknown: Int!
+}
+
+type DeviceConnection
+    @goModel(
+        model: "go.probo.inc/probo/pkg/server/api/console/v1/types.DeviceConnection"
+    ) {
+    totalCount: Int! @goField(forceResolver: true)
+    edges: [DeviceEdge!]!
+    pageInfo: PageInfo!
+}
+
+type DeviceEdge
+    @goModel(
+        model: "go.probo.inc/probo/pkg/server/api/console/v1/types.DeviceEdge"
+    ) {
+    cursor: CursorKey!
+    node: Device!
+}
+
+input DeviceOrder
+    @goModel(
+        model: "go.probo.inc/probo/pkg/server/api/console/v1/types.DeviceOrder"
+    ) {
+    field: DeviceOrderField!
+    direction: OrderDirection!
+}
+
+enum DeviceOrderField
+    @goModel(
+        model: "go.probo.inc/probo/pkg/coredata.DeviceOrderField"
+    ) {
+    ENROLLED_AT
+    HOSTNAME
+}
+
+input DeviceFilter
+    @goModel(
+        model: "go.probo.inc/probo/pkg/server/api/console/v1/types.DeviceFilter"
+    ) {
+    status: DeviceStatus
+}
+
+input GenerateDeviceEnrollmentTokenInput {
+    organizationId: ID!
+}
+
+type GenerateDeviceEnrollmentTokenPayload {
+    enrollmentToken: String!
+}
+
+input DeleteDeviceInput {
+    deviceId: ID!
+}
+
+type DeleteDevicePayload {
+    deletedDeviceId: ID!
+}
+
+extend type Mutation {
+    generateDeviceEnrollmentToken(
+        input: GenerateDeviceEnrollmentTokenInput!
+    ): GenerateDeviceEnrollmentTokenPayload
+    deleteDevice(input: DeleteDeviceInput!): DeleteDevicePayload
+}

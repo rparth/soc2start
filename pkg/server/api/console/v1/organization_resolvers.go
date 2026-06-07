@@ -1419,6 +1419,43 @@ func (r *organizationResolver) MonitoringReports(ctx context.Context, obj *types
 	return types.NewMonitoringReportConnection(p, r, obj.ID, filter), nil
 }
 
+// Devices is the resolver for the devices field.
+func (r *organizationResolver) Devices(ctx context.Context, obj *types.Organization, first *int, after *page.CursorKey, last *int, before *page.CursorKey, orderBy *types.DeviceOrder, filter *types.DeviceFilter) (*types.DeviceConnection, error) {
+	scope, err := r.authorize(ctx, obj.ID, probo.ActionDeviceList)
+	if err != nil {
+		return nil, err
+	}
+
+	pageOrderBy := page.OrderBy[coredata.DeviceOrderField]{
+		Field:     coredata.DeviceOrderFieldEnrolledAt,
+		Direction: page.OrderDirectionDesc,
+	}
+
+	if orderBy != nil {
+		pageOrderBy = page.OrderBy[coredata.DeviceOrderField]{
+			Field:     orderBy.Field,
+			Direction: orderBy.Direction,
+		}
+	}
+
+	cursor := types.NewCursor(first, after, last, before, pageOrderBy)
+
+	var status *coredata.DeviceStatus
+	if filter != nil {
+		status = filter.Status
+	}
+
+	deviceFilter := coredata.NewDeviceFilter(status, nil)
+
+	p, err := r.probo.Devices.ListForOrganizationID(ctx, scope, obj.ID, cursor, deviceFilter)
+	if err != nil {
+		r.logger.ErrorCtx(ctx, "cannot list devices", log.Error(err))
+		return nil, gqlutils.Internal(ctx)
+	}
+
+	return types.NewDeviceConnection(p, r, obj.ID, filter), nil
+}
+
 // Permission is the resolver for the permission field.
 func (r *organizationResolver) Permission(ctx context.Context, obj *types.Organization, action string) (bool, error) {
 	return r.Resolver.Permission(ctx, obj, action)

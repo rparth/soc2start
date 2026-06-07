@@ -58,4 +58,24 @@ export const monitoringRoutes = [
         ),
     ),
   },
+  {
+    path: "monitoring/devices",
+    Fallback: PageSkeleton,
+    Component: lazy(
+      () =>
+        import(
+          "#/pages/organizations/monitoring/DevicePosturePageLoader"
+        ),
+    ),
+  },
+  {
+    path: "monitoring/devices/:deviceId",
+    Fallback: PageSkeleton,
+    Component: lazy(
+      () =>
+        import(
+          "#/pages/organizations/monitoring/DevicePostureDetailPageLoader"
+        ),
+    ),
+  },
 ] satisfies AppRoute[];

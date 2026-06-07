@@ -96,6 +96,8 @@ var ViewerPolicy = policy.NewPolicy(
 		ActionRiskAssessmentProcessGet, ActionRiskAssessmentProcessList,
 		ActionRiskAssessmentThreatGet, ActionRiskAssessmentThreatList,
 		ActionRiskAssessmentScenarioGet, ActionRiskAssessmentScenarioList,
+		ActionMonitoringReportGet, ActionMonitoringReportList,
+		ActionDeviceGet, ActionDeviceList,
 	).WithSID("entity-read-access").When(organizationCondition),
 
 	policy.Allow(
@@ -170,6 +172,8 @@ var AuditorPolicy = policy.NewPolicy(
 		ActionRiskAssessmentProcessGet, ActionRiskAssessmentProcessList,
 		ActionRiskAssessmentThreatGet, ActionRiskAssessmentThreatList,
 		ActionRiskAssessmentScenarioGet, ActionRiskAssessmentScenarioList,
+		ActionMonitoringReportGet, ActionMonitoringReportList,
+		ActionDeviceGet, ActionDeviceList,
 	).WithSID("entity-read-access").When(organizationCondition),
 
 	policy.Allow(
@@ -218,6 +222,10 @@ var EmployeePolicy = policy.NewPolicy(
 		ActionDocumentVersionApprove,
 		ActionDocumentVersionReject,
 	).WithSID("document-version-approval").When(organizationCondition),
+
+	policy.Allow(
+		ActionDeviceGet, ActionDeviceList,
+	).WithSID("device-read-access").When(organizationCondition),
 ).WithDescription("Employee access - can sign documents, approve documents, and view internal content")
 
 // ProboPolicySet returns the PolicySet for the probo service.

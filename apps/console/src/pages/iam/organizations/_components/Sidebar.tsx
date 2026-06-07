@@ -19,6 +19,7 @@ import {
   IconBell2,
   IconBook,
   IconBox,
+  IconCircleCheck,
   IconCircleProgress,
   IconFire3,
   IconGroup1,
@@ -76,6 +77,7 @@ const fragment = graphql`
         canListMonitoringReports: permission(
             action: "core:monitoring-report:list"
         )
+        canListDevices: permission(action: "core:device:list")
     }
 `;
 
@@ -258,25 +260,38 @@ export function Sidebar(props: { fKey: SidebarFragment$key }) {
         )}
       </SidebarSection>
 
-      {organization.canListMonitoringReports && (
+      {(organization.canListMonitoringReports ||
+        organization.canListDevices) && (
         <SidebarSection
           icon={IconBell2}
           label={__("Monitoring")}
           basePaths={[
             `${prefix}/monitoring/prowler`,
             `${prefix}/monitoring/pentesting`,
+            `${prefix}/monitoring/devices`,
           ]}
         >
-          <SidebarItem
-            label={__("Prowler")}
-            icon={IconShield}
-            to={`${prefix}/monitoring/prowler`}
-          />
-          <SidebarItem
-            label={__("Pentesting")}
-            icon={IconMagnifyingGlass}
-            to={`${prefix}/monitoring/pentesting`}
-          />
+          {organization.canListMonitoringReports && (
+            <>
+              <SidebarItem
+                label={__("Prowler")}
+                icon={IconShield}
+                to={`${prefix}/monitoring/prowler`}
+              />
+              <SidebarItem
+                label={__("Pentesting")}
+                icon={IconMagnifyingGlass}
+                to={`${prefix}/monitoring/pentesting`}
+              />
+            </>
+          )}
+          {organization.canListDevices && (
+            <SidebarItem
+              label={__("Device Posture")}
+              icon={IconCircleCheck}
+              to={`${prefix}/monitoring/devices`}
+            />
+          )}
         </SidebarSection>
       )}
 
