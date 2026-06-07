@@ -18,6 +18,7 @@ import (
 	"context"
 	"crypto/rand"
 	"crypto/sha256"
+	"encoding/base64"
 	"encoding/hex"
 	"encoding/json"
 	"fmt"
@@ -54,7 +55,9 @@ func (s *DeviceService) GenerateEnrollmentToken(
 		return "", fmt.Errorf("cannot marshal enrollment claims: %w", err)
 	}
 
-	token, err := securetoken.Sign(string(payload), s.svc.tokenSecret)
+	encoded := base64.RawURLEncoding.EncodeToString(payload)
+
+	token, err := securetoken.Sign(encoded, s.svc.tokenSecret)
 	if err != nil {
 		return "", fmt.Errorf("cannot sign enrollment token: %w", err)
 	}
@@ -63,13 +66,18 @@ func (s *DeviceService) GenerateEnrollmentToken(
 }
 
 func (s *DeviceService) parseEnrollmentToken(token string) (*EnrollmentTokenClaims, error) {
-	payload, err := securetoken.Verify(token, s.svc.tokenSecret)
+	encoded, err := securetoken.Verify(token, s.svc.tokenSecret)
 	if err != nil {
 		return nil, fmt.Errorf("invalid enrollment token: %w", err)
 	}
 
+	payload, err := base64.RawURLEncoding.DecodeString(encoded)
+	if err != nil {
+		return nil, fmt.Errorf("cannot decode enrollment token payload: %w", err)
+	}
+
 	var claims EnrollmentTokenClaims
-	if err := json.Unmarshal([]byte(payload), &claims); err != nil {
+	if err := json.Unmarshal(payload, &claims); err != nil {
 		return nil, fmt.Errorf("cannot parse enrollment claims: %w", err)
 	}
 
