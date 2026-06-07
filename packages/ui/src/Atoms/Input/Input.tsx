@@ -30,7 +30,7 @@ export const input = tv({
   variants: {
     invalid: {
       true: "border-2 border-border-danger hover:border-border-danger",
-      false: "border-[1.5px] border-border-solid hover:border-border-strong focus:border-2 focus:border-border-accent focus:shadow-[0_0_0_3px_rgba(39,174,96,0.12)] focus:bg-[rgba(39,174,96,0.02)]",
+      false: "border-[1.5px] border-border-solid hover:border-border-strong focus:border-2 focus:border-border-accent focus:shadow-focus focus:bg-[rgba(39,174,96,0.02)]",
     },
     variant: {
       bordered:
