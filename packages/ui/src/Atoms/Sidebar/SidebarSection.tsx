@@ -15,7 +15,9 @@
 import { clsx } from "clsx";
 import {
   type FC,
+  forwardRef,
   type PropsWithChildren,
+  type RefObject,
   useCallback,
   useEffect,
   useRef,
@@ -61,6 +63,57 @@ const sectionHeader = tv({
     isHovered: false,
   },
 });
+
+type FlyoutProps = PropsWithChildren<{
+  show: boolean;
+  triggerRef: RefObject<HTMLButtonElement | null>;
+  label: string;
+}>;
+
+const FlyoutPanel = forwardRef<HTMLDivElement, FlyoutProps>(
+  function FlyoutPanel({ show, triggerRef, label, children }, ref) {
+    const [leftPx, setLeftPx] = useState(0);
+    const [visible, setVisible] = useState(false);
+    const [animateIn, setAnimateIn] = useState(false);
+
+    useEffect(() => {
+      if (show) {
+        if (triggerRef.current) {
+          const rect = triggerRef.current.getBoundingClientRect();
+          setLeftPx(rect.right + 4);
+        }
+        setVisible(true);
+        requestAnimationFrame(() => {
+          requestAnimationFrame(() => setAnimateIn(true));
+        });
+      } else {
+        setAnimateIn(false);
+        const timer = setTimeout(() => setVisible(false), 150);
+        return () => clearTimeout(timer);
+      }
+    }, [show, triggerRef]);
+
+    if (!visible) return null;
+
+    return (
+      <div
+        ref={ref}
+        className={clsx(
+          "fixed top-16 bottom-0 z-50 w-[220px] border-r border-border-solid bg-level-0 px-2 py-4 shadow-md transition-all duration-150 ease-out overflow-y-auto",
+          animateIn
+            ? "opacity-100 translate-x-0"
+            : "opacity-0 -translate-x-2",
+        )}
+        style={{ left: leftPx }}
+      >
+        <div className="px-3 py-1.5 text-xs font-medium text-txt-tertiary uppercase tracking-wider">
+          {label}
+        </div>
+        {children}
+      </div>
+    );
+  },
+);
 
 type Props = PropsWithChildren<{
   icon: FC<{ size: number }>;
@@ -112,7 +165,7 @@ export function SidebarSection({ icon: Icon, label, basePaths, children }: Props
 
   if (isCollapsed) {
     return (
-      <li className="relative">
+      <li>
         <button
           ref={triggerRef}
           type="button"
@@ -123,21 +176,18 @@ export function SidebarSection({ icon: Icon, label, basePaths, children }: Props
         >
           <Icon size={16} />
         </button>
-        {showFlyout && (
-          <div
-            ref={flyoutRef}
-            className="absolute left-full top-0 ml-1 z-50 min-w-[200px] rounded-lg border border-border-solid bg-level-0 p-2 shadow-md"
-          >
-            <div className="px-3 py-1.5 text-xs font-medium text-txt-tertiary uppercase tracking-wider">
-              {label}
-            </div>
-            <sidebarContext.Provider value={{ open: true }}>
-              <ul className="space-y-[2px]">
-                {children}
-              </ul>
-            </sidebarContext.Provider>
-          </div>
-        )}
+        <FlyoutPanel
+          ref={flyoutRef}
+          show={showFlyout}
+          triggerRef={triggerRef}
+          label={label}
+        >
+          <sidebarContext.Provider value={{ open: true }}>
+            <ul className="space-y-[2px]">
+              {children}
+            </ul>
+          </sidebarContext.Provider>
+        </FlyoutPanel>
       </li>
     );
   }
