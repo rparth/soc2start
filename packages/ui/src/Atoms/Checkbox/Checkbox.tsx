@@ -24,7 +24,7 @@ type Props = {
 };
 
 const checkbox = tv({
-  base: "size-4 border border-border-mid relative rounded-sm flex items-center justify-center",
+  base: "size-4 border border-border-mid relative rounded-sm flex items-center justify-center transition-all duration-150",
   variants: {
     isFocused: {
       true: "shadow shadow-focus",

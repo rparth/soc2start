@@ -29,7 +29,7 @@ type Props = PropsWithChildren<{
 }>;
 
 export const dropdown = tv({
-  base: "z-50 p-2 shadow-mid min-w-[8rem] bg-level-1 overflow-y-auto overflow-x-hidden rounded-2xl border-border-low",
+  base: "z-50 p-2 shadow-mid min-w-[8rem] bg-level-1 overflow-y-auto overflow-x-hidden rounded-2xl border border-border-low animate-in fade-in-0 zoom-in-95 duration-150",
 });
 
 export function Dropdown({ children, toggle, className, open, onOpenChange }: Props) {
@@ -71,7 +71,7 @@ type DropdownItemProps = PropsWithChildren<{
 & ComponentProps<typeof DropdownMenu.Item>;
 
 export const dropdownItem = tv({
-  base: "text-txt-primary flex items-center gap-2 hover:bg-tertiary-hover active:bg-tertiary-pressed data-active-item:bg-tertiary-pressed cursor-pointer p-2",
+  base: "text-txt-primary flex items-center gap-2 hover:bg-tertiary-hover active:bg-tertiary-pressed data-active-item:bg-tertiary-pressed cursor-pointer p-2 rounded-lg transition-colors duration-150",
   variants: {
     variant: {
       primary: "text-txt-primary",
