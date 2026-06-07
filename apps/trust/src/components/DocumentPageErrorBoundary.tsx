@@ -73,7 +73,7 @@ export function DocumentPageErrorBoundary() {
   }
 
   return (
-    <div className="flex flex-col h-screen bg-level-2">
+    <div className="flex flex-col h-dvh bg-level-2">
       <header className="flex items-center h-12 gap-3 border-b border-border-solid px-4 flex-none bg-level-1">
         <Link
           to="/documents"

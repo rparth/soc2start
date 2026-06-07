@@ -74,7 +74,7 @@ export function Layout({
   );
   return (
     <LayoutContext value={layoutContext}>
-      <div className="text-txt-primary bg-level-0 min-h-screen">
+      <div className="text-txt-primary bg-level-0 min-h-dvh">
         <header className="fixed top-0 z-20 left-0 right-0 px-3 lg:px-4 flex items-center border-b border-border-solid h-12 bg-level-0">
           {sidebar && (
             <button
@@ -124,7 +124,7 @@ export function Layout({
           </div>
         )}
 
-        <div className="flex min-h-screen" id="main">
+        <div className="flex min-h-dvh" id="main">
           {sidebar && (
             <div className="hidden lg:contents">
               <Sidebar>{sidebar}</Sidebar>
@@ -136,7 +136,7 @@ export function Layout({
               hasDrawer && "lg:pr-105",
             )}
           >
-            <div className="py-6 px-4 sm:px-6 lg:py-12 lg:px-8 max-w-[1200px] w-full mx-auto min-h-[calc(100vh-48px)]">
+            <div className="py-6 px-4 sm:px-6 lg:py-12 lg:px-8 max-w-[1200px] w-full mx-auto min-h-[calc(100dvh-48px)]">
               {children}
             </div>
           </main>
@@ -162,7 +162,7 @@ export function Drawer({
   return createPortal(
     <aside
       className={clsx(
-        "fixed pt-20 top-0 right-0 w-full sm:w-105 px-4 sm:px-6 pb-8 border-border-solid sm:border-l h-screen bg-level-0 z-10",
+        "fixed pt-20 top-0 right-0 w-full sm:w-105 px-4 sm:px-6 pb-8 border-border-solid sm:border-l h-dvh bg-level-0 z-10",
         className,
       )}
     >

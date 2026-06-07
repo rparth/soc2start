@@ -32,7 +32,7 @@ const errorLayout = tv({
   variants: {
     fullPage: {
       true: {
-        root: "min-h-screen",
+        root: "min-h-dvh",
       },
       false: {
         root: "py-12",

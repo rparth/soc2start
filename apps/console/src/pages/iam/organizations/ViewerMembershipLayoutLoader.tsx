@@ -46,11 +46,11 @@ function ViewerMembershipLayoutQueryLoader() {
   }, [organizationId, loadQuery]);
 
   if (!queryRef) {
-    return <Skeleton className="w-full h-screen" />;
+    return <Skeleton className="w-full h-dvh" />;
   }
 
   return (
-    <Suspense fallback={<Skeleton className="w-full h-screen" />}>
+    <Suspense fallback={<Skeleton className="w-full h-dvh" />}>
       <ViewerMembershipLayout queryRef={queryRef} />
     </Suspense>
   );

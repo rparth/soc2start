@@ -224,7 +224,7 @@ export function DialogContent({
       )}
       style={
         {
-          "--maxHeight": "min(640px, calc(100vh - 140px))",
+          "--maxHeight": "min(640px, calc(100dvh - 140px))",
           "maxHeight": "var(--maxHeight)",
         } as CSSProperties
       }

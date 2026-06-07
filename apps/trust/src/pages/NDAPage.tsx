@@ -230,7 +230,7 @@ export function NDAPage(props: {
       );
 
   return (
-    <div className="bg-level-2 flex flex-col min-h-screen lg:h-screen">
+    <div className="bg-level-2 flex flex-col min-h-dvh lg:h-dvh">
       <header className="flex items-center h-12 justify-between border-b border-border-solid px-4 flex-none">
         <Logo withPicto />
       </header>

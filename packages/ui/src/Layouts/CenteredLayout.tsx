@@ -19,7 +19,7 @@ import { Skeleton } from "../Atoms/Skeleton/Skeleton";
 
 export function CenteredLayout({ children }: PropsWithChildren) {
   return (
-    <div className="grid place-items-center min-h-[calc(100vh-48px-(2*48px))] text-txt-primary bg-level-0">
+    <div className="grid place-items-center min-h-[calc(100dvh-48px-(2*48px))] text-txt-primary bg-level-0">
       <div className="w-full max-w-2xl flex flex-col items-center">
         {children ?? <Outlet />}
       </div>
