@@ -14,6 +14,7 @@
 
 import { groupBy, objectEntries } from "@probo/helpers";
 import { useTranslate } from "@probo/i18n";
+import { EmptyState, IconPageTextLine } from "@probo/ui";
 import { Fragment } from "react";
 import { type PreloadedQuery, usePreloadedQuery } from "react-relay";
 
@@ -43,6 +44,23 @@ export function DocumentsPage({ queryRef }: Props) {
     documentTypeLabel(document.documentType, __),
   );
   const filesPerCategory = groupBy(files, file => file.category);
+
+  if (documents.length === 0 && files.length === 0) {
+    return (
+      <div>
+        <h2 className="font-medium mb-1">{__("Documents")}</h2>
+        <p className="text-sm text-txt-secondary mb-4">
+          {__("Security and compliance documentation:")}
+        </p>
+        <EmptyState
+          icon={<IconPageTextLine size={32} />}
+          title={__("No documents available yet")}
+          description={__("Compliance documents such as policies, procedures, and certifications will be published here.")}
+        />
+      </div>
+    );
+  }
+
   return (
     <div>
       <h2 className="font-medium mb-1">{__("Documents")}</h2>

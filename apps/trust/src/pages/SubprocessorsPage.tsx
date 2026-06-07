@@ -14,6 +14,7 @@
 
 import { sprintf } from "@probo/helpers";
 import { useTranslate } from "@probo/i18n";
+import { EmptyState, IconStore } from "@probo/ui";
 import { type PreloadedQuery, usePreloadedQuery } from "react-relay";
 
 import { Rows } from "#/components/Rows";
@@ -32,6 +33,25 @@ export function SubprocessorsPage({ queryRef }: Props) {
     = data.currentTrustCenter?.subprocessors.edges.map(edge => edge.node) ?? [];
 
   const hasAnyCountries = subprocessors.some(subprocessor => subprocessor.countries.length > 0);
+
+  if (subprocessors.length === 0) {
+    return (
+      <div>
+        <h2 className="font-medium mb-1">{__("Subprocessors")}</h2>
+        <p className="text-sm text-txt-secondary mb-4">
+          {sprintf(
+            __("Third-party subprocessors %s work with:"),
+            data.currentTrustCenter?.organization.name ?? "",
+          )}
+        </p>
+        <EmptyState
+          icon={<IconStore size={32} />}
+          title={__("No subprocessors listed yet")}
+          description={__("Information about third-party subprocessors will be published here once available.")}
+        />
+      </div>
+    );
+  }
 
   return (
     <div>
