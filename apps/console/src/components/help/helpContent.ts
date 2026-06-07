@@ -356,4 +356,42 @@ export const helpContent: Record<string, HelpContent> = {
       },
     ],
   },
+
+  prowler: {
+    title: "Prowler Reports",
+    subtitle: "Security monitoring",
+    description:
+      "Upload Prowler CSV scan reports to track your cloud security posture over time. Each report is parsed to extract pass/fail statistics by service and severity.",
+    sections: [
+      {
+        title: "Uploading reports",
+        content:
+          "Upload semicolon-delimited CSV files exported from Prowler. The system parses each report to extract summary statistics including pass/fail counts broken down by AWS service and finding severity.",
+      },
+      {
+        title: "Reviewing results",
+        content:
+          "Each uploaded report shows a summary tab with pass/fail breakdowns by severity and service, plus a raw data tab where you can search and paginate through individual findings.",
+      },
+    ],
+  },
+
+  pentesting: {
+    title: "Pentesting Reports",
+    subtitle: "Security monitoring",
+    description:
+      "Upload penetration testing reports to maintain a record of security assessments. Track findings over time and ensure remediation actions are completed.",
+    sections: [
+      {
+        title: "Uploading reports",
+        content:
+          "Upload CSV reports from penetration testing engagements. Reports are stored securely and parsed to provide summary statistics.",
+      },
+      {
+        title: "Tracking assessments",
+        content:
+          "Maintain a chronological record of all penetration tests. Review findings from each assessment to track your security posture improvements.",
+      },
+    ],
+  },
 };

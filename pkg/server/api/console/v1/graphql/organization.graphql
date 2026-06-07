@@ -348,6 +348,15 @@ type Organization implements Node {
         orderBy: WebhookSubscriptionOrder
     ): WebhookSubscriptionConnection! @goField(forceResolver: true)
 
+    monitoringReports(
+        first: Int
+        after: CursorKey
+        last: Int
+        before: CursorKey
+        orderBy: MonitoringReportOrder
+        filter: MonitoringReportFilter
+    ): MonitoringReportConnection! @goField(forceResolver: true)
+
     createdAt: Datetime!
     updatedAt: Datetime!
 

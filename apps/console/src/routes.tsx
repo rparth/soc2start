@@ -43,6 +43,7 @@ import { documentsRoutes } from "./routes/documentsRoutes";
 import { findingRoutes } from "./routes/findingRoutes";
 import { frameworkRoutes } from "./routes/frameworkRoutes";
 import { measureRoutes } from "./routes/measureRoutes";
+import { monitoringRoutes } from "./routes/monitoringRoutes";
 import { obligationRoutes } from "./routes/obligationRoutes";
 import { processingActivityRoutes } from "./routes/processingActivityRoutes";
 import { rightsRequestRoutes } from "./routes/rightsRequestRoutes";
@@ -308,6 +309,7 @@ const routes = [
           ...accessReviewRoutes,
           ...compliancePageRoutes,
           ...cookieBannerRoutes,
+          ...monitoringRoutes,
           {
             path: "*",
             Component: PageError,

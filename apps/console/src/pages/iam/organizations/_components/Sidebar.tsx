@@ -16,6 +16,7 @@ import { CookieIcon } from "@phosphor-icons/react";
 import { useTranslate } from "@probo/i18n";
 import {
   IconBank,
+  IconBell2,
   IconBook,
   IconBox,
   IconCircleProgress,
@@ -71,6 +72,9 @@ const fragment = graphql`
         )
         canListAccessReviewCampaigns: permission(
             action: "core:access-review-campaign:list"
+        )
+        canListMonitoringReports: permission(
+            action: "core:monitoring-report:list"
         )
     }
 `;
@@ -253,6 +257,28 @@ export function Sidebar(props: { fKey: SidebarFragment$key }) {
           />
         )}
       </SidebarSection>
+
+      {organization.canListMonitoringReports && (
+        <SidebarSection
+          icon={IconBell2}
+          label={__("Monitoring")}
+          basePaths={[
+            `${prefix}/monitoring/prowler`,
+            `${prefix}/monitoring/pentesting`,
+          ]}
+        >
+          <SidebarItem
+            label={__("Prowler")}
+            icon={IconShield}
+            to={`${prefix}/monitoring/prowler`}
+          />
+          <SidebarItem
+            label={__("Pentesting")}
+            icon={IconMagnifyingGlass}
+            to={`${prefix}/monitoring/pentesting`}
+          />
+        </SidebarSection>
+      )}
 
       {organization.canListAccessReviewCampaigns && (
         <SidebarItem

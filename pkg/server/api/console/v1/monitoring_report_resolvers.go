@@ -12,12 +12,11 @@ import (
 	"github.com/vikstrous/dataloadgen"
 	"go.gearno.de/kit/log"
 	"go.probo.inc/probo/pkg/coredata"
-	"go.probo.inc/probo/pkg/page"
 	"go.probo.inc/probo/pkg/probo"
+	"go.probo.inc/probo/pkg/server/api/authn"
 	"go.probo.inc/probo/pkg/server/api/console/v1/dataloader"
 	"go.probo.inc/probo/pkg/server/api/console/v1/schema"
 	"go.probo.inc/probo/pkg/server/api/console/v1/types"
-	"go.probo.inc/probo/pkg/server/api/authn"
 	"go.probo.inc/probo/pkg/server/gqlutils"
 )
 
@@ -171,43 +170,6 @@ func (r *mutationResolver) DeleteMonitoringReport(ctx context.Context, input typ
 	return &types.DeleteMonitoringReportPayload{
 		DeletedMonitoringReportID: input.MonitoringReportID,
 	}, nil
-}
-
-// MonitoringReports is the resolver for the monitoringReports field.
-func (r *organizationResolver) MonitoringReports(ctx context.Context, obj *types.Organization, first *int, after *page.CursorKey, last *int, before *page.CursorKey, orderBy *types.MonitoringReportOrder, filter *types.MonitoringReportFilter) (*types.MonitoringReportConnection, error) {
-	scope, err := r.authorize(ctx, obj.ID, probo.ActionMonitoringReportList)
-	if err != nil {
-		return nil, err
-	}
-
-	pageOrderBy := page.OrderBy[coredata.MonitoringReportOrderField]{
-		Field:     coredata.MonitoringReportOrderFieldCreatedAt,
-		Direction: page.OrderDirectionDesc,
-	}
-
-	if orderBy != nil {
-		pageOrderBy = page.OrderBy[coredata.MonitoringReportOrderField]{
-			Field:     orderBy.Field,
-			Direction: orderBy.Direction,
-		}
-	}
-
-	cursor := types.NewCursor(first, after, last, before, pageOrderBy)
-
-	var reportType *coredata.MonitoringReportType
-	if filter != nil {
-		reportType = filter.ReportType
-	}
-
-	reportFilter := coredata.NewMonitoringReportFilter(reportType)
-
-	p, err := r.probo.MonitoringReports.ListForOrganizationID(ctx, scope, obj.ID, cursor, reportFilter)
-	if err != nil {
-		r.logger.ErrorCtx(ctx, "cannot list monitoring reports", log.Error(err))
-		return nil, gqlutils.Internal(ctx)
-	}
-
-	return types.NewMonitoringReportConnection(p, r, obj.ID, filter), nil
 }
 
 // MonitoringReport returns schema.MonitoringReportResolver implementation.

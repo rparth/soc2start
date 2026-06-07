@@ -84,17 +84,6 @@ type DeleteMonitoringReportPayload {
     deletedMonitoringReportId: ID!
 }
 
-extend type Organization {
-    monitoringReports(
-        first: Int
-        after: CursorKey
-        last: Int
-        before: CursorKey
-        orderBy: MonitoringReportOrder
-        filter: MonitoringReportFilter
-    ): MonitoringReportConnection! @goField(forceResolver: true)
-}
-
 extend type Mutation {
     createMonitoringReport(
         input: CreateMonitoringReportInput!
