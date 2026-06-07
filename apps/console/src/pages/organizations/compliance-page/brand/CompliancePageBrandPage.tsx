@@ -15,7 +15,6 @@
 import { acceptImage } from "@probo/helpers";
 import { useTranslate } from "@probo/i18n";
 import {
-  Avatar,
   Button,
   Card,
   Dropzone,
