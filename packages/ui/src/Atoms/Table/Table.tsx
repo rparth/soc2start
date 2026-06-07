@@ -104,7 +104,7 @@ export function Tr({
 
 export function Tbody({ children }: PropsWithChildren) {
   return (
-    <tbody className="text-sm text-txt-primary bg-tertiary">
+    <tbody className="text-sm text-txt-primary bg-tertiary tabular-nums">
       {children}
     </tbody>
   );
