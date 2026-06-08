@@ -1,10 +1,10 @@
 {
   "identities": [
     {
-      "name": "probod",
+      "name": "soc2startd",
       "credentials": [
         {
-          "accessKey": "probod",
+          "accessKey": "soc2startd",
           "secretKey": "thisisnotasecret"
         }
       ],
