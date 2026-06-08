@@ -153,66 +153,6 @@ const routes = [
         Component: lazy(() => import("./pages/iam/organizations/AssumePageLoader")),
       },
       {
-        path: "employee",
-        ErrorBoundary: OrganizationErrorBoundary,
-        Component: lazy(
-          () => import("./pages/organizations/employee/EmployeeLayoutLoader"),
-        ),
-        children: [
-          {
-            index: true,
-            loader: ({ params: { organizationId } }) => {
-              // eslint-disable-next-line
-              throw redirect(`/organizations/${organizationId}/employee/signatures`);
-            },
-            Component: () => null,
-          },
-          {
-            Component: lazy(
-              () => import("./pages/organizations/employee/EmployeeTabsLayout"),
-            ),
-            children: [
-              {
-                path: "signatures",
-                Component: lazy(
-                  () =>
-                    import("./pages/organizations/employee/EmployeeDocumentsPageLoader"),
-                ),
-              },
-              {
-                path: "approvals",
-                Component: lazy(
-                  () =>
-                    import("./pages/organizations/employee/EmployeeApprovalsPageLoader"),
-                ),
-              },
-            ],
-          },
-          {
-            path: ":documentId",
-            loader: ({ params: { organizationId, documentId } }) => {
-              // eslint-disable-next-line
-              throw redirect(`/organizations/${organizationId}/employee/signatures/${documentId}`);
-            },
-            Component: () => null,
-          },
-          {
-            path: "signatures/:documentId",
-            Component: lazy(
-              () =>
-                import("./pages/organizations/employee/EmployeeDocumentSignaturePageLoader"),
-            ),
-          },
-          {
-            path: "approvals/:documentId",
-            Component: lazy(
-              () =>
-                import("./pages/organizations/documents/approve/DocumentApprovePageLoader"),
-            ),
-          },
-        ],
-      },
-      {
         Component: lazy(
           () => import("./pages/iam/organizations/ViewerMembershipLayoutLoader"),
         ),
@@ -285,6 +225,62 @@ const routes = [
                 path: "api-keys",
                 Component: lazy(
                   () => import("./pages/iam/apiKeys/APIKeysPageLoader"),
+                ),
+              },
+            ],
+          },
+          {
+            path: "employee",
+            children: [
+              {
+                index: true,
+                loader: ({ params: { organizationId } }) => {
+                  // eslint-disable-next-line
+                  throw redirect(`/organizations/${organizationId}/employee/signatures`);
+                },
+                Component: () => null,
+              },
+              {
+                Component: lazy(
+                  () => import("./pages/organizations/employee/EmployeeTabsLayout"),
+                ),
+                children: [
+                  {
+                    path: "signatures",
+                    Component: lazy(
+                      () =>
+                        import("./pages/organizations/employee/EmployeeDocumentsPageLoader"),
+                    ),
+                  },
+                  {
+                    path: "approvals",
+                    Component: lazy(
+                      () =>
+                        import("./pages/organizations/employee/EmployeeApprovalsPageLoader"),
+                    ),
+                  },
+                ],
+              },
+              {
+                path: ":documentId",
+                loader: ({ params: { organizationId, documentId } }) => {
+                  // eslint-disable-next-line
+                  throw redirect(`/organizations/${organizationId}/employee/signatures/${documentId}`);
+                },
+                Component: () => null,
+              },
+              {
+                path: "signatures/:documentId",
+                Component: lazy(
+                  () =>
+                    import("./pages/organizations/employee/EmployeeDocumentSignaturePageLoader"),
+                ),
+              },
+              {
+                path: "approvals/:documentId",
+                Component: lazy(
+                  () =>
+                    import("./pages/organizations/documents/approve/DocumentApprovePageLoader"),
                 ),
               },
             ],
