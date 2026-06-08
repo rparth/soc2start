@@ -46,7 +46,7 @@ export function Sidebar({ children }: PropsWithChildren) {
     <sidebarContext.Provider value={{ open }}>
       <aside
         className={clsx(
-          "border-r border-border-solid pt-4 flex-none flex flex-col sticky top-12 h-[calc(100dvh-48px)]",
+          "border-r border-border-solid pt-4 flex-none flex flex-col sticky top-12 h-[calc(100dvh-48px)] bg-level-0",
           open && "w-[280px]",
         )}
       >
