@@ -32,9 +32,17 @@ import {
   useConfirm,
   useToast,
 } from "@probo/ui";
+import {
+  type ColumnDef,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getPaginationRowModel,
+  getSortedRowModel,
+  type SortingState,
+  useReactTable,
+} from "@tanstack/react-table";
 import { useMemo, useState } from "react";
-import PivotTableUI from "react-pivottable/PivotTableUI";
-import "react-pivottable/pivottable.css";
 import {
   graphql,
   type PreloadedQuery,
@@ -381,13 +389,15 @@ function SummaryTab({ summary }: { summary: SummaryData }) {
 }
 
 function RawDataTab({ rawContent }: { rawContent: string }) {
-  const [pivotState, setPivotState] = useState<Record<string, unknown>>({});
+  const { __ } = useTranslate();
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [globalFilter, setGlobalFilter] = useState("");
 
-  const { data, error } = useMemo(() => {
+  const { data, columns, error } = useMemo(() => {
     const lines = rawContent.split("\n").filter((line) => line.trim());
 
     if (lines.length === 0) {
-      return { data: [], error: "Empty CSV file" };
+      return { data: [], columns: [], error: "Empty CSV file" };
     }
 
     const parseLine = (line: string) =>
@@ -403,30 +413,28 @@ function RawDataTab({ rawContent }: { rawContent: string }) {
       return record;
     });
 
-    return { data: records, error: null };
+    const cols: ColumnDef<Record<string, string>>[] = headers.map(
+      (header) => ({
+        accessorKey: header,
+        header: header,
+      }),
+    );
+
+    return { data: records, columns: cols, error: null };
   }, [rawContent]);
 
-  const defaultRows = useMemo(() => {
-    if (data.length === 0) return [];
-    const keys = Object.keys(data[0]);
-    const preferred = ["CHECK_TYPE", "STATUS"];
-    return preferred.filter((col) =>
-      keys.some((k) => k.toUpperCase() === col),
-    ).map((col) =>
-      keys.find((k) => k.toUpperCase() === col)!,
-    );
-  }, [data]);
-
-  const defaultCols = useMemo(() => {
-    if (data.length === 0) return [];
-    const keys = Object.keys(data[0]);
-    const preferred = ["SEVERITY", "COMPLIANCE"];
-    return preferred.filter((col) =>
-      keys.some((k) => k.toUpperCase() === col),
-    ).map((col) =>
-      keys.find((k) => k.toUpperCase() === col)!,
-    );
-  }, [data]);
+  const table = useReactTable({
+    data,
+    columns,
+    state: { sorting, globalFilter },
+    onSortingChange: setSorting,
+    onGlobalFilterChange: setGlobalFilter,
+    getCoreRowModel: getCoreRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    initialState: { pagination: { pageSize: 50 } },
+  });
 
   if (error) {
     return (
@@ -435,14 +443,91 @@ function RawDataTab({ rawContent }: { rawContent: string }) {
   }
 
   return (
-    <Card className="overflow-x-auto p-4">
-      <PivotTableUI
-        data={data}
-        onChange={(s: Record<string, unknown>) => setPivotState(s)}
-        rows={defaultRows}
-        cols={defaultCols}
-        {...pivotState}
-      />
-    </Card>
+    <div className="space-y-4">
+      <div className="flex items-center justify-between gap-4">
+        <input
+          type="text"
+          value={globalFilter}
+          onChange={(e) => setGlobalFilter(e.target.value)}
+          placeholder={__("Search across all columns...")}
+          className="w-full max-w-sm px-3 py-2 text-sm border border-bd-default rounded-lg bg-primary text-txt-primary placeholder:text-txt-tertiary focus:outline-none focus:ring-2 focus:ring-accent-bold/30 focus:border-accent-bold"
+        />
+        <span className="text-xs text-txt-tertiary whitespace-nowrap tabular-nums">
+          {sprintf(
+            __("%s of %s rows"),
+            table.getFilteredRowModel().rows.length.toLocaleString(),
+            data.length.toLocaleString(),
+          )}
+        </span>
+      </div>
+
+      <Table>
+        <Thead>
+          <Tr>
+            {table.getHeaderGroups().map((headerGroup) =>
+              headerGroup.headers.map((header) => (
+                <Th
+                  key={header.id}
+                  className="cursor-pointer select-none hover:text-txt-secondary"
+                  onClick={header.column.getToggleSortingHandler()}
+                >
+                  <span className="inline-flex items-center gap-1">
+                    {flexRender(
+                      header.column.columnDef.header,
+                      header.getContext(),
+                    )}
+                    {{
+                      asc: " ↑",
+                      desc: " ↓",
+                    }[header.column.getIsSorted() as string] ?? ""}
+                  </span>
+                </Th>
+              )),
+            )}
+          </Tr>
+        </Thead>
+        <Tbody>
+          {table.getRowModel().rows.map((row) => (
+            <Tr key={row.id}>
+              {row.getVisibleCells().map((cell) => (
+                <Td key={cell.id} className="whitespace-nowrap">
+                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                </Td>
+              ))}
+            </Tr>
+          ))}
+        </Tbody>
+      </Table>
+
+      {table.getPageCount() > 1 && (
+        <div className="flex items-center justify-between px-1">
+          <span className="text-xs text-txt-tertiary tabular-nums">
+            {sprintf(
+              __("Page %s of %s"),
+              (table.getState().pagination.pageIndex + 1).toLocaleString(),
+              table.getPageCount().toLocaleString(),
+            )}
+          </span>
+          <div className="flex gap-1">
+            <button
+              type="button"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+              className="px-3 py-1.5 text-xs font-medium rounded-md border border-bd-default bg-primary text-txt-primary hover:bg-subtle disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              {__("Previous")}
+            </button>
+            <button
+              type="button"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+              className="px-3 py-1.5 text-xs font-medium rounded-md border border-bd-default bg-primary text-txt-primary hover:bg-subtle disabled:opacity-40 disabled:cursor-not-allowed"
+            >
+              {__("Next")}
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
   );
 }
