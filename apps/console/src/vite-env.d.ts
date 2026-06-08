@@ -21,3 +21,20 @@ interface ImportMetaEnv {
 interface ImportMeta {
   readonly env: ImportMetaEnv;
 }
+
+declare module "react-pivottable/PivotTableUI" {
+  import type { Component } from "react";
+  interface PivotTableUIProps {
+    data: string[][] | Record<string, unknown>[];
+    onChange: (state: Record<string, unknown>) => void;
+    rows?: string[];
+    cols?: string[];
+    vals?: string[];
+    aggregatorName?: string;
+    rendererName?: string;
+    [key: string]: unknown;
+  }
+  export default class PivotTableUI extends Component<PivotTableUIProps> {}
+}
+
+declare module "react-pivottable/pivottable.css";

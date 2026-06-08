@@ -18,11 +18,9 @@ import { useTranslate } from "@probo/i18n";
 import {
   ActionDropdown,
   Badge,
-  Button,
   Card,
   DropdownItem,
   IconTrashCan,
-  Input,
   PageHeader,
   Table,
   Tabs,
@@ -34,7 +32,9 @@ import {
   useConfirm,
   useToast,
 } from "@probo/ui";
-import { useCallback, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
+import PivotTableUI from "react-pivottable/PivotTableUI";
+import "react-pivottable/pivottable.css";
 import {
   graphql,
   type PreloadedQuery,
@@ -382,93 +382,52 @@ function SummaryTab({ summary }: { summary: SummaryData }) {
 
 function RawDataTab({ rawContent }: { rawContent: string }) {
   const { __ } = useTranslate();
-  const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState<string>("FAIL");
-  const [severityFilter, setSeverityFilter] = useState<string>("ALL");
-  const [page, setPage] = useState(0);
-  const pageSize = 50;
+  const [pivotState, setPivotState] = useState<Record<string, unknown>>({});
 
-  const { headers, rows, error } = useMemo(() => {
+  const { data, error } = useMemo(() => {
     const lines = rawContent.split("\n").filter((line) => line.trim());
 
     if (lines.length === 0) {
-      return { headers: [], rows: [], error: "Empty CSV file" };
+      return { data: [], error: "Empty CSV file" };
     }
 
     const parseLine = (line: string) =>
       line.split(";").map((cell) => cell.trim());
 
-    return {
-      headers: parseLine(lines[0]),
-      rows: lines.slice(1).map(parseLine),
-      error: null,
-    };
+    const headers = parseLine(lines[0]);
+    const records = lines.slice(1).map((line) => {
+      const cells = parseLine(line);
+      const record: Record<string, string> = {};
+      headers.forEach((header, i) => {
+        record[header] = cells[i] ?? "";
+      });
+      return record;
+    });
+
+    return { data: records, error: null };
   }, [rawContent]);
 
-  const statusIdx = useMemo(
-    () => headers.findIndex((h) => h.toUpperCase() === "STATUS"),
-    [headers],
-  );
-  const severityIdx = useMemo(
-    () => headers.findIndex((h) => h.toUpperCase() === "SEVERITY"),
-    [headers],
-  );
-
-  const uniqueStatuses = useMemo(() => {
-    if (statusIdx < 0) return [];
-    const set = new Set(rows.map((r) => r[statusIdx]).filter(Boolean));
-    return Array.from(set).sort();
-  }, [rows, statusIdx]);
-
-  const uniqueSeverities = useMemo(() => {
-    if (severityIdx < 0) return [];
-    const set = new Set(rows.map((r) => r[severityIdx]).filter(Boolean));
-    const order = ["critical", "high", "medium", "low", "informational"];
-    return Array.from(set).sort(
-      (a, b) =>
-        order.indexOf(a.toLowerCase()) - order.indexOf(b.toLowerCase()),
+  const defaultRows = useMemo(() => {
+    if (data.length === 0) return [];
+    const keys = Object.keys(data[0]);
+    const preferred = ["CHECK_TYPE", "STATUS"];
+    return preferred.filter((col) =>
+      keys.some((k) => k.toUpperCase() === col),
+    ).map((col) =>
+      keys.find((k) => k.toUpperCase() === col)!,
     );
-  }, [rows, severityIdx]);
+  }, [data]);
 
-  const filteredRows = useMemo(() => {
-    let result = rows;
-
-    if (statusFilter !== "ALL" && statusIdx >= 0) {
-      result = result.filter(
-        (row) => row[statusIdx]?.toUpperCase() === statusFilter,
-      );
-    }
-
-    if (severityFilter !== "ALL" && severityIdx >= 0) {
-      result = result.filter(
-        (row) => row[severityIdx]?.toUpperCase() === severityFilter.toUpperCase(),
-      );
-    }
-
-    if (search) {
-      const lower = search.toLowerCase();
-      result = result.filter((row) =>
-        row.some((cell) => cell.toLowerCase().includes(lower)),
-      );
-    }
-
-    return result;
-  }, [rows, search, statusFilter, severityFilter, statusIdx, severityIdx]);
-
-  const paginatedRows = useMemo(() => {
-    const start = page * pageSize;
-    return filteredRows.slice(start, start + pageSize);
-  }, [filteredRows, page]);
-
-  const totalPages = Math.ceil(filteredRows.length / pageSize);
-
-  const handleSearchChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      setSearch(e.target.value);
-      setPage(0);
-    },
-    [],
-  );
+  const defaultCols = useMemo(() => {
+    if (data.length === 0) return [];
+    const keys = Object.keys(data[0]);
+    const preferred = ["SEVERITY", "COMPLIANCE"];
+    return preferred.filter((col) =>
+      keys.some((k) => k.toUpperCase() === col),
+    ).map((col) =>
+      keys.find((k) => k.toUpperCase() === col)!,
+    );
+  }, [data]);
 
   if (error) {
     return (
@@ -477,109 +436,14 @@ function RawDataTab({ rawContent }: { rawContent: string }) {
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-wrap items-center gap-4">
-        <Input
-          placeholder={__("Search across all columns...")}
-          value={search}
-          onChange={handleSearchChange}
-          className="max-w-sm"
-        />
-        {statusIdx >= 0 && (
-          <select
-            value={statusFilter}
-            onChange={(e) => {
-              setStatusFilter(e.target.value);
-              setPage(0);
-            }}
-            className="rounded-lg border border-border-solid bg-level-1 px-3 py-1.5 text-sm text-txt-primary"
-          >
-            <option value="ALL">{__("All statuses")}</option>
-            {uniqueStatuses.map((s) => (
-              <option key={s} value={s.toUpperCase()}>
-                {s}
-              </option>
-            ))}
-          </select>
-        )}
-        {severityIdx >= 0 && (
-          <select
-            value={severityFilter}
-            onChange={(e) => {
-              setSeverityFilter(e.target.value);
-              setPage(0);
-            }}
-            className="rounded-lg border border-border-solid bg-level-1 px-3 py-1.5 text-sm text-txt-primary"
-          >
-            <option value="ALL">{__("All severities")}</option>
-            {uniqueSeverities.map((s) => (
-              <option key={s} value={s.toUpperCase()}>
-                {s}
-              </option>
-            ))}
-          </select>
-        )}
-        <p className="ml-auto text-sm text-txt-secondary">
-          {sprintf(
-            __("%s of %s rows"),
-            filteredRows.length.toLocaleString(),
-            rows.length.toLocaleString(),
-          )}
-        </p>
-      </div>
-
-      <Table>
-          <Thead>
-            <Tr>
-              {headers.map((header, i) => (
-                <Th key={i} className="whitespace-nowrap">
-                  {header}
-                </Th>
-              ))}
-            </Tr>
-          </Thead>
-          <Tbody>
-            {paginatedRows.map((row, i) => (
-              <Tr key={i}>
-                {row.map((cell, j) => (
-                  <Td
-                    key={j}
-                    className="max-w-xs truncate whitespace-nowrap"
-                    title={cell}
-                  >
-                    {cell}
-                  </Td>
-                ))}
-              </Tr>
-            ))}
-          </Tbody>
-      </Table>
-
-      {totalPages > 1 && (
-        <div className="flex items-center justify-center gap-2">
-          <Button
-            variant="secondary"
-            disabled={page === 0}
-            onClick={() => setPage((p) => p - 1)}
-          >
-            {__("Previous")}
-          </Button>
-          <span className="text-sm text-txt-secondary">
-            {sprintf(
-              __("Page %s of %s"),
-              (page + 1).toString(),
-              totalPages.toString(),
-            )}
-          </span>
-          <Button
-            variant="secondary"
-            disabled={page >= totalPages - 1}
-            onClick={() => setPage((p) => p + 1)}
-          >
-            {__("Next")}
-          </Button>
-        </div>
-      )}
-    </div>
+    <Card className="overflow-x-auto p-4">
+      <PivotTableUI
+        data={data}
+        onChange={(s: Record<string, unknown>) => setPivotState(s)}
+        rows={defaultRows}
+        cols={defaultCols}
+        {...pivotState}
+      />
+    </Card>
   );
 }
