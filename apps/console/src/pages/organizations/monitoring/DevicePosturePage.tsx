@@ -164,7 +164,7 @@ export default function DevicePosturePage({
   return (
     <div className="space-y-6">
       <PageHeader
-        breadcrumbs={[__("Monitoring")]}
+        breadcrumbs={[__("Monitoring"), __("Device Posture")]}
         title={__("Device Posture")}
         description={__(
           "View connected agents and their security posture status.",

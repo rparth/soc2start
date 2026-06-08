@@ -177,7 +177,7 @@ export default function MonitoringReportsPage({
   return (
     <div className="space-y-6">
       <PageHeader
-        breadcrumbs={[__("Monitoring")]}
+        breadcrumbs={[__("Monitoring"), title]}
         title={title}
         description={
           reportType === "PROWLER"

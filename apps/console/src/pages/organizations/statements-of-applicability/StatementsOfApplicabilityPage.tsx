@@ -115,7 +115,7 @@ export default function StatementsOfApplicabilityPage({
   return (
     <div className="space-y-6">
       <PageHeader
-        breadcrumbs={[__("Compliance")]}
+        breadcrumbs={[__("Compliance"), __("Statements of Applicability")]}
         title={__("Statements of Applicability")}
         description={__(
           "Manage statements of applicability for your organization's frameworks.",

@@ -148,7 +148,7 @@ export default function DataPage(props: Props) {
   return (
     <div className="space-y-6">
       <PageHeader
-        breadcrumbs={[__("Organization")]}
+        breadcrumbs={[__("Organization"), __("Data")]}
         title={__("Data")}
         description={__(
           "Manage your organization's data assets and their classifications.",
