@@ -40,19 +40,23 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   type SortingState,
+  type VisibilityState,
   useReactTable,
 } from "@tanstack/react-table";
-import { useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   graphql,
   type PreloadedQuery,
+  useLazyLoadQuery,
   useMutation,
   usePreloadedQuery,
 } from "react-relay";
 import { useNavigate } from "react-router";
 
 import type { MonitoringReportDetailsPageDeleteMutation } from "#/__generated__/core/MonitoringReportDetailsPageDeleteMutation.graphql";
+import type { MonitoringReportDetailsPagePrefsQuery } from "#/__generated__/core/MonitoringReportDetailsPagePrefsQuery.graphql";
 import type { MonitoringReportDetailsPageQuery } from "#/__generated__/core/MonitoringReportDetailsPageQuery.graphql";
+import type { MonitoringReportDetailsPageUpdatePrefsMutation } from "#/__generated__/core/MonitoringReportDetailsPageUpdatePrefsMutation.graphql";
 import { useOrganizationId } from "#/hooks/useOrganizationId";
 
 export const monitoringReportDetailsPageQuery = graphql`
@@ -240,7 +244,11 @@ export default function MonitoringReportDetailsPage({
         <SummaryTab summary={summary} />
       )}
       {activeTab === "raw" && report.rawContent && (
-        <RawDataTab rawContent={report.rawContent} />
+        <RawDataTab
+          rawContent={report.rawContent}
+          organizationId={report.organization?.id ?? organizationId}
+          reportType={reportType}
+        />
       )}
     </div>
   );
@@ -388,53 +396,172 @@ function SummaryTab({ summary }: { summary: SummaryData }) {
   );
 }
 
-function RawDataTab({ rawContent }: { rawContent: string }) {
+const columnPrefsQuery = graphql`
+  query MonitoringReportDetailsPagePrefsQuery(
+    $organizationId: ID!
+    $reportType: MonitoringReportType!
+  ) {
+    viewer {
+      userColumnPreferences(
+        organizationId: $organizationId
+        reportType: $reportType
+      ) {
+        selectedColumns
+      }
+    }
+  }
+`;
+
+const updateColumnPrefsMutation = graphql`
+  mutation MonitoringReportDetailsPageUpdatePrefsMutation(
+    $input: UpdateUserColumnPreferencesInput!
+  ) {
+    updateUserColumnPreferences(input: $input) {
+      userColumnPreference {
+        selectedColumns
+      }
+    }
+  }
+`;
+
+const PAGE_SIZES = [10, 25, 50] as const;
+
+function RawDataTab({
+  rawContent,
+  organizationId,
+  reportType,
+}: {
+  rawContent: string;
+  organizationId: string;
+  reportType: string;
+}) {
   const { __ } = useTranslate();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState("");
+  const [pageSize, setPageSize] = useState<number>(10);
 
-  const { data, columns, error } = useMemo(() => {
+  const prefsData =
+    useLazyLoadQuery<MonitoringReportDetailsPagePrefsQuery>(
+      columnPrefsQuery,
+      { organizationId, reportType: reportType as "PROWLER" | "PENTEST" },
+    );
+
+  const savedColumns =
+    prefsData.viewer?.userColumnPreferences?.selectedColumns ?? null;
+
+  const [commitUpdatePrefs] =
+    useMutation<MonitoringReportDetailsPageUpdatePrefsMutation>(
+      updateColumnPrefsMutation,
+    );
+
+  const { data, headers, error } = useMemo(() => {
     const lines = rawContent.split("\n").filter((line) => line.trim());
 
     if (lines.length === 0) {
-      return { data: [], columns: [], error: "Empty CSV file" };
+      return { data: [], headers: [] as string[], error: "Empty CSV file" };
     }
 
     const parseLine = (line: string) =>
       line.split(";").map((cell) => cell.trim());
 
-    const headers = parseLine(lines[0]);
+    const hdrs = parseLine(lines[0]);
     const records = lines.slice(1).map((line) => {
       const cells = parseLine(line);
       const record: Record<string, string> = {};
-      headers.forEach((header, i) => {
+      hdrs.forEach((header, i) => {
         record[header] = cells[i] ?? "";
       });
       return record;
     });
 
-    const cols: ColumnDef<Record<string, string>>[] = headers.map(
-      (header) => ({
+    return { data: records, headers: hdrs, error: null };
+  }, [rawContent]);
+
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
+    () => {
+      if (savedColumns && savedColumns.length > 0) {
+        const vis: VisibilityState = {};
+        for (const h of headers) {
+          vis[h] = savedColumns.includes(h);
+        }
+        return vis;
+      }
+      return {};
+    },
+  );
+
+  const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const persistPreferences = useCallback(
+    (vis: VisibilityState) => {
+      if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+      saveTimerRef.current = setTimeout(() => {
+        const selected = headers.filter((h) => vis[h] !== false);
+        commitUpdatePrefs({
+          variables: {
+            input: {
+              organizationId,
+              reportType: reportType as "PROWLER" | "PENTEST",
+              selectedColumns: selected,
+            },
+          },
+        });
+      }, 800);
+    },
+    [headers, organizationId, reportType, commitUpdatePrefs],
+  );
+
+  useEffect(() => {
+    return () => {
+      if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+    };
+  }, []);
+
+  const handleVisibilityChange = useCallback(
+    (updater: VisibilityState | ((old: VisibilityState) => VisibilityState)) => {
+      setColumnVisibility((prev) => {
+        const next = typeof updater === "function" ? updater(prev) : updater;
+        persistPreferences(next);
+        return next;
+      });
+    },
+    [persistPreferences],
+  );
+
+  const columns = useMemo<ColumnDef<Record<string, string>>[]>(
+    () =>
+      headers.map((header) => ({
         accessorKey: header,
         header: header,
-      }),
-    );
-
-    return { data: records, columns: cols, error: null };
-  }, [rawContent]);
+      })),
+    [headers],
+  );
 
   const table = useReactTable({
     data,
     columns,
-    state: { sorting, globalFilter },
+    state: { sorting, globalFilter, columnVisibility, pagination: { pageIndex: 0, pageSize } },
     onSortingChange: setSorting,
     onGlobalFilterChange: setGlobalFilter,
+    onColumnVisibilityChange: handleVisibilityChange,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    initialState: { pagination: { pageSize: 50 } },
   });
+
+  const visibleCount = headers.filter((h) => columnVisibility[h] !== false).length;
+  const allVisible = visibleCount === headers.length || Object.keys(columnVisibility).length === 0;
+
+  const handleToggleAll = () => {
+    if (allVisible) {
+      const vis: VisibilityState = {};
+      for (const h of headers) vis[h] = false;
+      handleVisibilityChange(vis);
+    } else {
+      handleVisibilityChange({});
+    }
+  };
 
   if (error) {
     return (
@@ -443,91 +570,173 @@ function RawDataTab({ rawContent }: { rawContent: string }) {
   }
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center justify-between gap-4">
-        <input
-          type="text"
-          value={globalFilter}
-          onChange={(e) => setGlobalFilter(e.target.value)}
-          placeholder={__("Search across all columns...")}
-          className="w-full max-w-sm px-3 py-2 text-sm border border-bd-default rounded-lg bg-primary text-txt-primary placeholder:text-txt-tertiary focus:outline-none focus:ring-2 focus:ring-accent-bold/30 focus:border-accent-bold"
-        />
-        <span className="text-xs text-txt-tertiary whitespace-nowrap tabular-nums">
-          {sprintf(
-            __("%s of %s rows"),
-            table.getFilteredRowModel().rows.length.toLocaleString(),
-            data.length.toLocaleString(),
-          )}
-        </span>
-      </div>
-
-      <Table>
-        <Thead>
-          <Tr>
-            {table.getHeaderGroups().map((headerGroup) =>
-              headerGroup.headers.map((header) => (
-                <Th
-                  key={header.id}
-                  className="cursor-pointer select-none hover:text-txt-secondary"
-                  onClick={header.column.getToggleSortingHandler()}
-                >
-                  <span className="inline-flex items-center gap-1">
-                    {flexRender(
-                      header.column.columnDef.header,
-                      header.getContext(),
-                    )}
-                    {{
-                      asc: " ↑",
-                      desc: " ↓",
-                    }[header.column.getIsSorted() as string] ?? ""}
-                  </span>
-                </Th>
-              )),
-            )}
-          </Tr>
-        </Thead>
-        <Tbody>
-          {table.getRowModel().rows.map((row) => (
-            <Tr key={row.id}>
-              {row.getVisibleCells().map((cell) => (
-                <Td key={cell.id} className="whitespace-nowrap">
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </Td>
-              ))}
-            </Tr>
-          ))}
-        </Tbody>
-      </Table>
-
-      {table.getPageCount() > 1 && (
-        <div className="flex items-center justify-between px-1">
-          <span className="text-xs text-txt-tertiary tabular-nums">
-            {sprintf(
-              __("Page %s of %s"),
-              (table.getState().pagination.pageIndex + 1).toLocaleString(),
-              table.getPageCount().toLocaleString(),
-            )}
-          </span>
-          <div className="flex gap-1">
+    <div className="flex gap-4">
+      <div className="w-56 shrink-0">
+        <Card className="p-0 overflow-hidden">
+          <div className="px-3 py-2.5 border-b border-bd-default flex items-center justify-between">
+            <span className="text-xs font-semibold uppercase tracking-wider text-txt-tertiary">
+              {__("Columns")}
+            </span>
             <button
               type="button"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
-              className="px-3 py-1.5 text-xs font-medium rounded-md border border-bd-default bg-primary text-txt-primary hover:bg-subtle disabled:opacity-40 disabled:cursor-not-allowed"
+              onClick={handleToggleAll}
+              className="text-xs font-medium text-accent-bold hover:text-accent-bold/80 transition-colors"
             >
-              {__("Previous")}
-            </button>
-            <button
-              type="button"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
-              className="px-3 py-1.5 text-xs font-medium rounded-md border border-bd-default bg-primary text-txt-primary hover:bg-subtle disabled:opacity-40 disabled:cursor-not-allowed"
-            >
-              {__("Next")}
+              {allVisible ? __("Deselect All") : __("Select All")}
             </button>
           </div>
+          <div className="max-h-[calc(100vh-20rem)] overflow-y-auto p-1.5">
+            {headers.map((header) => {
+              const isVisible = columnVisibility[header] !== false;
+              return (
+                <label
+                  key={header}
+                  className="flex items-center gap-2 px-2 py-1.5 rounded-md cursor-pointer hover:bg-subtle transition-colors"
+                >
+                  <input
+                    type="checkbox"
+                    checked={isVisible}
+                    onChange={() =>
+                      handleVisibilityChange((prev) => ({
+                        ...prev,
+                        [header]: !isVisible,
+                      }))
+                    }
+                    className="size-3.5 rounded border-bd-default text-accent-bold focus:ring-accent-bold/30 accent-[var(--color-accent-bold)]"
+                  />
+                  <span
+                    className={`text-sm truncate ${isVisible ? "text-txt-primary" : "text-txt-tertiary"}`}
+                  >
+                    {header}
+                  </span>
+                </label>
+              );
+            })}
+          </div>
+        </Card>
+      </div>
+
+      <div className="flex-1 min-w-0 space-y-3">
+        <div className="flex items-center justify-between gap-4">
+          <input
+            type="text"
+            value={globalFilter}
+            onChange={(e) => setGlobalFilter(e.target.value)}
+            placeholder={__("Search across all columns...")}
+            className="w-full max-w-sm px-3 py-2 text-sm border border-bd-default rounded-lg bg-primary text-txt-primary placeholder:text-txt-tertiary focus:outline-none focus:ring-2 focus:ring-accent-bold/30 focus:border-accent-bold"
+          />
+          <span className="text-xs text-txt-tertiary whitespace-nowrap tabular-nums">
+            {sprintf(
+              __("%s of %s rows"),
+              table.getFilteredRowModel().rows.length.toLocaleString(),
+              data.length.toLocaleString(),
+            )}
+          </span>
         </div>
-      )}
+
+        <div className="overflow-x-auto rounded-lg border border-bd-default">
+          <Table>
+            <Thead>
+              <Tr>
+                {table.getHeaderGroups().map((headerGroup) =>
+                  headerGroup.headers.map((header) => (
+                    <Th
+                      key={header.id}
+                      className="cursor-pointer select-none hover:text-txt-secondary"
+                      onClick={header.column.getToggleSortingHandler()}
+                    >
+                      <span className="inline-flex items-center gap-1">
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext(),
+                        )}
+                        {{
+                          asc: " ↑",
+                          desc: " ↓",
+                        }[header.column.getIsSorted() as string] ?? ""}
+                      </span>
+                    </Th>
+                  )),
+                )}
+              </Tr>
+            </Thead>
+            <Tbody>
+              {table.getRowModel().rows.length === 0 ? (
+                <Tr>
+                  <Td
+                    colSpan={table.getVisibleLeafColumns().length}
+                    className="text-center text-txt-tertiary py-8"
+                  >
+                    {visibleCount === 0
+                      ? __("Select at least one column to view data")
+                      : __("No matching rows")}
+                  </Td>
+                </Tr>
+              ) : (
+                table.getRowModel().rows.map((row) => (
+                  <Tr key={row.id}>
+                    {row.getVisibleCells().map((cell) => (
+                      <Td key={cell.id} className="whitespace-nowrap max-w-xs truncate">
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
+                      </Td>
+                    ))}
+                  </Tr>
+                ))
+              )}
+            </Tbody>
+          </Table>
+        </div>
+
+        <div className="flex items-center justify-between px-1">
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-txt-tertiary">{__("Rows per page")}</span>
+            <select
+              value={pageSize}
+              onChange={(e) => {
+                setPageSize(Number(e.target.value));
+                table.setPageIndex(0);
+              }}
+              className="px-2 py-1 text-xs border border-bd-default rounded-md bg-primary text-txt-primary focus:outline-none focus:ring-2 focus:ring-accent-bold/30"
+            >
+              {PAGE_SIZES.map((size) => (
+                <option key={size} value={size}>
+                  {size}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="flex items-center gap-3">
+            <span className="text-xs text-txt-tertiary tabular-nums">
+              {sprintf(
+                __("Page %s of %s"),
+                (table.getState().pagination.pageIndex + 1).toLocaleString(),
+                Math.max(1, table.getPageCount()).toLocaleString(),
+              )}
+            </span>
+            <div className="flex gap-1">
+              <button
+                type="button"
+                onClick={() => table.previousPage()}
+                disabled={!table.getCanPreviousPage()}
+                className="px-3 py-1.5 text-xs font-medium rounded-md border border-bd-default bg-primary text-txt-primary hover:bg-subtle disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              >
+                {__("Previous")}
+              </button>
+              <button
+                type="button"
+                onClick={() => table.nextPage()}
+                disabled={!table.getCanNextPage()}
+                className="px-3 py-1.5 text-xs font-medium rounded-md border border-bd-default bg-primary text-txt-primary hover:bg-subtle disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              >
+                {__("Next")}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
