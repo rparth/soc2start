@@ -23,7 +23,7 @@ import {
   IconChevronDown,
   IconChevronLeft,
   IconChevronRight,
-  IconChevronUp,
+  IconChevronTriangleDownSmall,
   IconMagnifyingGlass,
   IconTrashCan,
   PageHeader,
@@ -37,6 +37,7 @@ import {
   useConfirm,
   useToast,
 } from "@probo/ui";
+import { clsx } from "clsx";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   graphql,
@@ -691,25 +692,18 @@ function RawDataTab({
                   return (
                     <Th
                       key={header}
-                      className={`cursor-pointer select-none transition-colors duration-150 ${
-                        sorted
-                          ? "text-txt-primary"
-                          : "hover:text-txt-secondary"
-                      }`}
                       onClick={() => handleSort(header)}
                     >
-                      <span className="inline-flex items-center gap-1.5">
+                      <button className="flex items-center cursor-pointer hover:text-txt-primary">
                         {header}
-                        {sorted ? (
-                          <span className="text-accent-bold">
-                            {sorted === "asc" ? (
-                              <IconChevronUp className="size-3.5" />
-                            ) : (
-                              <IconChevronDown className="size-3.5" />
-                            )}
-                          </span>
-                        ) : null}
-                      </span>
+                        <IconChevronTriangleDownSmall
+                          size={16}
+                          className={clsx(
+                            sorted && "text-txt-primary",
+                            sorted === "asc" && "rotate-180",
+                          )}
+                        />
+                      </button>
                     </Th>
                   );
                 })}
@@ -737,7 +731,7 @@ function RawDataTab({
                 pageRows.map((row, rowIdx) => (
                   <Tr key={rowIdx}>
                     {visibleHeaders.map((header) => (
-                      <Td key={header} className="max-w-xs truncate">
+                      <Td key={header} className="max-w-xs truncate" title={String(row[header] ?? "")}>
                         {row[header]}
                       </Td>
                     ))}
