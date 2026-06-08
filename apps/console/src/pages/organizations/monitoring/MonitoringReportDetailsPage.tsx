@@ -20,7 +20,6 @@ import {
   Badge,
   Card,
   DropdownItem,
-  IconChevronDown,
   IconChevronLeft,
   IconChevronRight,
   IconChevronTriangleDownSmall,
