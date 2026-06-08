@@ -381,7 +381,6 @@ function SummaryTab({ summary }: { summary: SummaryData }) {
 }
 
 function RawDataTab({ rawContent }: { rawContent: string }) {
-  const { __ } = useTranslate();
   const [pivotState, setPivotState] = useState<Record<string, unknown>>({});
 
   const { data, error } = useMemo(() => {
