@@ -20,6 +20,7 @@ import {
   type RefObject,
   useCallback,
   useEffect,
+  useLayoutEffect,
   useRef,
   useState,
 } from "react";
@@ -73,34 +74,33 @@ type FlyoutProps = PropsWithChildren<{
 
 const FlyoutPanel = forwardRef<HTMLDivElement, FlyoutProps>(
   function FlyoutPanel({ show, triggerRef, label, children }, ref) {
-    const [leftPx, setLeftPx] = useState(0);
-    const [visible, setVisible] = useState(false);
+    const [leftPx, setLeftPx] = useState(56);
     const [animateIn, setAnimateIn] = useState(false);
 
-    useEffect(() => {
-      if (show) {
-        if (triggerRef.current) {
-          const rect = triggerRef.current.getBoundingClientRect();
-          setLeftPx(rect.right + 4);
-        }
-        setVisible(true);
-        requestAnimationFrame(() => {
-          requestAnimationFrame(() => setAnimateIn(true));
-        });
-      } else {
-        setAnimateIn(false);
-        const timer = setTimeout(() => setVisible(false), 150);
-        return () => clearTimeout(timer);
+    useLayoutEffect(() => {
+      if (show && triggerRef.current) {
+        const rect = triggerRef.current.getBoundingClientRect();
+        setLeftPx(rect.right + 4);
       }
     }, [show, triggerRef]);
 
-    if (!visible) return null;
+    useEffect(() => {
+      if (show) {
+        const id = requestAnimationFrame(() => setAnimateIn(true));
+        return () => {
+          cancelAnimationFrame(id);
+          setAnimateIn(false);
+        };
+      }
+    }, [show]);
+
+    if (!show) return null;
 
     return createPortal(
       <div
         ref={ref}
         className={clsx(
-          "fixed top-12 bottom-0 z-50 w-[220px] border-r border-border-solid bg-level-0 px-2 py-4 shadow-md transition-all duration-150 ease-out overflow-y-auto",
+          "fixed top-12 bottom-0 z-50 w-[220px] border-r border-border-solid bg-level-0 px-2 py-4 shadow-lg transition-all duration-150 ease-out overflow-y-auto",
           animateIn
             ? "opacity-100 translate-x-0"
             : "opacity-0 -translate-x-2",
