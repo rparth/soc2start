@@ -171,7 +171,7 @@ export default function RiskDetailLayout(props: RiskDetailLayoutProps) {
               to: risksUrl,
             },
             {
-              label: __("Risk detail"),
+              label: risk.name ?? __("Risk detail"),
             },
           ]}
         />

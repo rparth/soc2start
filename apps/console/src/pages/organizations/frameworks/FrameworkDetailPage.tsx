@@ -150,6 +150,7 @@ export default function FrameworkDetailPage(props: Props) {
         breadcrumbs={[
           __("Governance"),
           { label: __("Frameworks"), to: `/organizations/${organizationId}/frameworks` },
+          framework.name ?? "",
         ]}
         title={(
           <>

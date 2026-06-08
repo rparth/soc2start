@@ -134,6 +134,7 @@ export default function DevicePostureDetailPage({
             label: __("Device Posture"),
             to: `/organizations/${organizationId}/monitoring/devices`,
           },
+          device.hostname ?? "",
         ]}
         title={device.hostname ?? ""}
         description={`${device.platform ?? ""} · ${device.osVersion ?? ""} · Agent ${device.agentVersion ?? ""}`}

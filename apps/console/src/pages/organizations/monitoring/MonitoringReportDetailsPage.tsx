@@ -188,7 +188,7 @@ export default function MonitoringReportDetailsPage({
   return (
     <div className="space-y-6">
       <PageHeader
-        breadcrumbs={[__("Monitoring"), title]}
+        breadcrumbs={[__("Monitoring"), { label: title, to: `/organizations/${organizationId}/${basePath}` }, reportName]}
         title={reportName}
         description={sprintf(
           __("Uploaded %s • %s rows"),
