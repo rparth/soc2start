@@ -39,7 +39,7 @@ var Templates embed.FS
 
 var (
 	//go:embed assets
-	staticAssets embed.FS
+	StaticAssets embed.FS
 
 	staticAssetsValidator = filevalidation.NewValidator(
 		filevalidation.WithMaxFileSize(5*1024*1024),
@@ -145,7 +145,7 @@ func NewPresenter(fileService *filemanager.Service, staticAssetsBucket string, b
 }
 
 func UploadStaticAssets(ctx context.Context, s3Client *s3.Client, staticAssetsBucket string) error {
-	subFS, err := fs.Sub(staticAssets, "assets")
+	subFS, err := fs.Sub(StaticAssets, "assets")
 	if err != nil {
 		return fmt.Errorf("cannot create subtree file system: %w", err)
 	}
@@ -256,15 +256,13 @@ var (
 )
 
 func (p *Presenter) getCommonVariables(ctx context.Context) (*CommonVariables, error) {
-	poweredByLogoURL, err := p.fm.GenerateFileUrl(ctx, &p.config.PoweredByLogo, staticAssetsDuration)
-	if err != nil {
-		return nil, fmt.Errorf("cannot generate probo logo URL: %w", err)
-	}
+	poweredByLogoURL := baseurl.MustParse(p.config.BaseURL).
+		AppendPath("/api/email-assets/v1/" + p.config.PoweredByLogo.Name).
+		MustString()
 
-	senderCompanyLogoURL, err := p.fm.GenerateFileUrl(ctx, &p.config.SenderCompanyLogo, staticAssetsDuration)
-	if err != nil {
-		return nil, fmt.Errorf("cannot generate sender logo URL: %w", err)
-	}
+	senderCompanyLogoURL := baseurl.MustParse(p.config.BaseURL).
+		AppendPath("/api/email-assets/v1/" + p.config.SenderCompanyLogo.Name).
+		MustString()
 
 	return &CommonVariables{
 		BaseURL:                         p.config.BaseURL,

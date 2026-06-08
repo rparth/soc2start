@@ -42,6 +42,7 @@ import (
 	connect_v1 "go.probo.inc/probo/pkg/server/api/connect/v1"
 	console_v1 "go.probo.inc/probo/pkg/server/api/console/v1"
 	cookiebanner_v1 "go.probo.inc/probo/pkg/server/api/cookiebanner/v1"
+	emailassets_v1 "go.probo.inc/probo/pkg/server/api/emailassets/v1"
 	files_v1 "go.probo.inc/probo/pkg/server/api/files/v1"
 	mcp_v1 "go.probo.inc/probo/pkg/server/api/mcp/v1"
 	slack_v1 "go.probo.inc/probo/pkg/server/api/slack/v1"
@@ -88,6 +89,7 @@ type (
 		compliancePageHandler http.Handler
 		consoleHandler        http.Handler
 		cookieBannerHandler   http.Handler
+		emailAssetsHandler    http.Handler
 		filesHandler          http.Handler
 		mcpHandler            http.Handler
 		slackHandler          http.Handler
@@ -214,6 +216,7 @@ func NewServer(cfg Config) (*Server, error) {
 			cfg.CookieBanner,
 			cfg.Geoloc,
 		),
+		emailAssetsHandler: emailassets_v1.NewMux(),
 		filesHandler: files_v1.NewMux(
 			cfg.Logger.Named("files.v1"),
 			cfg.FileSign,
@@ -282,6 +285,8 @@ func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	router := chi.NewRouter()
 	router.MethodNotAllowed(methodNotAllowed)
 	router.NotFound(notFound)
+
+	router.Mount("/email-assets/v1", http.StripPrefix("/email-assets/v1", s.emailAssetsHandler))
 
 	// Device agent API receives machine-to-machine POSTs using Bearer
 	// token auth. Mount outside the CORS handler since agents are not
