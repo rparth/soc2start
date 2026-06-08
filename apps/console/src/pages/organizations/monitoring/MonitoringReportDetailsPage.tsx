@@ -489,31 +489,40 @@ function RawDataTab({
   );
 
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const pendingVisRef = useRef<ColumnVisibility | null>(null);
+
+  const flushSave = useCallback(() => {
+    if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+    saveTimerRef.current = null;
+    const vis = pendingVisRef.current;
+    if (!vis) return;
+    pendingVisRef.current = null;
+    const selected = headers.filter((h) => vis[h] !== false);
+    commitUpdatePrefs({
+      variables: {
+        input: {
+          organizationId,
+          reportType: reportType as "PROWLER" | "PENTEST",
+          selectedColumns: selected,
+        },
+      },
+    });
+  }, [headers, organizationId, reportType, commitUpdatePrefs]);
 
   const persistPreferences = useCallback(
     (vis: ColumnVisibility) => {
+      pendingVisRef.current = vis;
       if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
-      saveTimerRef.current = setTimeout(() => {
-        const selected = headers.filter((h) => vis[h] !== false);
-        commitUpdatePrefs({
-          variables: {
-            input: {
-              organizationId,
-              reportType: reportType as "PROWLER" | "PENTEST",
-              selectedColumns: selected,
-            },
-          },
-        });
-      }, 800);
+      saveTimerRef.current = setTimeout(flushSave, 300);
     },
-    [headers, organizationId, reportType, commitUpdatePrefs],
+    [flushSave],
   );
 
   useEffect(() => {
     return () => {
-      if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
+      flushSave();
     };
-  }, []);
+  }, [flushSave]);
 
   const handleVisibilityChange = useCallback(
     (updater: ColumnVisibility | ((old: ColumnVisibility) => ColumnVisibility)) => {
