@@ -20,6 +20,7 @@ import {
   IconCircleQuestionmark,
   UserDropdown,
   UserDropdownItem,
+  useHelpPanel,
   useToast,
 } from "@probo/ui";
 import { useFragment, useMutation } from "react-relay";
@@ -27,6 +28,8 @@ import { graphql } from "relay-runtime";
 
 import type { ViewerMembershipDropdownFragment$key } from "#/__generated__/iam/ViewerMembershipDropdownFragment.graphql";
 import type { ViewerMembershipDropdownSignOutMutation } from "#/__generated__/iam/ViewerMembershipDropdownSignOutMutation.graphql";
+
+import { navigationHelpContent } from "./helpContent";
 
 export const fragment = graphql`
   fragment ViewerMembershipDropdownFragment on Organization {
@@ -54,6 +57,7 @@ export function ViewerMembershipDropdown(props: {
 
   const { __ } = useTranslate();
   const { toast } = useToast();
+  const helpPanel = useHelpPanel();
 
   const {
     viewer: {
@@ -92,9 +96,13 @@ export function ViewerMembershipDropdown(props: {
   return (
     <UserDropdown fullName={fullName} email={email}>
       <UserDropdownItem
-        to="mailto:support@getprobo.com"
+        to="#"
         icon={IconCircleQuestionmark}
         label={__("Help")}
+        onClick={(e) => {
+          e.preventDefault();
+          helpPanel.open(navigationHelpContent);
+        }}
       />
       <DropdownSeparator />
       <UserDropdownItem
