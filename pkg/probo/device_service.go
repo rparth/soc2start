@@ -17,6 +17,7 @@ package probo
 import (
 	"context"
 	"crypto/rand"
+	"errors"
 	"crypto/sha256"
 	"encoding/base64"
 	"encoding/hex"
@@ -125,6 +126,44 @@ func (s *DeviceService) Enroll(
 
 	scope := coredata.NewScopeFromObjectID(claims.OrganizationID)
 	now := time.Now()
+
+	existing := &coredata.Device{}
+
+	err = s.svc.pg.WithConn(
+		ctx,
+		func(ctx context.Context, conn pg.Querier) error {
+			return existing.LoadByHardwareUUID(ctx, conn, claims.OrganizationID, hardwareUUID)
+		},
+	)
+
+	if err == nil {
+		existing.ProfileID = &claims.ProfileID
+		existing.SerialNumber = serialNumber
+		existing.Hostname = hostname
+		existing.Platform = platform
+		existing.OSVersion = osVersion
+		existing.AgentVersion = agentVersion
+		existing.APIKeyHash = keyHash
+		existing.Status = coredata.DeviceStatusOnline
+		existing.LastHeartbeatAt = &now
+		existing.UpdatedAt = now
+
+		err = s.svc.pg.WithTx(
+			ctx,
+			func(ctx context.Context, tx pg.Tx) error {
+				return existing.ReEnroll(ctx, tx, scope)
+			},
+		)
+		if err != nil {
+			return nil, "", fmt.Errorf("cannot re-enroll device: %w", err)
+		}
+
+		return existing, rawKey, nil
+	}
+
+	if !errors.Is(err, pgx.ErrNoRows) {
+		return nil, "", fmt.Errorf("cannot check existing device: %w", err)
+	}
 
 	device := &coredata.Device{
 		ID:             gid.New(scope.GetTenantID(), coredata.DeviceEntityType),

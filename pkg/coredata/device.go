@@ -404,6 +404,53 @@ WHERE
 	return nil
 }
 
+func (d *Device) ReEnroll(
+	ctx context.Context,
+	conn pg.Tx,
+	scope Scoper,
+) error {
+	q := `
+UPDATE devices SET
+	profile_id = @profile_id,
+	serial_number = @serial_number,
+	hostname = @hostname,
+	platform = @platform,
+	os_version = @os_version,
+	agent_version = @agent_version,
+	api_key_hash = @api_key_hash,
+	status = @status,
+	last_heartbeat_at = @last_heartbeat_at,
+	updated_at = @updated_at
+WHERE
+	%s
+	AND id = @id
+`
+
+	q = fmt.Sprintf(q, scope.SQLFragment())
+
+	args := pgx.StrictNamedArgs{
+		"id":                d.ID,
+		"profile_id":        d.ProfileID,
+		"serial_number":     d.SerialNumber,
+		"hostname":          d.Hostname,
+		"platform":          d.Platform,
+		"os_version":        d.OSVersion,
+		"agent_version":     d.AgentVersion,
+		"api_key_hash":      d.APIKeyHash,
+		"status":            d.Status,
+		"last_heartbeat_at": d.LastHeartbeatAt,
+		"updated_at":        d.UpdatedAt,
+	}
+	maps.Copy(args, scope.SQLArguments())
+
+	_, err := conn.Exec(ctx, q, args)
+	if err != nil {
+		return fmt.Errorf("cannot re-enroll device: %w", err)
+	}
+
+	return nil
+}
+
 func (d *Device) Delete(
 	ctx context.Context,
 	conn pg.Tx,
