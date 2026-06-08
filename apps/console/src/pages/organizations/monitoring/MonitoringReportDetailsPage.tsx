@@ -240,117 +240,141 @@ export default function MonitoringReportDetailsPage({
 
 function SummaryTab({ summary }: { summary: SummaryData }) {
   const { __ } = useTranslate();
+  const passRate =
+    summary.totalRows > 0
+      ? Math.round((summary.passCount / summary.totalRows) * 100)
+      : 0;
 
   return (
     <div className="space-y-6">
       <div className="grid grid-cols-3 gap-4">
-        <Card className="p-4">
-          <p className="text-sm text-txt-secondary">{__("Total Checks")}</p>
-          <p className="text-2xl font-semibold">
+        <Card className="p-5">
+          <p className="text-xs font-semibold uppercase tracking-wider text-txt-tertiary">
+            {__("Total Checks")}
+          </p>
+          <p className="mt-2 text-2xl font-bold tabular-nums tracking-tight">
             {summary.totalRows.toLocaleString()}
           </p>
+          <div className="mt-3 flex gap-1 h-1.5 rounded-full overflow-hidden bg-subtle">
+            {summary.passCount > 0 && (
+              <div
+                className="bg-txt-success rounded-full transition-all duration-300"
+                style={{ width: `${passRate}%` }}
+              />
+            )}
+            {summary.failCount > 0 && (
+              <div
+                className="bg-txt-danger rounded-full transition-all duration-300"
+                style={{ width: `${100 - passRate}%` }}
+              />
+            )}
+          </div>
         </Card>
-        <Card className="p-4">
-          <p className="text-sm text-txt-secondary">{__("Passed")}</p>
-          <p className="text-2xl font-semibold text-green-600">
-            {summary.passCount.toLocaleString()}
+        <Card className="p-5">
+          <p className="text-xs font-semibold uppercase tracking-wider text-txt-tertiary">
+            {__("Passed")}
           </p>
+          <div className="mt-2 flex items-baseline gap-2">
+            <p className="text-2xl font-bold tabular-nums tracking-tight text-txt-success">
+              {summary.passCount.toLocaleString()}
+            </p>
+            <span className="text-sm text-txt-secondary tabular-nums">
+              {passRate}%
+            </span>
+          </div>
         </Card>
-        <Card className="p-4">
-          <p className="text-sm text-txt-secondary">{__("Failed")}</p>
-          <p className="text-2xl font-semibold text-red-600">
-            {summary.failCount.toLocaleString()}
+        <Card className="p-5">
+          <p className="text-xs font-semibold uppercase tracking-wider text-txt-tertiary">
+            {__("Failed")}
           </p>
+          <div className="mt-2 flex items-baseline gap-2">
+            <p className="text-2xl font-bold tabular-nums tracking-tight text-txt-danger">
+              {summary.failCount.toLocaleString()}
+            </p>
+            <span className="text-sm text-txt-secondary tabular-nums">
+              {100 - passRate}%
+            </span>
+          </div>
         </Card>
       </div>
 
       {Object.keys(summary.bySeverity).length > 0 && (
-        <Card>
-          <div className="p-4">
-            <h3 className="text-sm font-semibold">{__("By Severity")}</h3>
-          </div>
-          <Table>
-            <Thead>
-              <Tr>
-                <Th>{__("Severity")}</Th>
-                <Th>{__("Pass")}</Th>
-                <Th>{__("Fail")}</Th>
-                <Th>{__("Total")}</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {Object.entries(summary.bySeverity)
-                .sort(([a], [b]) => {
-                  const order = [
-                    "critical",
-                    "high",
-                    "medium",
-                    "low",
-                    "informational",
-                  ];
-                  return (
-                    order.indexOf(a.toLowerCase()) -
-                    order.indexOf(b.toLowerCase())
-                  );
-                })
-                .map(([severity, counts]) => (
-                  <Tr key={severity}>
-                    <Td>
-                      <Badge
-                        variant={
-                          severity.toLowerCase() === "critical" ||
-                          severity.toLowerCase() === "high"
-                            ? "danger"
-                            : severity.toLowerCase() === "medium"
-                              ? "warning"
-                              : "neutral"
-                        }
-                      >
-                        {severity}
-                      </Badge>
-                    </Td>
-                    <Td>{counts.pass.toLocaleString()}</Td>
-                    <Td>{counts.fail.toLocaleString()}</Td>
-                    <Td>
-                      {(counts.pass + counts.fail).toLocaleString()}
-                    </Td>
-                  </Tr>
-                ))}
-            </Tbody>
-          </Table>
-        </Card>
+        <Table>
+          <Thead>
+            <Tr>
+              <Th>{__("Severity")}</Th>
+              <Th>{__("Pass")}</Th>
+              <Th>{__("Fail")}</Th>
+              <Th>{__("Total")}</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {Object.entries(summary.bySeverity)
+              .sort(([a], [b]) => {
+                const order = [
+                  "critical",
+                  "high",
+                  "medium",
+                  "low",
+                  "informational",
+                ];
+                return (
+                  order.indexOf(a.toLowerCase()) -
+                  order.indexOf(b.toLowerCase())
+                );
+              })
+              .map(([severity, counts]) => (
+                <Tr key={severity}>
+                  <Td>
+                    <Badge
+                      variant={
+                        severity.toLowerCase() === "critical" ||
+                        severity.toLowerCase() === "high"
+                          ? "danger"
+                          : severity.toLowerCase() === "medium"
+                            ? "warning"
+                            : "neutral"
+                      }
+                    >
+                      {severity}
+                    </Badge>
+                  </Td>
+                  <Td>{counts.pass.toLocaleString()}</Td>
+                  <Td>{counts.fail.toLocaleString()}</Td>
+                  <Td>
+                    {(counts.pass + counts.fail).toLocaleString()}
+                  </Td>
+                </Tr>
+              ))}
+          </Tbody>
+        </Table>
       )}
 
       {Object.keys(summary.byService).length > 0 && (
-        <Card>
-          <div className="p-4">
-            <h3 className="text-sm font-semibold">{__("By Service")}</h3>
-          </div>
-          <Table>
-            <Thead>
-              <Tr>
-                <Th>{__("Service")}</Th>
-                <Th>{__("Pass")}</Th>
-                <Th>{__("Fail")}</Th>
-                <Th>{__("Total")}</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {Object.entries(summary.byService)
-                .sort(([, a], [, b]) => b.fail - a.fail)
-                .map(([service, counts]) => (
-                  <Tr key={service}>
-                    <Td className="font-medium">{service}</Td>
-                    <Td>{counts.pass.toLocaleString()}</Td>
-                    <Td>{counts.fail.toLocaleString()}</Td>
-                    <Td>
-                      {(counts.pass + counts.fail).toLocaleString()}
-                    </Td>
-                  </Tr>
-                ))}
-            </Tbody>
-          </Table>
-        </Card>
+        <Table>
+          <Thead>
+            <Tr>
+              <Th>{__("Service")}</Th>
+              <Th>{__("Pass")}</Th>
+              <Th>{__("Fail")}</Th>
+              <Th>{__("Total")}</Th>
+            </Tr>
+          </Thead>
+          <Tbody>
+            {Object.entries(summary.byService)
+              .sort(([, a], [, b]) => b.fail - a.fail)
+              .map(([service, counts]) => (
+                <Tr key={service}>
+                  <Td className="font-medium">{service}</Td>
+                  <Td>{counts.pass.toLocaleString()}</Td>
+                  <Td>{counts.fail.toLocaleString()}</Td>
+                  <Td>
+                    {(counts.pass + counts.fail).toLocaleString()}
+                  </Td>
+                </Tr>
+              ))}
+          </Tbody>
+        </Table>
       )}
     </div>
   );
@@ -468,7 +492,7 @@ function RawDataTab({ rawContent }: { rawContent: string }) {
               setStatusFilter(e.target.value);
               setPage(0);
             }}
-            className="rounded-md border border-primary bg-primary px-3 py-1.5 text-sm text-txt-primary"
+            className="rounded-lg border border-border-solid bg-level-1 px-3 py-1.5 text-sm text-txt-primary"
           >
             <option value="ALL">{__("All statuses")}</option>
             {uniqueStatuses.map((s) => (
@@ -485,7 +509,7 @@ function RawDataTab({ rawContent }: { rawContent: string }) {
               setSeverityFilter(e.target.value);
               setPage(0);
             }}
-            className="rounded-md border border-primary bg-primary px-3 py-1.5 text-sm text-txt-primary"
+            className="rounded-lg border border-border-solid bg-level-1 px-3 py-1.5 text-sm text-txt-primary"
           >
             <option value="ALL">{__("All severities")}</option>
             {uniqueSeverities.map((s) => (
@@ -504,8 +528,7 @@ function RawDataTab({ rawContent }: { rawContent: string }) {
         </p>
       </div>
 
-      <Card className="overflow-x-auto">
-        <Table>
+      <Table>
           <Thead>
             <Tr>
               {headers.map((header, i) => (
@@ -530,8 +553,7 @@ function RawDataTab({ rawContent }: { rawContent: string }) {
               </Tr>
             ))}
           </Tbody>
-        </Table>
-      </Card>
+      </Table>
 
       {totalPages > 1 && (
         <div className="flex items-center justify-center gap-2">
