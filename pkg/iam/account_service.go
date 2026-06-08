@@ -200,6 +200,60 @@ func (s AccountService) VerifyEmail(ctx context.Context, token string) error {
 	)
 }
 
+func (s AccountService) ResendVerificationEmail(ctx context.Context, emailAddr mail.Addr) error {
+	return s.pg.WithTx(
+		ctx,
+		func(ctx context.Context, tx pg.Tx) error {
+			identity := &coredata.Identity{}
+
+			err := identity.LoadByEmail(ctx, tx, emailAddr)
+			if err != nil {
+				if err == coredata.ErrResourceNotFound {
+					return nil
+				}
+				return fmt.Errorf("cannot load identity: %w", err)
+			}
+
+			if identity.EmailAddressVerified {
+				return nil
+			}
+
+			confirmationToken, err := statelesstoken.NewToken(
+				s.tokenSecret,
+				TokenTypeEmailConfirmation,
+				24*time.Hour,
+				EmailConfirmationData{IdentityID: identity.ID, Email: identity.EmailAddress},
+			)
+			if err != nil {
+				return fmt.Errorf("cannot generate confirmation token: %w", err)
+			}
+
+			emailPresenter := emails.NewPresenter(s.fm, s.bucket, s.baseURL, identity.FullName)
+
+			subject, textBody, htmlBody, err := emailPresenter.RenderConfirmEmail(ctx, "/auth/verify-email", confirmationToken)
+			if err != nil {
+				return fmt.Errorf("cannot render confirmation email: %w", err)
+			}
+
+			confirmationEmail := coredata.NewEmail(
+				identity.FullName,
+				identity.EmailAddress,
+				subject,
+				textBody,
+				htmlBody,
+				nil,
+			)
+
+			err = confirmationEmail.Insert(ctx, tx)
+			if err != nil {
+				return fmt.Errorf("cannot insert confirmation email: %w", err)
+			}
+
+			return nil
+		},
+	)
+}
+
 func (s *AccountService) ListPendingInvitations(
 	ctx context.Context,
 	userID gid.GID,

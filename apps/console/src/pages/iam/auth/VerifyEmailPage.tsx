@@ -23,6 +23,7 @@ import { graphql } from "relay-runtime";
 import { z } from "zod";
 
 import type { VerifyEmailPageMutation } from "#/__generated__/iam/VerifyEmailPageMutation.graphql";
+import type { VerifyEmailPageResendMutation } from "#/__generated__/iam/VerifyEmailPageResendMutation.graphql";
 import { useFormWithSchema } from "#/hooks/useFormWithSchema";
 
 const verifyEmailMutation = graphql`
@@ -33,8 +34,20 @@ const verifyEmailMutation = graphql`
   }
 `;
 
+const resendVerificationEmailMutation = graphql`
+  mutation VerifyEmailPageResendMutation($input: ResendVerificationEmailInput!) {
+    resendVerificationEmail(input: $input) {
+      success
+    }
+  }
+`;
+
 const confirmEmailSchema = z.object({
   token: z.string().min(1, "Please enter a confirmation token"),
+});
+
+const resendEmailSchema = z.object({
+  email: z.string().email("Please enter a valid email address"),
 });
 
 export default function VerifyEmailPage() {
@@ -45,6 +58,8 @@ export default function VerifyEmailPage() {
   usePageTitle(__("Confirm Email"));
 
   const [isConfirmed, setIsConfirmed] = useState(false);
+  const [showResend, setShowResend] = useState(false);
+  const [resendSent, setResendSent] = useState(false);
 
   const form = useFormWithSchema(confirmEmailSchema, {
     defaultValues: {
@@ -52,8 +67,17 @@ export default function VerifyEmailPage() {
     },
   });
 
+  const resendForm = useFormWithSchema(resendEmailSchema, {
+    defaultValues: {
+      email: "",
+    },
+  });
+
   const [verifyEmail]
     = useMutation<VerifyEmailPageMutation>(verifyEmailMutation);
+
+  const [resendVerificationEmail]
+    = useMutation<VerifyEmailPageResendMutation>(resendVerificationEmailMutation);
 
   const handleSubmit = form.handleSubmit((data) => {
     verifyEmail({
@@ -64,11 +88,20 @@ export default function VerifyEmailPage() {
       },
       onCompleted: (_, errors) => {
         if (errors) {
+          const errorMessage = errors[0]?.message ?? "";
+          const isExpired = errorMessage.toLowerCase().includes("expired");
+
           toast({
             title: __("Error"),
-            description: formatError(__("Failed to confirm email"), errors),
+            description: isExpired
+              ? __("Your confirmation link has expired. Request a new one below.")
+              : formatError(__("Failed to confirm email"), errors),
             variant: "error",
           });
+
+          if (isExpired) {
+            setShowResend(true);
+          }
           return;
         }
 
@@ -83,6 +116,31 @@ export default function VerifyEmailPage() {
         toast({
           title: __("Error"),
           description: err.message || __("Failed to confirm email"),
+          variant: "error",
+        });
+      },
+    });
+  });
+
+  const handleResend = resendForm.handleSubmit((data) => {
+    resendVerificationEmail({
+      variables: {
+        input: {
+          email: data.email.trim(),
+        },
+      },
+      onCompleted: () => {
+        setResendSent(true);
+        toast({
+          title: __("Email sent"),
+          description: __("If an account exists with that email, a new verification link has been sent."),
+          variant: "success",
+        });
+      },
+      onError: () => {
+        toast({
+          title: __("Error"),
+          description: __("Failed to send verification email. Please try again."),
           variant: "error",
         });
       },
@@ -110,29 +168,79 @@ export default function VerifyEmailPage() {
             </div>
           )
         : (
-            <form onSubmit={e => void handleSubmit(e)} className="space-y-4">
-              <Field
-                label={__("Confirmation Token")}
-                type="text"
-                placeholder={__("Enter your confirmation token")}
-                {...form.register("token")}
-                error={form.formState.errors.token?.message}
-                disabled={form.formState.isSubmitting}
-                help={__(
-                  "The token has been automatically filled from the URL if available",
-                )}
-              />
+            <>
+              <form onSubmit={e => void handleSubmit(e)} className="space-y-4">
+                <Field
+                  label={__("Confirmation Token")}
+                  type="text"
+                  placeholder={__("Enter your confirmation token")}
+                  {...form.register("token")}
+                  error={form.formState.errors.token?.message}
+                  disabled={form.formState.isSubmitting}
+                  help={__(
+                    "The token has been automatically filled from the URL if available",
+                  )}
+                />
 
-              <Button
-                type="submit"
-                className="w-xs h-10 mx-auto mt-6"
-                disabled={form.formState.isSubmitting}
-              >
-                {form.formState.isSubmitting
-                  ? __("Confirming...")
-                  : __("Confirm Email")}
-              </Button>
-            </form>
+                <Button
+                  type="submit"
+                  className="w-xs h-10 mx-auto mt-6"
+                  disabled={form.formState.isSubmitting}
+                >
+                  {form.formState.isSubmitting
+                    ? __("Confirming...")
+                    : __("Confirm Email")}
+                </Button>
+              </form>
+
+              {showResend && (
+                <div className="border-t border-bd-default pt-6 space-y-4">
+                  <p className="text-sm text-txt-secondary text-center">
+                    {__("Request a new verification email")}
+                  </p>
+                  {resendSent
+                    ? (
+                        <p className="text-sm text-txt-success text-center">
+                          {__("Check your inbox for a new verification link.")}
+                        </p>
+                      )
+                    : (
+                        <form onSubmit={e => void handleResend(e)} className="space-y-4">
+                          <Field
+                            label={__("Email Address")}
+                            type="email"
+                            placeholder={__("Enter your email address")}
+                            {...resendForm.register("email")}
+                            error={resendForm.formState.errors.email?.message}
+                            disabled={resendForm.formState.isSubmitting}
+                          />
+                          <Button
+                            type="submit"
+                            variant="secondary"
+                            className="w-xs h-10 mx-auto"
+                            disabled={resendForm.formState.isSubmitting}
+                          >
+                            {resendForm.formState.isSubmitting
+                              ? __("Sending...")
+                              : __("Resend Verification Email")}
+                          </Button>
+                        </form>
+                      )}
+                </div>
+              )}
+
+              <p className="text-sm text-txt-tertiary text-center">
+                <button
+                  type="button"
+                  className="underline text-txt-secondary hover:text-txt-primary"
+                  onClick={() => setShowResend(!showResend)}
+                >
+                  {showResend
+                    ? __("Hide resend form")
+                    : __("Didn't receive the email?")}
+                </button>
+              </p>
+            </>
           )}
 
       <div className="text-center">

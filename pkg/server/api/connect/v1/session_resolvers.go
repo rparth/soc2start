@@ -315,6 +315,18 @@ func (r *mutationResolver) VerifyEmail(ctx context.Context, input types.VerifyEm
 	}, nil
 }
 
+// ResendVerificationEmail is the resolver for the resendVerificationEmail field.
+func (r *mutationResolver) ResendVerificationEmail(ctx context.Context, input types.ResendVerificationEmailInput) (*types.ResendVerificationEmailPayload, error) {
+	err := r.iam.AccountService.ResendVerificationEmail(ctx, input.Email)
+	if err != nil {
+		r.logger.ErrorCtx(ctx, "cannot resend verification email", log.Error(err))
+	}
+
+	return &types.ResendVerificationEmailPayload{
+		Success: true,
+	}, nil
+}
+
 // ChangePassword is the resolver for the changePassword field.
 func (r *mutationResolver) ChangePassword(ctx context.Context, input types.ChangePasswordInput) (*types.ChangePasswordPayload, error) {
 	identity := authn.IdentityFromContext(ctx)
