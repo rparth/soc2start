@@ -20,6 +20,11 @@ import {
   Badge,
   Card,
   DropdownItem,
+  IconChevronDown,
+  IconChevronLeft,
+  IconChevronRight,
+  IconChevronUp,
+  IconMagnifyingGlass,
   IconTrashCan,
   PageHeader,
   Table,
@@ -563,6 +568,12 @@ function RawDataTab({
     }
   };
 
+  const isFiltering = globalFilter.length > 0;
+  const filteredCount = table.getFilteredRowModel().rows.length;
+  const totalCount = data.length;
+  const currentPage = table.getState().pagination.pageIndex + 1;
+  const totalPages = Math.max(1, table.getPageCount());
+
   if (error) {
     return (
       <Card className="p-8 text-center text-txt-secondary">{error}</Card>
@@ -570,17 +581,22 @@ function RawDataTab({
   }
 
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-5">
       <div className="w-56 shrink-0">
         <Card className="p-0 overflow-hidden">
-          <div className="px-3 py-2.5 border-b border-bd-default flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-txt-tertiary">
-              {__("Columns")}
-            </span>
+          <div className="px-3 py-3 border-b border-bd-default flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-semibold uppercase tracking-wider text-txt-tertiary">
+                {__("Columns")}
+              </span>
+              <span className="text-xs tabular-nums font-medium text-txt-secondary bg-subtle rounded-md px-1.5 py-0.5">
+                {visibleCount}/{headers.length}
+              </span>
+            </div>
             <button
               type="button"
               onClick={handleToggleAll}
-              className="text-xs font-medium text-accent-bold hover:text-accent-bold/80 transition-colors"
+              className="text-xs font-medium text-accent-bold hover:text-accent-bold/80 transition-colors duration-150"
             >
               {allVisible ? __("Deselect All") : __("Select All")}
             </button>
@@ -591,7 +607,11 @@ function RawDataTab({
               return (
                 <label
                   key={header}
-                  className="flex items-center gap-2 px-2 py-1.5 rounded-md cursor-pointer hover:bg-subtle transition-colors"
+                  className={`flex items-center gap-2.5 px-2 py-1.5 rounded-md cursor-pointer transition-colors duration-150 ${
+                    isVisible
+                      ? "hover:bg-subtle"
+                      : "hover:bg-subtle opacity-60 hover:opacity-80"
+                  }`}
                 >
                   <input
                     type="checkbox"
@@ -602,10 +622,12 @@ function RawDataTab({
                         [header]: !isVisible,
                       }))
                     }
-                    className="size-3.5 rounded border-bd-default text-accent-bold focus:ring-accent-bold/30 accent-[var(--color-accent-bold)]"
+                    className="size-3.5 rounded border-bd-default text-accent-bold focus:ring-accent-bold/30 accent-[var(--color-accent-bold)] transition-transform duration-150 active:scale-90"
                   />
                   <span
-                    className={`text-sm truncate ${isVisible ? "text-txt-primary" : "text-txt-tertiary"}`}
+                    className={`text-sm truncate transition-colors duration-150 ${
+                      isVisible ? "text-txt-primary" : "text-txt-tertiary"
+                    }`}
                   >
                     {header}
                   </span>
@@ -618,18 +640,32 @@ function RawDataTab({
 
       <div className="flex-1 min-w-0 space-y-3">
         <div className="flex items-center justify-between gap-4">
-          <input
-            type="text"
-            value={globalFilter}
-            onChange={(e) => setGlobalFilter(e.target.value)}
-            placeholder={__("Search across all columns...")}
-            className="w-full max-w-sm px-3 py-2 text-sm border border-bd-default rounded-lg bg-primary text-txt-primary placeholder:text-txt-tertiary focus:outline-none focus:ring-2 focus:ring-accent-bold/30 focus:border-accent-bold"
-          />
+          <div className="relative w-full max-w-sm group">
+            <IconMagnifyingGlass
+              className="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-txt-tertiary group-focus-within:text-accent-bold transition-colors duration-150 pointer-events-none"
+            />
+            <input
+              type="text"
+              value={globalFilter}
+              onChange={(e) => setGlobalFilter(e.target.value)}
+              placeholder={__("Search across all columns...")}
+              className="w-full pl-9 pr-3 py-2 text-sm border border-bd-default rounded-lg bg-primary text-txt-primary placeholder:text-txt-tertiary focus:outline-none focus:ring-2 focus:ring-accent-bold/30 focus:border-accent-bold transition-[border-color,box-shadow] duration-150"
+            />
+          </div>
           <span className="text-xs text-txt-tertiary whitespace-nowrap tabular-nums">
-            {sprintf(
-              __("%s of %s rows"),
-              table.getFilteredRowModel().rows.length.toLocaleString(),
-              data.length.toLocaleString(),
+            {isFiltering ? (
+              <>
+                <span className="font-semibold text-accent-bold">
+                  {filteredCount.toLocaleString()}
+                </span>
+                {" "}{__("of")}{" "}
+                {totalCount.toLocaleString()}{" "}{__("rows")}
+              </>
+            ) : (
+              sprintf(
+                __("%s rows"),
+                totalCount.toLocaleString(),
+              )
             )}
           </span>
         </div>
@@ -639,24 +675,36 @@ function RawDataTab({
             <Thead>
               <Tr>
                 {table.getHeaderGroups().map((headerGroup) =>
-                  headerGroup.headers.map((header) => (
-                    <Th
-                      key={header.id}
-                      className="cursor-pointer select-none hover:text-txt-secondary"
-                      onClick={header.column.getToggleSortingHandler()}
-                    >
-                      <span className="inline-flex items-center gap-1">
-                        {flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                        {{
-                          asc: " ↑",
-                          desc: " ↓",
-                        }[header.column.getIsSorted() as string] ?? ""}
-                      </span>
-                    </Th>
-                  )),
+                  headerGroup.headers.map((header) => {
+                    const sorted = header.column.getIsSorted();
+                    return (
+                      <Th
+                        key={header.id}
+                        className={`cursor-pointer select-none transition-colors duration-150 ${
+                          sorted
+                            ? "text-txt-primary"
+                            : "hover:text-txt-secondary"
+                        }`}
+                        onClick={header.column.getToggleSortingHandler()}
+                      >
+                        <span className="inline-flex items-center gap-1.5">
+                          {flexRender(
+                            header.column.columnDef.header,
+                            header.getContext(),
+                          )}
+                          {sorted ? (
+                            <span className="text-accent-bold">
+                              {sorted === "asc" ? (
+                                <IconChevronUp className="size-3.5" />
+                              ) : (
+                                <IconChevronDown className="size-3.5" />
+                              )}
+                            </span>
+                          ) : null}
+                        </span>
+                      </Th>
+                    );
+                  }),
                 )}
               </Tr>
             </Thead>
@@ -665,11 +713,17 @@ function RawDataTab({
                 <Tr>
                   <Td
                     colSpan={table.getVisibleLeafColumns().length}
-                    className="text-center text-txt-tertiary py-8"
+                    className="text-center py-12"
                   >
-                    {visibleCount === 0
-                      ? __("Select at least one column to view data")
-                      : __("No matching rows")}
+                    <div className="flex flex-col items-center gap-2">
+                      <span className="text-txt-tertiary text-sm">
+                        {visibleCount === 0
+                          ? __("Select at least one column to view data")
+                          : isFiltering
+                            ? sprintf(__("No rows match \"%s\""), globalFilter)
+                            : __("No data available")}
+                      </span>
+                    </div>
                   </Td>
                 </Tr>
               ) : (
@@ -690,7 +744,7 @@ function RawDataTab({
           </Table>
         </div>
 
-        <div className="flex items-center justify-between px-1">
+        <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <span className="text-xs text-txt-tertiary">{__("Rows per page")}</span>
             <select
@@ -699,7 +753,7 @@ function RawDataTab({
                 setPageSize(Number(e.target.value));
                 table.setPageIndex(0);
               }}
-              className="px-2 py-1 text-xs border border-bd-default rounded-md bg-primary text-txt-primary focus:outline-none focus:ring-2 focus:ring-accent-bold/30"
+              className="px-2 py-1 text-xs border border-bd-default rounded-md bg-primary text-txt-primary focus:outline-none focus:ring-2 focus:ring-accent-bold/30 transition-[border-color,box-shadow] duration-150"
             >
               {PAGE_SIZES.map((size) => (
                 <option key={size} value={size}>
@@ -708,32 +762,32 @@ function RawDataTab({
               ))}
             </select>
           </div>
-          <div className="flex items-center gap-3">
-            <span className="text-xs text-txt-tertiary tabular-nums">
+          <div className="flex items-center gap-1.5">
+            <span className="text-xs text-txt-tertiary tabular-nums mr-2">
               {sprintf(
                 __("Page %s of %s"),
-                (table.getState().pagination.pageIndex + 1).toLocaleString(),
-                Math.max(1, table.getPageCount()).toLocaleString(),
+                currentPage.toLocaleString(),
+                totalPages.toLocaleString(),
               )}
             </span>
-            <div className="flex gap-1">
-              <button
-                type="button"
-                onClick={() => table.previousPage()}
-                disabled={!table.getCanPreviousPage()}
-                className="px-3 py-1.5 text-xs font-medium rounded-md border border-bd-default bg-primary text-txt-primary hover:bg-subtle disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-              >
-                {__("Previous")}
-              </button>
-              <button
-                type="button"
-                onClick={() => table.nextPage()}
-                disabled={!table.getCanNextPage()}
-                className="px-3 py-1.5 text-xs font-medium rounded-md border border-bd-default bg-primary text-txt-primary hover:bg-subtle disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-              >
-                {__("Next")}
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={() => table.previousPage()}
+              disabled={!table.getCanPreviousPage()}
+              className="p-1.5 rounded-md border border-bd-default bg-primary text-txt-primary hover:bg-subtle disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-150"
+              aria-label={__("Previous page")}
+            >
+              <IconChevronLeft className="size-3.5" />
+            </button>
+            <button
+              type="button"
+              onClick={() => table.nextPage()}
+              disabled={!table.getCanNextPage()}
+              className="p-1.5 rounded-md border border-bd-default bg-primary text-txt-primary hover:bg-subtle disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-150"
+              aria-label={__("Next page")}
+            >
+              <IconChevronRight className="size-3.5" />
+            </button>
           </div>
         </div>
       </div>
