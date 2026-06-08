@@ -138,7 +138,7 @@ export default function ThirdPartyDetailPage(props: Props) {
             <img
               src={logo}
               alt={thirdParty.name ?? ""}
-              className="shadow-mid rounded-2xl"
+              className="shadow-mid rounded-lg"
             />
           )}
           <div className="flex items-center gap-3">

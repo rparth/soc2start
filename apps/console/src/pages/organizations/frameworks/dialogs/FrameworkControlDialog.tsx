@@ -209,7 +209,7 @@ export function FrameworkControlDialog(props: Props) {
             placeholder={__("Add description")}
             {...register("description")}
           />
-          <div className="border border-border-low rounded-xl p-3 space-y-3 mt-4">
+          <div className="border border-border-low rounded-lg p-3 space-y-3 mt-4">
             <label className="flex items-center gap-2 cursor-pointer">
               <Checkbox
                 checked={bestPracticeValue}

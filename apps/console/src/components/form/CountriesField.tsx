@@ -165,7 +165,7 @@ function CountryInput({ availableCountries, onAdd }: CountryInputProps) {
       </div>
 
       {isOpen && filteredCountries.length > 0 && (
-        <div className="absolute z-50 w-full mt-1 p-2 shadow-mid bg-level-1 overflow-y-auto overflow-x-hidden rounded-2xl border-border-low max-h-60">
+        <div className="absolute z-50 w-full mt-1 p-2 shadow-mid bg-level-1 overflow-y-auto overflow-x-hidden rounded-lg border-border-low max-h-60">
           {filteredCountries.map((option: { value: string; label: string }) => (
             <button
               key={option.value}

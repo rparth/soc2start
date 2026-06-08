@@ -29,7 +29,7 @@ type Props = PropsWithChildren<{
 }>;
 
 export const dropdown = tv({
-  base: "z-50 p-2 shadow-mid min-w-[8rem] bg-level-1 overflow-y-auto overflow-x-hidden rounded-2xl border border-border-low animate-in fade-in-0 zoom-in-95 duration-150",
+  base: "z-50 p-2 shadow-mid min-w-[8rem] bg-level-1 overflow-y-auto overflow-x-hidden rounded-lg border border-border-low animate-in fade-in-0 zoom-in-95 duration-150",
 });
 
 export function Dropdown({ children, toggle, className, open, onOpenChange }: Props) {

@@ -165,7 +165,7 @@ function HelpPanelOverlay({
 
 function HelpSectionCard({ section }: { section: HelpSection }) {
   return (
-    <div className="rounded-xl border border-border-low bg-level-0 p-4 space-y-2">
+    <div className="rounded-lg border border-border-low bg-level-0 p-4 space-y-2">
       <h3 className="text-sm font-medium text-txt-primary">{section.title}</h3>
       <p className="text-sm text-txt-secondary leading-relaxed">{section.content}</p>
     </div>

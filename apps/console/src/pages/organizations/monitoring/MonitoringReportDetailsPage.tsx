@@ -649,7 +649,7 @@ function RawDataTab({
               value={globalFilter}
               onChange={(e) => setGlobalFilter(e.target.value)}
               placeholder={__("Search across all columns...")}
-              className="w-full pl-9 pr-3 py-2 text-sm border border-bd-default rounded-lg bg-primary text-txt-primary placeholder:text-txt-tertiary focus:outline-none focus:ring-2 focus:ring-accent-bold/30 focus:border-accent-bold transition-[border-color,box-shadow] duration-150"
+              className="w-full pl-9 pr-3 py-2 text-sm border border-bd-default rounded-md bg-level-1 text-txt-primary placeholder:text-txt-tertiary focus:outline-none focus:ring-2 focus:ring-accent-bold/30 focus:border-accent-bold transition-[border-color,box-shadow] duration-150"
             />
           </div>
           <span className="text-xs text-txt-tertiary whitespace-nowrap tabular-nums">
@@ -753,7 +753,7 @@ function RawDataTab({
                 setPageSize(Number(e.target.value));
                 table.setPageIndex(0);
               }}
-              className="px-2 py-1 text-xs border border-bd-default rounded-md bg-primary text-txt-primary focus:outline-none focus:ring-2 focus:ring-accent-bold/30 transition-[border-color,box-shadow] duration-150"
+              className="px-2 py-1 text-xs border border-bd-default rounded-md bg-level-1 text-txt-primary focus:outline-none focus:ring-2 focus:ring-accent-bold/30 transition-[border-color,box-shadow] duration-150"
             >
               {PAGE_SIZES.map((size) => (
                 <option key={size} value={size}>
@@ -774,7 +774,7 @@ function RawDataTab({
               type="button"
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
-              className="p-1.5 rounded-md border border-bd-default bg-primary text-txt-primary hover:bg-subtle disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-150"
+              className="p-1.5 rounded-md border border-bd-default bg-level-1 text-txt-primary hover:bg-subtle disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-150"
               aria-label={__("Previous page")}
             >
               <IconChevronLeft className="size-3.5" />
@@ -783,7 +783,7 @@ function RawDataTab({
               type="button"
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
-              className="p-1.5 rounded-md border border-bd-default bg-primary text-txt-primary hover:bg-subtle disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-150"
+              className="p-1.5 rounded-md border border-bd-default bg-level-1 text-txt-primary hover:bg-subtle disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-150"
               aria-label={__("Next page")}
             >
               <IconChevronRight className="size-3.5" />

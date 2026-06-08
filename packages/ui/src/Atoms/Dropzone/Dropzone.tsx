@@ -33,8 +33,8 @@ type Props = {
 export const dropzone = tv({
   slots: {
     wrapper:
-            "bg-subtle border border border-border-low p-2 rounded-[20px] outline-none  focus-visible:shadow-focus",
-    zone: "bg-secondary min-h-46 border border-border-low border-dashed rounded-2xl flex items-center justify-center",
+            "bg-subtle border border border-border-low p-2 rounded-lg outline-none  focus-visible:shadow-focus",
+    zone: "bg-secondary min-h-46 border border-border-low border-dashed rounded-lg flex items-center justify-center",
     title: "flex gap-2 text-sm font-medium text-center justify-center",
     description: "text-xs text-txt-tertiary text-center",
   },

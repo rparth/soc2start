@@ -90,9 +90,9 @@ const variantIcon: Record<string, FC<IconProps>> = {
 const toastStyles = tv({
   slots: {
     wrapper:
-            "relative overflow-hidden bg-level-1 border border-border-solid rounded-xl shadow-dialog animate-in slide-in-from-bottom-3 fade-in-0 duration-200 ease-[var(--ease-out-expo)]",
+            "relative overflow-hidden bg-level-1 border border-border-solid rounded-lg shadow-dialog animate-in slide-in-from-bottom-3 fade-in-0 duration-200 ease-[var(--ease-out-expo)]",
     icon: "flex-none mt-0.5",
-    timer: "absolute bottom-0 left-0 h-[2px] starting:scale-x-0 scale-x-100 origin-left transition-transform ease-linear rounded-b-xl",
+    timer: "absolute bottom-0 left-0 h-[2px] starting:scale-x-0 scale-x-100 origin-left transition-transform ease-linear rounded-b-lg",
     close: "flex-none p-1 rounded-md text-txt-quaternary hover:text-txt-secondary hover:bg-subtle transition-colors duration-150 cursor-pointer",
   },
   variants: {

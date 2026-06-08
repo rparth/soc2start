@@ -72,9 +72,9 @@ typography:
     lineHeight: 1.43
 rounded:
   sm: "4px"
-  md: "8px"
-  lg: "12px"
-  xl: "16px"
+  md: "6px"
+  lg: "8px"
+  xl: "12px"
   pill: "9999px"
 spacing:
   xs: "4px"
@@ -150,7 +150,7 @@ This is not a startup dashboard trying to look fun. It is not an enterprise tool
 - Navy anchors identity; emerald signals action and success
 - Light mode is the default working mode; dark mode is a fully-designed companion, not an afterthought
 - Tight negative letter-spacing on headings for density and authority
-- Consistent 12px corner radius on interactive surfaces
+- Consistent 8px corner radius on interactive surfaces; 12px reserved for dialogs
 - Flat surfaces at rest; elevation earned through interaction
 - Motion is functional — ease-out-quart curves, 150-200ms durations, reduced-motion respected
 
@@ -400,7 +400,7 @@ All transitions use the ease-out-quart curve by default. Motion is functional: i
 
 ### 7.1 Buttons
 
-**Shape:** Generously rounded (12px), substantial padding (12px vertical, 24px horizontal), semibold (600) at 14px.
+**Shape:** Rounded (8px), substantial padding (12px vertical, 24px horizontal), semibold (600) at 14px.
 
 | Variant | Rest | Hover | Active | Usage |
 |---------|------|-------|--------|-------|
@@ -433,7 +433,7 @@ Each semantic variant (success/warning/danger/info) includes a 6px colored statu
 
 | Property | Value |
 |----------|-------|
-| Corner radius | 12px (`rounded-xl`) |
+| Corner radius | 8px (`rounded-lg`) |
 | Background | `level-1` (white in light, `#0D2137` in dark) |
 | Border | 1px solid `border-solid` |
 | Shadow at rest | None |
@@ -535,7 +535,7 @@ For dense tables, row height can reduce to 36px with 8px 12px padding. Never go 
 | Position | Bottom-right, 16px from edges |
 | Background | `level-1` with `shadow-dialog` |
 | Border | 1px `border-solid` |
-| Corner radius | 12px |
+| Corner radius | 8px |
 | Auto-dismiss | 4 seconds |
 | Entry | Slide up + fade, 200ms ease-out-expo |
 | Exit | Fade out, 150ms ease-in |
