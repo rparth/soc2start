@@ -199,7 +199,7 @@ export default function VerifyEmailPage() {
               </form>
 
               {showResend && (
-                <div className="mt-8 pt-6 border-t border-bd-default">
+                <div className="mt-8 pt-6 border-t border-border-low">
                   <p className="text-sm text-txt-secondary text-center mb-4">
                     {__("Request a new verification email")}
                   </p>

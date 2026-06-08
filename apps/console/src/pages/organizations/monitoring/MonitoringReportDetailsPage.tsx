@@ -584,7 +584,7 @@ function RawDataTab({
     <div className="flex gap-5">
       <div className="w-56 shrink-0">
         <Card className="p-0 overflow-hidden">
-          <div className="px-3 py-3 border-b border-bd-default flex items-center justify-between">
+          <div className="px-3 py-3 border-b border-border-low flex items-center justify-between">
             <div className="flex items-center gap-2">
               <span className="text-xs font-semibold uppercase tracking-wider text-txt-tertiary">
                 {__("Columns")}
@@ -622,7 +622,7 @@ function RawDataTab({
                         [header]: !isVisible,
                       }))
                     }
-                    className="size-3.5 rounded border-bd-default text-accent-bold focus:ring-accent-bold/30 accent-[var(--color-accent-bold)] transition-transform duration-150 active:scale-90"
+                    className="size-3.5 rounded border-border-low text-accent-bold focus:ring-accent-bold/30 accent-[var(--color-accent-bold)] transition-transform duration-150 active:scale-90"
                   />
                   <span
                     className={`text-sm truncate transition-colors duration-150 ${
@@ -649,7 +649,7 @@ function RawDataTab({
               value={globalFilter}
               onChange={(e) => setGlobalFilter(e.target.value)}
               placeholder={__("Search across all columns...")}
-              className="w-full pl-9 pr-3 py-2 text-sm border border-bd-default rounded-md bg-level-1 text-txt-primary placeholder:text-txt-tertiary focus:outline-none focus:ring-2 focus:ring-accent-bold/30 focus:border-accent-bold transition-[border-color,box-shadow] duration-150"
+              className="w-full pl-9 pr-3 py-2 text-sm border border-border-low rounded-md bg-level-1 text-txt-primary placeholder:text-txt-tertiary focus:outline-none focus:ring-2 focus:ring-accent-bold/30 focus:border-accent-bold transition-[border-color,box-shadow] duration-150"
             />
           </div>
           <span className="text-xs text-txt-tertiary whitespace-nowrap tabular-nums">
@@ -670,7 +670,7 @@ function RawDataTab({
           </span>
         </div>
 
-        <div className="overflow-x-auto rounded-md border border-bd-default">
+        <div className="overflow-x-auto">
           <Table>
             <Thead>
               <Tr>
@@ -753,7 +753,7 @@ function RawDataTab({
                 setPageSize(Number(e.target.value));
                 table.setPageIndex(0);
               }}
-              className="px-2 py-1 text-xs border border-bd-default rounded-md bg-level-1 text-txt-primary focus:outline-none focus:ring-2 focus:ring-accent-bold/30 transition-[border-color,box-shadow] duration-150"
+              className="px-2 py-1 text-xs border border-border-low rounded-md bg-level-1 text-txt-primary focus:outline-none focus:ring-2 focus:ring-accent-bold/30 transition-[border-color,box-shadow] duration-150"
             >
               {PAGE_SIZES.map((size) => (
                 <option key={size} value={size}>
@@ -774,7 +774,7 @@ function RawDataTab({
               type="button"
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
-              className="p-1.5 rounded-md border border-bd-default bg-level-1 text-txt-primary hover:bg-subtle disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-150"
+              className="p-1.5 rounded-md border border-border-low bg-level-1 text-txt-primary hover:bg-subtle disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-150"
               aria-label={__("Previous page")}
             >
               <IconChevronLeft className="size-3.5" />
@@ -783,7 +783,7 @@ function RawDataTab({
               type="button"
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
-              className="p-1.5 rounded-md border border-bd-default bg-level-1 text-txt-primary hover:bg-subtle disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-150"
+              className="p-1.5 rounded-md border border-border-low bg-level-1 text-txt-primary hover:bg-subtle disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-150"
               aria-label={__("Next page")}
             >
               <IconChevronRight className="size-3.5" />
