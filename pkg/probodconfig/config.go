@@ -19,7 +19,7 @@ type (
 	// This is used by bootstrap to generate the YAML config file.
 	FullConfig struct {
 		Unit   UnitConfig `json:"unit"`
-		Probod Config     `json:"probod"`
+		Probod Config     `json:"soc2startd"`
 	}
 
 	// UnitConfig contains unit framework configuration.

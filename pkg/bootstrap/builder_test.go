@@ -149,9 +149,9 @@ func TestBuilder_Build_Defaults(t *testing.T) {
 
 	// PG config
 	assert.Equal(t, "localhost:5432", cfg.Probod.Pg.Addr)
-	assert.Equal(t, "probod", cfg.Probod.Pg.Username)
-	assert.Equal(t, "probod", cfg.Probod.Pg.Password)
-	assert.Equal(t, "probod", cfg.Probod.Pg.Database)
+	assert.Equal(t, "soc2startd", cfg.Probod.Pg.Username)
+	assert.Equal(t, "soc2startd", cfg.Probod.Pg.Password)
+	assert.Equal(t, "soc2startd", cfg.Probod.Pg.Database)
 	assert.Equal(t, int32(100), cfg.Probod.Pg.PoolSize)
 	assert.Equal(t, int32(10), cfg.Probod.Pg.MinPoolSize)
 	assert.Equal(t, 1800, cfg.Probod.Pg.MaxConnIdleTimeSeconds)
@@ -184,7 +184,7 @@ func TestBuilder_Build_Defaults(t *testing.T) {
 
 	// AWS config
 	assert.Equal(t, "us-east-1", cfg.Probod.AWS.Region)
-	assert.Equal(t, "probod", cfg.Probod.AWS.Bucket)
+	assert.Equal(t, "soc2startd", cfg.Probod.AWS.Bucket)
 	assert.False(t, cfg.Probod.AWS.UsePathStyle)
 
 	// Notifications config

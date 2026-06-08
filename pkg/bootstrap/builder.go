@@ -84,9 +84,9 @@ func (b *Builder) Build() (*probodconfig.FullConfig, error) {
 			},
 			Pg: probodconfig.PgConfig{
 				Addr:                         b.getEnvOrDefault("PG_ADDR", "localhost:5432"),
-				Username:                     b.getEnvOrDefault("PG_USERNAME", "probod"),
-				Password:                     b.getEnvOrDefault("PG_PASSWORD", "probod"),
-				Database:                     b.getEnvOrDefault("PG_DATABASE", "probod"),
+				Username:                     b.getEnvOrDefault("PG_USERNAME", "soc2startd"),
+				Password:                     b.getEnvOrDefault("PG_PASSWORD", "soc2startd"),
+				Database:                     b.getEnvOrDefault("PG_DATABASE", "soc2startd"),
 				PoolSize:                     int32(b.getEnvIntOrDefault("PG_POOL_SIZE", 100)),
 				MinPoolSize:                  int32(b.getEnvIntOrDefault("PG_MIN_POOL_SIZE", 10)),
 				MaxConnIdleTimeSeconds:       b.getEnvIntOrDefault("PG_MAX_CONN_IDLE_TIME_SECONDS", 1800),
@@ -151,7 +151,7 @@ func (b *Builder) Build() (*probodconfig.FullConfig, error) {
 			},
 			AWS: probodconfig.AWSConfig{
 				Region:          b.getEnvOrDefault("AWS_REGION", "us-east-1"),
-				Bucket:          b.getEnvOrDefault("AWS_BUCKET", "probod"),
+				Bucket:          b.getEnvOrDefault("AWS_BUCKET", "soc2startd"),
 				AccessKeyID:     b.getEnv("AWS_ACCESS_KEY_ID"),
 				SecretAccessKey: b.getEnv("AWS_SECRET_ACCESS_KEY"),
 				Endpoint:        b.getEnv("AWS_ENDPOINT"),

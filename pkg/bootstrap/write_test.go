@@ -115,7 +115,7 @@ func TestWriteConfig_CompleteConfig(t *testing.T) {
 				Addr:                   "localhost:5432",
 				Username:               "postgres",
 				Password:               "postgres",
-				Database:               "probod",
+				Database:               "soc2startd",
 				PoolSize:               100,
 				MinPoolSize:            10,
 				MaxConnIdleTimeSeconds: 1800,

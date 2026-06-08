@@ -96,9 +96,9 @@ func New() *Implm {
 			},
 			Pg: PgConfig{
 				Addr:                         "localhost:5432",
-				Username:                     "probod",
-				Password:                     "probod",
-				Database:                     "probod",
+				Username:                     "soc2startd",
+				Password:                     "soc2startd",
+				Database:                     "soc2startd",
 				PoolSize:                     100,
 				MinPoolSize:                  10,
 				MaxConnIdleTimeSeconds:       1800,
