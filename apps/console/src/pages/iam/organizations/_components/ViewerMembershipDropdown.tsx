@@ -18,7 +18,6 @@ import {
   DropdownSeparator,
   IconArrowBoxLeft,
   IconCircleQuestionmark,
-  IconKey,
   IconPageTextLine,
   UserDropdown,
   UserDropdownItem,
@@ -37,7 +36,6 @@ export const fragment = graphql`
       fullName
       identity @required(action: THROW) {
         email
-        canListAPIKeys: permission(action: "iam:personal-api-key:list")
       }
     }
   }
@@ -63,7 +61,7 @@ export function ViewerMembershipDropdown(props: {
   const {
     viewer: {
       fullName,
-      identity: { canListAPIKeys, email },
+      identity: { email },
     },
   } = useFragment<ViewerMembershipDropdownFragment$key>(fragment, fKey);
   const [signOut] = useMutation<ViewerMembershipDropdownSignOutMutation>(signOutMutation);
@@ -96,13 +94,6 @@ export function ViewerMembershipDropdown(props: {
 
   return (
     <UserDropdown fullName={fullName} email={email}>
-      {canListAPIKeys && (
-        <UserDropdownItem
-          to="/me/api-keys"
-          icon={IconKey}
-          label={__("API Keys")}
-        />
-      )}
       <UserDropdownItem
         to={`/organizations/${organizationId}/employee`}
         icon={IconPageTextLine}

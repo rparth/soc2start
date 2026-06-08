@@ -18,7 +18,6 @@ import {
   DropdownSeparator,
   IconArrowBoxLeft,
   IconCircleQuestionmark,
-  IconKey,
   UserDropdown,
   UserDropdownItem,
   useToast,
@@ -31,7 +30,6 @@ import type { ViewerDropdownSignOutMutation } from "#/__generated__/iam/ViewerDr
 
 export const fragment = graphql`
   fragment ViewerDropdownFragment on Identity {
-    canListAPIKeys: permission(action: "iam:personal-api-key:list")
     email
     fullName
   }
@@ -51,7 +49,7 @@ export function ViewerDropdown(props: { fKey: ViewerDropdownFragment$key }) {
   const { __ } = useTranslate();
   const { toast } = useToast();
 
-  const { canListAPIKeys, email, fullName }
+  const { email, fullName }
     = useFragment<ViewerDropdownFragment$key>(fragment, fKey);
   const [signOut] = useMutation<ViewerDropdownSignOutMutation>(signOutMutation);
 
@@ -83,13 +81,6 @@ export function ViewerDropdown(props: { fKey: ViewerDropdownFragment$key }) {
 
   return (
     <UserDropdown fullName={fullName} email={email}>
-      {canListAPIKeys && (
-        <UserDropdownItem
-          to="/me/api-keys"
-          icon={IconKey}
-          label={__("API Keys")}
-        />
-      )}
       <UserDropdownItem
         to="mailto:support@getprobo.com"
         icon={IconCircleQuestionmark}

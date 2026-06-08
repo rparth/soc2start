@@ -56,6 +56,10 @@ export default function SettingsLayout() {
           <IconListStack size={20} />
           {__("Audit Log")}
         </TabLink>
+        <TabLink to={`/organizations/${organizationId}/settings/api-keys`}>
+          <IconKey size={20} />
+          {__("API Keys")}
+        </TabLink>
       </Tabs>
 
       <Outlet />

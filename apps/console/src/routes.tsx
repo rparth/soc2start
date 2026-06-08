@@ -131,12 +131,6 @@ const routes = [
             ),
           },
           {
-            path: "me/api-keys",
-            Component: lazy(
-              () => import("./pages/iam/apiKeys/APIKeysPageLoader"),
-            ),
-          },
-          {
             Component: CenteredLayout,
             children: [
               {
@@ -285,6 +279,12 @@ const routes = [
                 Component: lazy(
                   () =>
                     import("./pages/iam/organizations/settings/AuditLogSettingsPageLoader"),
+                ),
+              },
+              {
+                path: "api-keys",
+                Component: lazy(
+                  () => import("./pages/iam/apiKeys/APIKeysPageLoader"),
                 ),
               },
             ],
