@@ -38,7 +38,7 @@ export function SAMLDomainVerifyDialog(props: {
               "Add the following TXT record to your domain's DNS configuration to verify ownership:",
             )}
           </p>
-          <div className="bg-subtle rounded-lg p-4 mb-4">
+          <div className="bg-subtle rounded-md p-4 mb-4">
             <div className="space-y-2">
               <div>
                 <span className="font-semibold text-sm">
@@ -74,7 +74,7 @@ export function SAMLDomainVerifyDialog(props: {
               </div>
             </div>
           </div>
-          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <div className="bg-blue-50 border border-blue-200 rounded-md p-4">
             <p className="text-sm text-blue-800">
               <strong>{__("Note:")}</strong>
               {" "}

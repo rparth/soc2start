@@ -243,7 +243,7 @@ export const TrustCenterReferenceDialog = forwardRef<TrustCenterReferenceDialogR
                   maxSize={5}
                 />
                 {uploadedFile && (
-                  <div className="mt-2 p-3 bg-tertiary-subtle rounded-lg">
+                  <div className="mt-2 p-3 bg-tertiary-subtle rounded-md">
                     <p className="text-sm font-medium">
                       {__("Selected file")}
                       :
@@ -252,14 +252,14 @@ export const TrustCenterReferenceDialog = forwardRef<TrustCenterReferenceDialogR
                   </div>
                 )}
                 {mode === "edit" && !uploadedFile && (
-                  <div className="mt-2 p-3 bg-tertiary-subtle rounded-lg">
+                  <div className="mt-2 p-3 bg-tertiary-subtle rounded-md">
                     <p className="text-sm text-txt-secondary">
                       {__("Current logo will be kept if no new file is uploaded")}
                     </p>
                   </div>
                 )}
                 {mode === "create" && !uploadedFile && (
-                  <div className="mt-2 p-3 bg-warning-subtle rounded-lg">
+                  <div className="mt-2 p-3 bg-warning-subtle rounded-md">
                     <p className="text-sm">
                       {__("Logo is required for new references")}
                     </p>

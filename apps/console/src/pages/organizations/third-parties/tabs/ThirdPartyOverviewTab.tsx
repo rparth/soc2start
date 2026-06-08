@@ -292,7 +292,7 @@ export default function ThirdPartyOverviewTab() {
       <div className="space-y-4">
         <h2 className="text-base font-medium">{__("Data agreements")}</h2>
         <Card className="space-y-4" padded>
-          <div className="flex items-center justify-between p-4 border border-border-low rounded-lg">
+          <div className="flex items-center justify-between p-4 border border-border-low rounded-md">
             <div className="flex-1">
               <h3 className="font-medium text-txt-primary">
                 {__("Business Associate Agreement")}
@@ -366,7 +366,7 @@ export default function ThirdPartyOverviewTab() {
             </div>
           </div>
 
-          <div className="flex items-center justify-between p-4 border border-border-low rounded-lg">
+          <div className="flex items-center justify-between p-4 border border-border-low rounded-md">
             <div className="flex-1">
               <h3 className="font-medium text-txt-primary">
                 {__("Data Privacy Agreement")}

@@ -107,7 +107,7 @@ export default function ThirdPartyDetailPage(props: Props) {
   return (
     <div className="space-y-6">
       {isVetting && (
-        <div className="flex items-center gap-3 rounded-lg bg-warning px-4 py-3 text-sm text-txt-warning">
+        <div className="flex items-center gap-3 rounded-md bg-warning px-4 py-3 text-sm text-txt-warning">
           <div
             aria-hidden
             className="size-4 shrink-0 animate-spin rounded-full border-2 border-border-warning/30 border-t-border-warning"
@@ -116,7 +116,7 @@ export default function ThirdPartyDetailPage(props: Props) {
         </div>
       )}
       {isVettingFailed && (
-        <div className="rounded-lg bg-danger px-4 py-3 text-sm text-txt-danger">
+        <div className="rounded-md bg-danger px-4 py-3 text-sm text-txt-danger">
           {__("Vetting failed. You can start vetting again.")}
         </div>
       )}
@@ -138,7 +138,7 @@ export default function ThirdPartyDetailPage(props: Props) {
             <img
               src={logo}
               alt={thirdParty.name ?? ""}
-              className="shadow-mid rounded-lg"
+              className="shadow-mid rounded-md"
             />
           )}
           <div className="flex items-center gap-3">

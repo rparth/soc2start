@@ -69,7 +69,7 @@ export function RiskOverview({ type, risk }: Props) {
           className={clsx(
             severity?.bg,
             severity?.color,
-            "py-2 text-sm font-semibold rounded-lg text-center",
+            "py-2 text-sm font-semibold rounded-md text-center",
           )}
         >
           {severity?.label}
@@ -95,7 +95,7 @@ function RiskOverviewBadge({
       <div
         className={clsx(
           getColor(score),
-          "py-2 text-sm font-semibold rounded-lg text-txt-invert text-center",
+          "py-2 text-sm font-semibold rounded-md text-txt-invert text-center",
         )}
       >
         {textCb(__).find(i => i.value === score)?.label}

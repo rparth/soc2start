@@ -67,7 +67,7 @@ export function CompliancePageDocumentAccessList(props: CompliancePageDocumentAc
 
       {documentAccesses.length > 0
         ? (
-            <div className="bg-bg-secondary rounded-lg overflow-hidden">
+            <div className="bg-bg-secondary rounded-md overflow-hidden">
               <Table>
                 <Thead>
                   <Tr>

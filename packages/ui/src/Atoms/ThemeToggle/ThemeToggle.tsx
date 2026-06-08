@@ -26,7 +26,7 @@ export function ThemeToggle() {
 
   return (
     <div
-      className="flex items-center gap-0.5 rounded-lg bg-highlight p-0.5"
+      className="flex items-center gap-0.5 rounded-md bg-highlight p-0.5"
       role="radiogroup"
       aria-label="Theme"
     >

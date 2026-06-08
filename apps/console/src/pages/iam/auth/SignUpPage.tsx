@@ -165,7 +165,7 @@ function SignUpPageContent(props: { queryRef: NonNullable<ReturnType<typeof useQ
           error={formState.errors.password?.message}
         />
 
-        <div className="auth-btn-hover rounded-lg mt-6">
+        <div className="auth-btn-hover rounded-md mt-6">
           <Button type="submit" className="w-full h-12 mx-auto" disabled={formState.isLoading}>
             {formState.isLoading
               ? __("Creating account...")

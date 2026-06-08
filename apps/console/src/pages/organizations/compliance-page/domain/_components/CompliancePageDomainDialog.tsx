@@ -83,7 +83,7 @@ export function CompliancePageDomainDialog(props: CompliancePageDomainDialogProp
       <DialogContent padded className="space-y-6">
         {domain.sslStatus === "ACTIVE"
           ? (
-              <div className="bg-subtle rounded-lg p-4">
+              <div className="bg-subtle rounded-md p-4">
                 <div className="flex items-start">
                   <svg
                     className="w-5 h-5 text-green-500 mt-0.5 mr-3 shrink-0"
@@ -117,7 +117,7 @@ export function CompliancePageDomainDialog(props: CompliancePageDomainDialogProp
           : (
               <div>
                 {domain.provisioningError && (
-                  <div className="bg-danger-subtle text-danger rounded-lg p-4 mb-4">
+                  <div className="bg-danger-subtle text-danger rounded-md p-4 mb-4">
                     <p className="text-sm font-medium mb-1">{__("Provisioning error")}</p>
                     <p className="text-sm">{domain.provisioningError}</p>
                   </div>
@@ -132,7 +132,7 @@ export function CompliancePageDomainDialog(props: CompliancePageDomainDialogProp
 
                 <div className="space-y-3">
                   {domain.dnsRecords?.map((record, index) => (
-                    <div key={index} className="bg-subtle rounded-lg p-4">
+                    <div key={index} className="bg-subtle rounded-md p-4">
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-sm font-medium">{record.type}</span>
                         <Badge variant="neutral">{record.purpose}</Badge>
@@ -183,7 +183,7 @@ export function CompliancePageDomainDialog(props: CompliancePageDomainDialogProp
                 </div>
 
                 {domain.sslStatus === "PENDING" && (
-                  <div className="bg-subtle rounded-lg p-4 mt-4">
+                  <div className="bg-subtle rounded-md p-4 mt-4">
                     <p className="text-sm">
                       {__(
                         "After adding the DNS records, verification will happen automatically. This may take a few minutes to propagate.",

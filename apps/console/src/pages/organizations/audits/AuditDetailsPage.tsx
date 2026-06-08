@@ -257,7 +257,7 @@ export default function AuditDetailsPage(props: Props) {
             {auditEntry.reportFile
               ? (
                   <div className="space-y-4">
-                    <div className="flex items-center justify-between p-4 bg-success-50 border border-success-200 rounded-lg">
+                    <div className="flex items-center justify-between p-4 bg-success-50 border border-success-200 rounded-md">
                       <div className="flex items-center gap-3">
                         <IconArrowInbox className="text-success-600" size={20} />
                         <div className="flex-1">

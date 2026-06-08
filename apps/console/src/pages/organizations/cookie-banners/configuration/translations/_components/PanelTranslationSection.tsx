@@ -142,7 +142,7 @@ export function PanelTranslationSection({
           </div>
         </Card>
 
-        <div className="flex items-start justify-center rounded-lg border border-border-low bg-[repeating-conic-gradient(#e5e7eb_0%_25%,transparent_0%_50%)] bg-size-[20px_20px] p-6">
+        <div className="flex items-start justify-center rounded-md border border-border-low bg-[repeating-conic-gradient(#e5e7eb_0%_25%,transparent_0%_50%)] bg-size-[20px_20px] p-6">
           <PanelPreview
             panelTitle={panelTitle}
             panelDescription={panelDescription}

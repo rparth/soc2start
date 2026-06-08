@@ -156,7 +156,7 @@ export function ComplianceUpdateFormDialog(props: Props) {
     <Dialog ref={ref} title={isSent ? __("View Update") : isEditMode ? __("Edit Update") : __("Add Update")}>
       <form onSubmit={e => void form.handleSubmit(handleSubmit)(e)}>
         <DialogContent className="px-6 pt-4 pb-2 space-y-4">
-          <div className="flex gap-2.5 rounded-lg bg-surface-secondary p-3 text-sm text-txt-secondary">
+          <div className="flex gap-2.5 rounded-md bg-surface-secondary p-3 text-sm text-txt-secondary">
             <IconCircleInfo size={16} className="mt-0.5 shrink-0 text-txt-tertiary" />
             {__("Do not include confidential or sensitive information in this update. Any content that requires protection should be placed behind your NDA-gated documents instead.")}
           </div>

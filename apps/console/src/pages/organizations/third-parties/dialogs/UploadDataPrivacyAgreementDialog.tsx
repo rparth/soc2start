@@ -153,7 +153,7 @@ export function UploadDataPrivacyAgreementDialog({
           />
 
           {uploadedFile && (
-            <div className="p-3 bg-tertiary-subtle rounded-lg">
+            <div className="p-3 bg-tertiary-subtle rounded-md">
               <p className="text-sm font-medium">
                 {__("Selected file")}
                 :

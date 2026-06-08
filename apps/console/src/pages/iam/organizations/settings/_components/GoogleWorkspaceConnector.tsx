@@ -365,7 +365,7 @@ export function GoogleWorkspaceConnector(props: {
       </div>
 
       {hasBridgeError && (
-        <div className="flex items-start gap-2 rounded-lg bg-bg-warning/10 border border-border-warning p-3">
+        <div className="flex items-start gap-2 rounded-md bg-bg-warning/10 border border-border-warning p-3">
           <IconWarning size={16} className="text-txt-danger shrink-0 mt-0.5" />
           <div className="space-y-1">
             <p className="text-sm font-medium text-txt-danger">

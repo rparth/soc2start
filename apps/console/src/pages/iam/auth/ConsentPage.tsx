@@ -198,7 +198,7 @@ export default function ConsentPage(props: {
           return (
             <li
               key={scope}
-              className="flex items-center gap-2.5 px-3 py-2.5 text-sm text-txt-secondary border border-border-mid rounded-lg"
+              className="flex items-center gap-2.5 px-3 py-2.5 text-sm text-txt-secondary border border-border-mid rounded-md"
             >
               {scopeIcons[scope]}
               {__(label)}

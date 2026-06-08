@@ -24,7 +24,7 @@ const cls = tv({
     wrapper:
             "border-b border-border-low flex gap-6 text-sm font-medium text-txt-secondary",
     item: "py-4 hover:text-txt-primary border-b-2 active:border-border-accent -mb-[1px] active:text-txt-primary flex items-center gap-2 cursor-pointer transition-colors duration-150",
-    badge: "py-1 px-2 text-txt-secondary text-xs font-semibold rounded-lg bg-highlight",
+    badge: "py-1 px-2 text-txt-secondary text-xs font-semibold rounded-md bg-highlight",
   },
   variants: {
     active: {

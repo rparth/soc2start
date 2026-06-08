@@ -173,7 +173,7 @@ export function ThemePreview({ cookieBannerKey }: ThemePreviewProps) {
       </div>
 
       <Card className="border">
-        <pre className="overflow-x-auto p-4 text-sm font-mono text-invert bg-accent rounded-lg">
+        <pre className="overflow-x-auto p-4 text-sm font-mono text-invert bg-accent rounded-md">
           <code>{cssSnippet}</code>
         </pre>
       </Card>

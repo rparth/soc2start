@@ -11,6 +11,6 @@ export const tableRowMenuVariants = tv({
       "rounded text-txt-tertiary bg-subtle hover:bg-border-solid cursor-grab",
       "px-0.5 w-2",
     ],
-    menu: ["rounded-lg border border-border-mid bg-level-0 p-1 shadow-mid z-30"],
+    menu: ["rounded-md border border-border-mid bg-level-0 p-1 shadow-mid z-30"],
   },
 });

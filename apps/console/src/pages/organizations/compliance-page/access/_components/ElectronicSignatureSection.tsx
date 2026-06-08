@@ -59,7 +59,7 @@ export function ElectronicSignatureSection({
       <h3 className="text-sm font-medium text-txt-primary mb-3">
         {__("Electronic Signature")}
       </h3>
-      <div className="rounded-lg border border-border-solid bg-bg-secondary p-4 space-y-3">
+      <div className="rounded-md border border-border-solid bg-bg-secondary p-4 space-y-3">
         <div className="flex items-center justify-between">
           <span className="text-sm text-txt-secondary">{__("Status")}</span>
           <NdaSignatureBadge status={signature.status} />

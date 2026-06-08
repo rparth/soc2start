@@ -218,7 +218,7 @@ export default function FrameworkDetailPage(props: Props) {
               frameworkId={framework.id}
               connectionId={connectionId}
             >
-              <button className="flex gap-[6px] flex-col w-full p-4 space-y-[6px] rounded-lg cursor-pointer text-start text-sm text-txt-tertiary hover:bg-tertiary-hover">
+              <button className="flex gap-[6px] flex-col w-full p-4 space-y-[6px] rounded-md cursor-pointer text-start text-sm text-txt-tertiary hover:bg-tertiary-hover">
                 <IconPlusLarge
                   size={20}
                   className="text-txt-primary"

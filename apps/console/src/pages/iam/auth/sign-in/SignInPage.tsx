@@ -49,12 +49,12 @@ export default function SignInPage(props: Props) {
 
       <div className="mt-8 space-y-4">
         {data.oidcProviders.map((providerRef, index) => (
-          <div key={index} className="auth-btn-hover rounded-lg">
+          <div key={index} className="auth-btn-hover rounded-md">
             <OIDCButton providerRef={providerRef} />
           </div>
         ))}
 
-        <div className="auth-btn-hover rounded-lg">
+        <div className="auth-btn-hover rounded-md">
           <Button
             variant="secondary"
             className="w-full h-12"
@@ -66,7 +66,7 @@ export default function SignInPage(props: Props) {
 
         <Divider>{__("Or")}</Divider>
 
-        <div className="auth-btn-hover rounded-lg">
+        <div className="auth-btn-hover rounded-md">
           <Button
             variant="secondary"
             className="w-full h-12"

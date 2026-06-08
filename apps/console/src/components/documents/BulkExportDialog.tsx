@@ -150,7 +150,7 @@ export const BulkExportDialog = forwardRef<BulkExportDialogRef, Props>(
                 )}
               </div>
 
-              <div className="bg-level-1 p-3 rounded-lg border border-border-subtle">
+              <div className="bg-level-1 p-3 rounded-md border border-border-subtle">
                 <p className="text-sm text-txt-secondary">
                   {__("The documents will be exported as individual PDFs in a ZIP file. You will receive an email when the export is ready for download.")}
                 </p>

@@ -130,7 +130,7 @@ export function PublishDocumentsDialog({
       <form onSubmit={e => void handleSubmit(onSubmit)(e)}>
         <DialogContent padded>
           <div className="space-y-4">
-            <div className="flex items-start gap-2 rounded-lg bg-bg-warning/10 border border-border-warning p-3">
+            <div className="flex items-start gap-2 rounded-md bg-bg-warning/10 border border-border-warning p-3">
               <IconWarning size={16} className="text-txt-warning shrink-0 mt-0.5" />
               <div className="text-sm text-txt-warning space-y-1">
                 <p>{__("Publishing as major will request approval for documents that have default approvers configured. Approvers will receive an email notification.")}</p>

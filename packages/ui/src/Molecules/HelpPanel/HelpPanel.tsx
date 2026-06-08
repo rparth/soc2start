@@ -126,7 +126,7 @@ function HelpPanelOverlay({
         <div className="flex flex-col h-full">
           <header className="flex items-center justify-between px-6 py-4 border-b border-border-low">
             <div className="flex items-center gap-3">
-              <div className="size-8 rounded-lg bg-accent/10 flex items-center justify-center">
+              <div className="size-8 rounded-md bg-accent/10 flex items-center justify-center">
                 <IconCircleQuestionmark size={18} className="text-txt-accent" />
               </div>
               <div>
@@ -138,7 +138,7 @@ function HelpPanelOverlay({
             </div>
             <button
               onClick={onClose}
-              className="size-8 rounded-lg flex items-center justify-center hover:bg-tertiary-hover transition-colors"
+              className="size-8 rounded-md flex items-center justify-center hover:bg-tertiary-hover transition-colors"
             >
               <IconCrossLargeX size={16} className="text-txt-secondary" />
             </button>
@@ -165,7 +165,7 @@ function HelpPanelOverlay({
 
 function HelpSectionCard({ section }: { section: HelpSection }) {
   return (
-    <div className="rounded-lg border border-border-low bg-level-0 p-4 space-y-2">
+    <div className="rounded-md border border-border-low bg-level-0 p-4 space-y-2">
       <h3 className="text-sm font-medium text-txt-primary">{section.title}</h3>
       <p className="text-sm text-txt-secondary leading-relaxed">{section.content}</p>
     </div>
@@ -195,7 +195,7 @@ export function HelpButton({
   return (
     <button
       onClick={() => open(content)}
-      className="size-8 rounded-lg flex items-center justify-center hover:bg-tertiary-hover transition-colors text-txt-tertiary hover:text-txt-secondary"
+      className="size-8 rounded-md flex items-center justify-center hover:bg-tertiary-hover transition-colors text-txt-tertiary hover:text-txt-secondary"
       aria-label="Help"
     >
       <IconCircleQuestionmark size={18} />

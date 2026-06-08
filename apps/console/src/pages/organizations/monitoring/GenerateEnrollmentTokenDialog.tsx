@@ -107,7 +107,7 @@ export function GenerateEnrollmentTokenDialog({
 
         {token ? (
           <div className="space-y-3">
-            <div className="rounded-lg bg-tertiary-subtle p-3">
+            <div className="rounded-md bg-tertiary-subtle p-3">
               <p className="break-all font-mono text-sm">{token}</p>
             </div>
             <Button

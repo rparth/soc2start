@@ -50,7 +50,7 @@ const errorDetails = tv({
     summary:
       "text-sm text-txt-tertiary cursor-pointer select-none list-none flex items-center justify-center gap-1 hover:text-txt-secondary transition-colors [&::-webkit-details-marker]:hidden",
     marker: "transition-transform group-open:rotate-180",
-    panel: "mt-3 rounded-lg bg-subtle px-3 py-2.5",
+    panel: "mt-3 rounded-md bg-subtle px-3 py-2.5",
     message: "text-xs font-mono text-txt-tertiary break-all leading-relaxed",
   },
 });

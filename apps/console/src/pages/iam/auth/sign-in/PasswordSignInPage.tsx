@@ -126,7 +126,7 @@ export default function PasswordSignInPage() {
         />
       </div>
 
-      <div className="auth-btn-hover rounded-lg mt-6">
+      <div className="auth-btn-hover rounded-md mt-6">
         <Button className="w-full h-12 mx-auto" disabled={isSigningIn}>
           {isSigningIn ? __("Logging in...") : __("Login")}
         </Button>

@@ -670,7 +670,7 @@ function RawDataTab({
           </span>
         </div>
 
-        <div className="overflow-x-auto rounded-lg border border-bd-default">
+        <div className="overflow-x-auto rounded-md border border-bd-default">
           <Table>
             <Thead>
               <Tr>

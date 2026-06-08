@@ -176,7 +176,7 @@ export function CookieBannersOverviewPage({ queryRef }: CookieBannersOverviewPag
           <Button to={newBannerHref}>{__("Create Banner")}</Button>
         </div>
 
-        <Card className="divide-y divide-border-low rounded-lg">
+        <Card className="divide-y divide-border-low rounded-md">
           {banners.map(banner => (
             <Link
               key={banner.id}

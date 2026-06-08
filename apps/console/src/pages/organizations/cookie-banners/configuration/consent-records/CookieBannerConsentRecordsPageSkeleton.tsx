@@ -20,7 +20,7 @@ export function CookieBannerConsentRecordsPageSkeleton() {
         <div className="h-9 w-48 rounded bg-bg-subtle" />
         <div className="h-9 w-40 rounded bg-bg-subtle" />
       </div>
-      <div className="rounded-lg border border-border-low">
+      <div className="rounded-md border border-border-low">
         <div className="h-10 border-b border-border-low bg-bg-subtle" />
         {Array.from({ length: 5 }).map((_, i) => (
           <div key={i} className="h-12 border-b border-border-low last:border-b-0" />

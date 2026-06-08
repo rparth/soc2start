@@ -51,7 +51,7 @@ export function CookieBannerEmptyState({ children }: CookieBannerEmptyStateProps
 
       <div className="grid gap-6 sm:grid-cols-3 mb-8 w-full max-w-2xl">
         {steps.map(s => (
-          <div key={s.step} className="rounded-lg border border-border-mid p-4 text-left">
+          <div key={s.step} className="rounded-md border border-border-mid p-4 text-left">
             <div className="mb-2 flex size-8 items-center justify-center rounded-full bg-border-solid text-primary-foreground text-sm font-semibold">
               {s.step}
             </div>

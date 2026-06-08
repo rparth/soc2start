@@ -132,7 +132,7 @@ function DocumentApprovalsPageContent(props: {
         <div className="space-y-4">
           <h3 className="text-sm font-medium text-txt-secondary">{__("Previous approval requests")}</h3>
           {pastQuorums.map(({ node: quorum }) => (
-            <div key={quorum.id} className="border border-border-solid rounded-lg p-4">
+            <div key={quorum.id} className="border border-border-solid rounded-md p-4">
               <div className="flex items-center gap-2 mb-3">
                 <Badge variant={quorum.status === "APPROVED" ? "success" : quorum.status === "VOIDED" ? "neutral" : "danger"}>
                   {quorum.status === "APPROVED" ? __("Approved") : quorum.status === "VOIDED" ? __("Voided") : __("Rejected")}

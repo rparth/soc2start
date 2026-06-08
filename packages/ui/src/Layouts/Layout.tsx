@@ -79,7 +79,7 @@ export function Layout({
         <header className="fixed top-0 z-20 left-0 right-0 px-3 lg:px-4 flex items-center border-b border-border-solid h-12 bg-level-0">
           {sidebar && (
             <button
-              className="lg:hidden mr-2 p-1.5 -ml-1 rounded-lg text-txt-secondary hover:text-txt-primary hover:bg-highlight transition-colors duration-150"
+              className="lg:hidden mr-2 p-1.5 -ml-1 rounded-md text-txt-secondary hover:text-txt-primary hover:bg-highlight transition-colors duration-150"
               onClick={() => setMobileMenu(!mobileMenuOpen)}
               aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
             >

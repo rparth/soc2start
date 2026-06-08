@@ -69,7 +69,7 @@ export function SendUpdateDialog({ ref, update, onSent }: Props) {
           {__("This update will be sent to all current subscribers of this mailing list. This action cannot be undone.")}
         </p>
         {update && (
-          <div className="rounded-lg border border-border-low bg-surface-secondary overflow-hidden">
+          <div className="rounded-md border border-border-low bg-surface-secondary overflow-hidden">
             <div className="px-4 py-3 border-b border-border-low">
               <p className="text-sm font-medium text-txt-primary">{update.title}</p>
             </div>

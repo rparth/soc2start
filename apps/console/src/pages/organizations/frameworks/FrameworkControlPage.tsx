@@ -297,7 +297,7 @@ export default function FrameworkControlPage({ queryRef }: Props) {
     <div className="space-y-6">
       <div className="flex justify-between">
         <div className="flex items-center gap-3">
-          <div className="text-xl font-medium px-[6px] py-[2px] border border-border-low rounded-lg w-max bg-active mb-3">
+          <div className="text-xl font-medium px-[6px] py-[2px] border border-border-low rounded-md w-max bg-active mb-3">
             {control.sectionTitle}
           </div>
         </div>

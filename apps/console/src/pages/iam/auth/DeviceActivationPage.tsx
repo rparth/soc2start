@@ -201,7 +201,7 @@ export default function DeviceActivationPage(props: {
                 spellCheck={false}
                 autoFocus={idx === 0}
                 aria-label={`${__("Code character")} ${idx + 1}`}
-                className="w-11 h-13 text-center text-lg font-mono font-medium uppercase rounded-lg border border-border-mid bg-level-1 text-txt-primary outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
+                className="w-11 h-13 text-center text-lg font-mono font-medium uppercase rounded-md border border-border-mid bg-level-1 text-txt-primary outline-none transition-colors focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20"
               />
             </div>
           ))}

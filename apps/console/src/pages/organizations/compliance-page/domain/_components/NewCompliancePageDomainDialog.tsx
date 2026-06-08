@@ -149,7 +149,7 @@ export function NewCompliancePageDomainDialog(props: PropsWithChildren) {
             autoFocus
           />
 
-          <div className="bg-subtle rounded-lg p-4">
+          <div className="bg-subtle rounded-md p-4">
             <p className="text-xs text-txt-secondary">
               <strong>{__("Examples:")}</strong>
               {" "}

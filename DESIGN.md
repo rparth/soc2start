@@ -108,21 +108,21 @@ components:
   button-primary:
     backgroundColor: "{colors.emerald}"
     textColor: "#ffffff"
-    rounded: "{rounded.lg}"
+    rounded: "{rounded.md}"
     padding: "12px 24px"
   button-primary-hover:
     backgroundColor: "{colors.emerald-light}"
   button-secondary:
     backgroundColor: "#ffffff"
     textColor: "{colors.navy-dark}"
-    rounded: "{rounded.lg}"
+    rounded: "{rounded.md}"
     padding: "12px 24px"
   button-secondary-hover:
     backgroundColor: "{colors.navy-dark}"
     textColor: "#ffffff"
   card-default:
     backgroundColor: "#ffffff"
-    rounded: "{rounded.lg}"
+    rounded: "{rounded.md}"
     padding: "24px"
   input-bordered:
     backgroundColor: "#ffffff"
@@ -150,7 +150,7 @@ This is not a startup dashboard trying to look fun. It is not an enterprise tool
 - Navy anchors identity; emerald signals action and success
 - Light mode is the default working mode; dark mode is a fully-designed companion, not an afterthought
 - Tight negative letter-spacing on headings for density and authority
-- Consistent 8px corner radius on interactive surfaces; 12px reserved for dialogs
+- Consistent 6px corner radius on interactive surfaces; 8px reserved for dialogs
 - Flat surfaces at rest; elevation earned through interaction
 - Motion is functional — ease-out-quart curves, 150-200ms durations, reduced-motion respected
 

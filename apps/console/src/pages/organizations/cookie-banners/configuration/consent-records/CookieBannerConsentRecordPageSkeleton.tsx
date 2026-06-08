@@ -15,7 +15,7 @@
 export function CookieBannerConsentRecordPageSkeleton() {
   return (
     <div className="space-y-6 animate-pulse">
-      <div className="rounded-lg border border-border-low p-6 space-y-4">
+      <div className="rounded-md border border-border-low p-6 space-y-4">
         {Array.from({ length: 7 }).map((_, i) => (
           <div key={i} className="flex items-center justify-between py-3 border-b border-border-low last:border-b-0">
             <div className="h-4 w-28 rounded bg-bg-subtle" />
@@ -23,7 +23,7 @@ export function CookieBannerConsentRecordPageSkeleton() {
           </div>
         ))}
       </div>
-      <div className="rounded-lg border border-border-low p-6 space-y-4">
+      <div className="rounded-md border border-border-low p-6 space-y-4">
         <div className="h-5 w-32 rounded bg-bg-subtle" />
         {Array.from({ length: 3 }).map((_, i) => (
           <div key={i} className="space-y-2 py-3 border-b border-border-low last:border-b-0">

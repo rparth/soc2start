@@ -160,7 +160,7 @@ export function UploadMonitoringReportDialog({
           />
 
           {uploadedFile && (
-            <div className="rounded-lg bg-tertiary-subtle p-3">
+            <div className="rounded-md bg-tertiary-subtle p-3">
               <p className="text-sm font-medium">
                 {__("Selected file")}:
               </p>

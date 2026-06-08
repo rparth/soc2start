@@ -177,7 +177,7 @@ function LinkedStatementsOfApplicabilityDialogContent(
                       return (
                         <div
                           key={soa.id}
-                          className={`border border-border-low rounded-lg p-3 flex items-center justify-between ${!isLinked ? "hover:bg-hover cursor-pointer" : ""}`}
+                          className={`border border-border-low rounded-md p-3 flex items-center justify-between ${!isLinked ? "hover:bg-hover cursor-pointer" : ""}`}
                           onClick={() =>
                             !isLinked && handleSelectSOA(soa)}
                         >

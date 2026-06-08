@@ -177,7 +177,7 @@ function RisksChartCell({
   const { __ } = useTranslate();
   const level = getLevel(impact * likelihood);
   const baseClass
-    = "flex items-center justify-center aspect-square rounded-lg text-txt-invert text-sm font-semibold";
+    = "flex items-center justify-center aspect-square rounded-md text-txt-invert text-sm font-semibold";
   if (!risks) {
     return <div className={clsx(baseClass, levelColors[level].bg)}></div>;
   }

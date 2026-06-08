@@ -10,6 +10,6 @@ export const optionsMenuVariants = tv({
       "z-20 flex size-5 items-center justify-center",
       "rounded text-txt-tertiary hover:bg-subtle hover:text-txt-primary cursor-grab active:cursor-grabbing",
     ],
-    menu: ["rounded-lg border border-border-mid bg-level-0 p-1 shadow-mid z-30"],
+    menu: ["rounded-md border border-border-mid bg-level-0 p-1 shadow-mid z-30"],
   },
 });

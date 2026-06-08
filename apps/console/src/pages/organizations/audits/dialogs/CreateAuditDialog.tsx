@@ -158,7 +158,7 @@ export function CreateAuditDialog({
       <form onSubmit={e => void handleSubmit(onSubmit)(e)} className="space-y-4">
         <DialogContent padded className="space-y-4">
           {file && (
-            <div className="flex items-center gap-3 rounded-lg border border-border-low bg-level-1 p-3">
+            <div className="flex items-center gap-3 rounded-md border border-border-low bg-level-1 p-3">
               <IconUpload className="text-txt-secondary size-5 shrink-0" />
               <div className="min-w-0">
                 <p className="text-txt-primary truncate text-sm font-medium">

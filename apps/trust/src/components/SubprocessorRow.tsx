@@ -42,13 +42,13 @@ export function SubprocessorRow(props: { subprocessor: SubprocessorRowFragment$k
         ? (
             <img
               src={logo}
-              className="size-8 flex-none rounded-lg"
+              className="size-8 flex-none rounded-md"
               alt=""
               onError={() => setLogoHasError(true)}
             />
           )
         : (
-            <div className="size-8 flex-none rounded-lg" />
+            <div className="size-8 flex-none rounded-md" />
           )}
       <div className="flex flex-col gap-2 flex-1">
         <span className="text-sm">{subprocessor.name}</span>
