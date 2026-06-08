@@ -144,14 +144,14 @@ function HelpPanelOverlay({
     <>
       <div
         className={clsx(
-          "fixed inset-0 z-50 bg-dialog/20 backdrop-blur-[1px] transition-opacity duration-300",
+          "fixed inset-0 z-[60] bg-dialog/20 backdrop-blur-[1px] transition-opacity duration-300",
           isOpen ? "opacity-100" : "opacity-0",
         )}
         onClick={onClose}
       />
       <aside
         className={clsx(
-          "fixed top-0 right-0 z-50 h-full bg-level-1 shadow-dialog border-l border-border-low",
+          "fixed top-0 right-0 z-[60] h-full bg-level-1 shadow-dialog border-l border-border-low",
           "transition-transform duration-300 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)]",
           isOpen ? "translate-x-0" : "translate-x-full",
           content.wide ? "w-full sm:w-[50vw]" : "w-full sm:w-[440px]",
