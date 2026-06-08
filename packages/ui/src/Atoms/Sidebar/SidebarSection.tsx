@@ -143,6 +143,10 @@ export function SidebarSection({ icon: Icon, label, basePaths, children }: Props
     }
   }, [hasActiveChild]);
 
+  useEffect(() => {
+    setShowFlyout(false);
+  }, [location.pathname]);
+
   const toggleOpen = useCallback(() => {
     const next = !isOpen;
     setIsOpen(next);
