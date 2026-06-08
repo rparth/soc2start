@@ -37,17 +37,6 @@ import {
   useConfirm,
   useToast,
 } from "@probo/ui";
-import {
-  type ColumnDef,
-  flexRender,
-  getCoreRowModel,
-  getFilteredRowModel,
-  getPaginationRowModel,
-  getSortedRowModel,
-  type SortingState,
-  type VisibilityState,
-  useReactTable,
-} from "@tanstack/react-table";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
   graphql,
@@ -431,6 +420,9 @@ const updateColumnPrefsMutation = graphql`
 
 const PAGE_SIZES = [10, 25, 50] as const;
 
+type ColumnVisibility = Record<string, boolean>;
+type SortConfig = { key: string; dir: "asc" | "desc" } | null;
+
 function RawDataTab({
   rawContent,
   organizationId,
@@ -441,9 +433,10 @@ function RawDataTab({
   reportType: string;
 }) {
   const { __ } = useTranslate();
-  const [sorting, setSorting] = useState<SortingState>([]);
+  const [sortConfig, setSortConfig] = useState<SortConfig>(null);
   const [globalFilter, setGlobalFilter] = useState("");
   const [pageSize, setPageSize] = useState<number>(10);
+  const [pageIndex, setPageIndex] = useState(0);
 
   const prefsData =
     useLazyLoadQuery<MonitoringReportDetailsPagePrefsQuery>(
@@ -482,10 +475,10 @@ function RawDataTab({
     return { data: records, headers: hdrs, error: null };
   }, [rawContent]);
 
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>(
+  const [columnVisibility, setColumnVisibility] = useState<ColumnVisibility>(
     () => {
       if (savedColumns && savedColumns.length > 0) {
-        const vis: VisibilityState = {};
+        const vis: ColumnVisibility = {};
         for (const h of headers) {
           vis[h] = savedColumns.includes(h);
         }
@@ -498,7 +491,7 @@ function RawDataTab({
   const saveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const persistPreferences = useCallback(
-    (vis: VisibilityState) => {
+    (vis: ColumnVisibility) => {
       if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
       saveTimerRef.current = setTimeout(() => {
         const selected = headers.filter((h) => vis[h] !== false);
@@ -523,7 +516,7 @@ function RawDataTab({
   }, []);
 
   const handleVisibilityChange = useCallback(
-    (updater: VisibilityState | ((old: VisibilityState) => VisibilityState)) => {
+    (updater: ColumnVisibility | ((old: ColumnVisibility) => ColumnVisibility)) => {
       setColumnVisibility((prev) => {
         const next = typeof updater === "function" ? updater(prev) : updater;
         persistPreferences(next);
@@ -533,34 +526,43 @@ function RawDataTab({
     [persistPreferences],
   );
 
-  const columns = useMemo<ColumnDef<Record<string, string>>[]>(
-    () =>
-      headers.map((header) => ({
-        accessorKey: header,
-        header: header,
-      })),
-    [headers],
+  const visibleHeaders = useMemo(
+    () => headers.filter((h) => columnVisibility[h] !== false),
+    [headers, columnVisibility],
   );
 
-  const table = useReactTable({
-    data,
-    columns,
-    state: { sorting, globalFilter, columnVisibility, pagination: { pageIndex: 0, pageSize } },
-    onSortingChange: setSorting,
-    onGlobalFilterChange: setGlobalFilter,
-    onColumnVisibilityChange: handleVisibilityChange,
-    getCoreRowModel: getCoreRowModel(),
-    getSortedRowModel: getSortedRowModel(),
-    getFilteredRowModel: getFilteredRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-  });
+  const filteredData = useMemo(() => {
+    if (!globalFilter) return data;
+    const lower = globalFilter.toLowerCase();
+    return data.filter((row) =>
+      visibleHeaders.some((h) => (row[h] ?? "").toLowerCase().includes(lower)),
+    );
+  }, [data, globalFilter, visibleHeaders]);
 
-  const visibleCount = headers.filter((h) => columnVisibility[h] !== false).length;
+  const sortedData = useMemo(() => {
+    if (!sortConfig) return filteredData;
+    const { key, dir } = sortConfig;
+    return [...filteredData].sort((a, b) => {
+      const av = a[key] ?? "";
+      const bv = b[key] ?? "";
+      const cmp = av.localeCompare(bv, undefined, { numeric: true, sensitivity: "base" });
+      return dir === "asc" ? cmp : -cmp;
+    });
+  }, [filteredData, sortConfig]);
+
+  const totalPages = Math.max(1, Math.ceil(sortedData.length / pageSize));
+  const safePageIndex = Math.min(pageIndex, totalPages - 1);
+  const pageRows = sortedData.slice(
+    safePageIndex * pageSize,
+    (safePageIndex + 1) * pageSize,
+  );
+
+  const visibleCount = visibleHeaders.length;
   const allVisible = visibleCount === headers.length || Object.keys(columnVisibility).length === 0;
 
   const handleToggleAll = () => {
     if (allVisible) {
-      const vis: VisibilityState = {};
+      const vis: ColumnVisibility = {};
       for (const h of headers) vis[h] = false;
       handleVisibilityChange(vis);
     } else {
@@ -568,11 +570,18 @@ function RawDataTab({
     }
   };
 
+  const handleSort = (key: string) => {
+    setSortConfig((prev) => {
+      if (prev?.key === key) {
+        return prev.dir === "asc" ? { key, dir: "desc" } : null;
+      }
+      return { key, dir: "asc" };
+    });
+  };
+
   const isFiltering = globalFilter.length > 0;
-  const filteredCount = table.getFilteredRowModel().rows.length;
+  const filteredCount = filteredData.length;
   const totalCount = data.length;
-  const currentPage = table.getState().pagination.pageIndex + 1;
-  const totalPages = Math.max(1, table.getPageCount());
 
   if (error) {
     return (
@@ -647,7 +656,10 @@ function RawDataTab({
             <input
               type="text"
               value={globalFilter}
-              onChange={(e) => setGlobalFilter(e.target.value)}
+              onChange={(e) => {
+                setGlobalFilter(e.target.value);
+                setPageIndex(0);
+              }}
               placeholder={__("Search across all columns...")}
               className="w-full pl-9 pr-3 py-2 text-sm border border-border-low rounded-md bg-level-1 text-txt-primary placeholder:text-txt-tertiary focus:outline-none focus:ring-2 focus:ring-accent-bold/30 focus:border-accent-bold transition-[border-color,box-shadow] duration-150"
             />
@@ -674,45 +686,40 @@ function RawDataTab({
           <Table>
             <Thead>
               <Tr>
-                {table.getHeaderGroups().map((headerGroup) =>
-                  headerGroup.headers.map((header) => {
-                    const sorted = header.column.getIsSorted();
-                    return (
-                      <Th
-                        key={header.id}
-                        className={`cursor-pointer select-none transition-colors duration-150 ${
-                          sorted
-                            ? "text-txt-primary"
-                            : "hover:text-txt-secondary"
-                        }`}
-                        onClick={header.column.getToggleSortingHandler()}
-                      >
-                        <span className="inline-flex items-center gap-1.5">
-                          {flexRender(
-                            header.column.columnDef.header,
-                            header.getContext(),
-                          )}
-                          {sorted ? (
-                            <span className="text-accent-bold">
-                              {sorted === "asc" ? (
-                                <IconChevronUp className="size-3.5" />
-                              ) : (
-                                <IconChevronDown className="size-3.5" />
-                              )}
-                            </span>
-                          ) : null}
-                        </span>
-                      </Th>
-                    );
-                  }),
-                )}
+                {visibleHeaders.map((header) => {
+                  const sorted = sortConfig?.key === header ? sortConfig.dir : null;
+                  return (
+                    <Th
+                      key={header}
+                      className={`cursor-pointer select-none transition-colors duration-150 ${
+                        sorted
+                          ? "text-txt-primary"
+                          : "hover:text-txt-secondary"
+                      }`}
+                      onClick={() => handleSort(header)}
+                    >
+                      <span className="inline-flex items-center gap-1.5">
+                        {header}
+                        {sorted ? (
+                          <span className="text-accent-bold">
+                            {sorted === "asc" ? (
+                              <IconChevronUp className="size-3.5" />
+                            ) : (
+                              <IconChevronDown className="size-3.5" />
+                            )}
+                          </span>
+                        ) : null}
+                      </span>
+                    </Th>
+                  );
+                })}
               </Tr>
             </Thead>
             <Tbody>
-              {table.getRowModel().rows.length === 0 ? (
+              {pageRows.length === 0 ? (
                 <Tr>
                   <Td
-                    colSpan={table.getVisibleLeafColumns().length}
+                    colSpan={visibleHeaders.length}
                     className="text-center py-12"
                   >
                     <div className="flex flex-col items-center gap-2">
@@ -727,14 +734,11 @@ function RawDataTab({
                   </Td>
                 </Tr>
               ) : (
-                table.getRowModel().rows.map((row) => (
-                  <Tr key={row.id}>
-                    {row.getVisibleCells().map((cell) => (
-                      <Td key={cell.id} className="whitespace-nowrap max-w-xs truncate">
-                        {flexRender(
-                          cell.column.columnDef.cell,
-                          cell.getContext(),
-                        )}
+                pageRows.map((row, rowIdx) => (
+                  <Tr key={rowIdx}>
+                    {visibleHeaders.map((header) => (
+                      <Td key={header} className="max-w-xs truncate">
+                        {row[header]}
                       </Td>
                     ))}
                   </Tr>
@@ -751,7 +755,7 @@ function RawDataTab({
               value={pageSize}
               onChange={(e) => {
                 setPageSize(Number(e.target.value));
-                table.setPageIndex(0);
+                setPageIndex(0);
               }}
               className="px-2 py-1 text-xs border border-border-low rounded-md bg-level-1 text-txt-primary focus:outline-none focus:ring-2 focus:ring-accent-bold/30 transition-[border-color,box-shadow] duration-150"
             >
@@ -766,14 +770,14 @@ function RawDataTab({
             <span className="text-xs text-txt-tertiary tabular-nums mr-2">
               {sprintf(
                 __("Page %s of %s"),
-                currentPage.toLocaleString(),
+                (safePageIndex + 1).toLocaleString(),
                 totalPages.toLocaleString(),
               )}
             </span>
             <button
               type="button"
-              onClick={() => table.previousPage()}
-              disabled={!table.getCanPreviousPage()}
+              onClick={() => setPageIndex((i) => Math.max(0, i - 1))}
+              disabled={safePageIndex === 0}
               className="p-1.5 rounded-md border border-border-low bg-level-1 text-txt-primary hover:bg-subtle disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-150"
               aria-label={__("Previous page")}
             >
@@ -781,8 +785,8 @@ function RawDataTab({
             </button>
             <button
               type="button"
-              onClick={() => table.nextPage()}
-              disabled={!table.getCanNextPage()}
+              onClick={() => setPageIndex((i) => Math.min(totalPages - 1, i + 1))}
+              disabled={safePageIndex >= totalPages - 1}
               className="p-1.5 rounded-md border border-border-low bg-level-1 text-txt-primary hover:bg-subtle disabled:opacity-40 disabled:cursor-not-allowed transition-colors duration-150"
               aria-label={__("Next page")}
             >
