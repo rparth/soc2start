@@ -22,4 +22,9 @@ type Viewer {
     ): EmployeeDocumentConnection! @goField(forceResolver: true)
 
     approvableDocument(id: ID!): EmployeeDocument @goField(forceResolver: true)
+
+    userColumnPreferences(
+        organizationId: ID!
+        reportType: MonitoringReportType!
+    ): UserColumnPreference @goField(forceResolver: true)
 }

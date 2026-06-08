@@ -1,0 +1,23 @@
+type UserColumnPreference implements Node {
+    id: ID!
+    reportType: MonitoringReportType!
+    selectedColumns: [String!]!
+    createdAt: Datetime!
+    updatedAt: Datetime!
+}
+
+input UpdateUserColumnPreferencesInput {
+    organizationId: ID!
+    reportType: MonitoringReportType!
+    selectedColumns: [String!]!
+}
+
+type UpdateUserColumnPreferencesPayload {
+    userColumnPreference: UserColumnPreference!
+}
+
+extend type Mutation {
+    updateUserColumnPreferences(
+        input: UpdateUserColumnPreferencesInput!
+    ): UpdateUserColumnPreferencesPayload
+}

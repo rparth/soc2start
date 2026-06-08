@@ -180,6 +180,33 @@ func (r *viewerResolver) ApprovableDocument(ctx context.Context, obj *types.View
 	}, nil
 }
 
+// UserColumnPreferences is the resolver for the userColumnPreferences field.
+func (r *viewerResolver) UserColumnPreferences(ctx context.Context, obj *types.Viewer, organizationID gid.GID, reportType coredata.MonitoringReportType) (*types.UserColumnPreference, error) {
+	scope, err := r.authorize(ctx, organizationID, probo.ActionMonitoringReportList)
+	if err != nil {
+		return nil, err
+	}
+
+	identity := authn.IdentityFromContext(ctx)
+
+	pref, err := r.probo.UserColumnPreferences.GetByProfileAndReportType(
+		ctx,
+		scope,
+		identity.ID,
+		reportType,
+	)
+	if err != nil {
+		if errors.Is(err, coredata.ErrResourceNotFound) {
+			return nil, nil
+		}
+
+		r.logger.ErrorCtx(ctx, "cannot get user column preferences", log.Error(err))
+		return nil, gqlutils.Internal(ctx)
+	}
+
+	return types.NewUserColumnPreference(pref), nil
+}
+
 // Viewer returns schema.ViewerResolver implementation.
 func (r *Resolver) Viewer() schema.ViewerResolver { return &viewerResolver{r} }
 

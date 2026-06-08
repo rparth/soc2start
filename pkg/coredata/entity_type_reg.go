@@ -127,6 +127,7 @@ const (
 	MonitoringReportEntityType                     uint16 = 101
 	DeviceEntityType                               uint16 = 102
 	DevicePostureCheckEntityType                   uint16 = 103
+	UserColumnPreferenceEntityType                 uint16 = 104
 )
 
 func NewEntityFromID(id gid.GID) (any, bool) {
@@ -321,6 +322,8 @@ func NewEntityFromID(id gid.GID) (any, bool) {
 		return &Device{ID: id}, true
 	case DevicePostureCheckEntityType:
 		return &DevicePostureCheck{ID: id}, true
+	case UserColumnPreferenceEntityType:
+		return &UserColumnPreference{ID: id}, true
 	default:
 		return nil, false
 	}

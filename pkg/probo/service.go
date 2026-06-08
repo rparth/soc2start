@@ -124,6 +124,7 @@ type (
 		CustomDomains                         *CustomDomainService
 		SlackMessages                         *slack.Service
 		MonitoringReports                     *MonitoringReportService
+		UserColumnPreferences                 *UserColumnPreferenceService
 		Devices                               *DeviceService
 	}
 )
@@ -276,6 +277,7 @@ func NewService(
 			),
 		),
 	}
+	svc.UserColumnPreferences = &UserColumnPreferenceService{svc: svc}
 	svc.Devices = &DeviceService{svc: svc}
 
 	return svc, nil
