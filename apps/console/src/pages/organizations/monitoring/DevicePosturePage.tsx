@@ -12,7 +12,7 @@
 // OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 // PERFORMANCE OF THIS SOFTWARE.
 
-import { formatDate, type GraphQLError, sprintf } from "@probo/helpers";
+import { formatDateTime, type GraphQLError, sprintf } from "@probo/helpers";
 import { usePageTitle } from "@probo/hooks";
 import { useTranslate } from "@probo/i18n";
 import {
@@ -339,7 +339,7 @@ function DeviceRow({
         <Badge variant={postureVariant}>{postureLabel}</Badge>
       </Td>
       <Td>
-        {device.lastHeartbeatAt ? formatDate(device.lastHeartbeatAt) : "—"}
+        {device.lastHeartbeatAt ? formatDateTime(device.lastHeartbeatAt) : "—"}
       </Td>
       <Td>
         {device.canDelete && (

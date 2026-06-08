@@ -37,6 +37,16 @@ export function formatDate(dateInput?: string | null): string {
   return date.toLocaleDateString();
 }
 
+export function formatDateTime(dateInput?: string | null): string {
+  if (!dateInput) return "";
+
+  const date = parseDate(dateInput);
+  return date.toLocaleString(undefined, {
+    dateStyle: "medium",
+    timeStyle: "short",
+  });
+}
+
 export function parseDate(dateString: string): Date {
   if (dateString.includes("T")) {
     return new Date(dateString);

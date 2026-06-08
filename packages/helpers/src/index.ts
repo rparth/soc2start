@@ -98,6 +98,7 @@ export {
 export {
   formatDatetime,
   formatDate,
+  formatDateTime,
   toDateInput,
   todayAsDateInput,
   formatDuration,
