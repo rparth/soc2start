@@ -121,24 +121,32 @@ function EmailVerificationBanner({ email }: { email: string }) {
   };
 
   return (
-    <div className="flex items-center justify-between gap-4 bg-yellow-50 dark:bg-yellow-950/30 border-b border-yellow-200 dark:border-yellow-800 px-4 py-2.5 text-sm">
-      <p className="text-yellow-800 dark:text-yellow-200">
-        {__("Please verify your email address to secure your account.")}
-      </p>
+    <div className="flex items-center justify-between gap-4 bg-warning border-b border-border-warning px-5 py-3 text-sm">
+      <div className="flex items-center gap-3 min-w-0">
+        <div className="flex-shrink-0 w-5 h-5 rounded-full bg-txt-warning/20 flex items-center justify-center">
+          <span className="text-txt-warning text-xs font-bold">!</span>
+        </div>
+        <p className="text-txt-warning font-medium truncate">
+          {__("Please verify your email address to secure your account.")}
+        </p>
+      </div>
       {sent
         ? (
-            <span className="text-yellow-700 dark:text-yellow-300 whitespace-nowrap">
+            <span className="text-txt-success text-xs font-medium whitespace-nowrap flex items-center gap-1.5">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="flex-shrink-0">
+                <path d="M11.5 3.5L5.5 10L2.5 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
               {__("Verification email sent")}
             </span>
           )
         : (
             <Button
               variant="secondary"
-              className="text-xs py-1 px-3"
+              className="text-xs py-1.5 px-4 whitespace-nowrap"
               onClick={handleResend}
               disabled={isInFlight}
             >
-              {isInFlight ? __("Sending...") : __("Resend verification email")}
+              {isInFlight ? __("Sending...") : __("Resend email")}
             </Button>
           )}
     </div>

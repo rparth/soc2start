@@ -148,28 +148,33 @@ export default function VerifyEmailPage() {
   });
 
   return (
-    <div className="space-y-6 w-full max-w-md mx-auto pt-8">
-      <div className="space-y-2 text-center">
-        <h1 className="text-3xl font-bold">{__("Email Confirmation")}</h1>
-        <p className="text-txt-tertiary">
+    <div className="w-full max-w-md mx-auto pt-8">
+      <div className="text-center mb-8">
+        <h1 className="text-2xl font-semibold tracking-tight">{__("Email Confirmation")}</h1>
+        <p className="mt-2 text-sm text-txt-tertiary">
           {__("Confirm your email address to complete registration")}
         </p>
       </div>
 
       {isConfirmed
         ? (
-            <div className="space-y-4 text-center">
-              <p className="text-green-600 dark:text-green-400">
+            <div className="text-center space-y-6">
+              <div className="mx-auto w-12 h-12 rounded-full bg-txt-success/10 flex items-center justify-center">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" className="text-txt-success">
+                  <path d="M20 6L9 17L4 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              </div>
+              <p className="text-sm text-txt-success font-medium">
                 {__("Your email has been confirmed successfully!")}
               </p>
-              <Button to="/auth/login" className="w-full">
+              <Button to="/auth/login" className="w-full h-10">
                 {__("Proceed to Login")}
               </Button>
             </div>
           )
         : (
             <>
-              <form onSubmit={e => void handleSubmit(e)} className="space-y-4">
+              <form onSubmit={e => void handleSubmit(e)} className="space-y-5">
                 <Field
                   label={__("Confirmation Token")}
                   type="text"
@@ -184,7 +189,7 @@ export default function VerifyEmailPage() {
 
                 <Button
                   type="submit"
-                  className="w-xs h-10 mx-auto mt-6"
+                  className="w-full h-10"
                   disabled={form.formState.isSubmitting}
                 >
                   {form.formState.isSubmitting
@@ -194,15 +199,18 @@ export default function VerifyEmailPage() {
               </form>
 
               {showResend && (
-                <div className="border-t border-bd-default pt-6 space-y-4">
-                  <p className="text-sm text-txt-secondary text-center">
+                <div className="mt-8 pt-6 border-t border-bd-default">
+                  <p className="text-sm text-txt-secondary text-center mb-4">
                     {__("Request a new verification email")}
                   </p>
                   {resendSent
                     ? (
-                        <p className="text-sm text-txt-success text-center">
-                          {__("Check your inbox for a new verification link.")}
-                        </p>
+                        <div className="flex items-center justify-center gap-2 text-sm text-txt-success">
+                          <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="flex-shrink-0">
+                            <path d="M13 4L6 11.5L3 8.5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                          <span className="font-medium">{__("Check your inbox for a new verification link.")}</span>
+                        </div>
                       )
                     : (
                         <form onSubmit={e => void handleResend(e)} className="space-y-4">
@@ -217,7 +225,7 @@ export default function VerifyEmailPage() {
                           <Button
                             type="submit"
                             variant="secondary"
-                            className="w-xs h-10 mx-auto"
+                            className="w-full h-10"
                             disabled={resendForm.formState.isSubmitting}
                           >
                             {resendForm.formState.isSubmitting
@@ -229,30 +237,28 @@ export default function VerifyEmailPage() {
                 </div>
               )}
 
-              <p className="text-sm text-txt-tertiary text-center">
+              <div className="mt-6 text-center">
                 <button
                   type="button"
-                  className="underline text-txt-secondary hover:text-txt-primary"
+                  className="text-sm text-txt-tertiary hover:text-txt-secondary transition-colors"
                   onClick={() => setShowResend(!showResend)}
                 >
                   {showResend
                     ? __("Hide resend form")
                     : __("Didn't receive the email?")}
                 </button>
-              </p>
+              </div>
             </>
           )}
 
-      <div className="text-center">
+      <div className="mt-6 text-center">
         {!isConfirmed && (
-          <p className="text-sm text-txt-tertiary">
-            <Link
-              to="/auth/login"
-              className="underline text-txt-primary hover:text-txt-secondary"
-            >
-              {__("Back to Login")}
-            </Link>
-          </p>
+          <Link
+            to="/auth/login"
+            className="text-sm text-txt-tertiary hover:text-txt-primary transition-colors"
+          >
+            {__("Back to Login")}
+          </Link>
         )}
       </div>
     </div>
