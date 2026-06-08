@@ -82,11 +82,11 @@ const auditLogSettingsPageFragment = graphql`
 const auditLogEntryRowFragment = graphql`
   fragment AuditLogSettingsPageRowFragment on AuditLogEntry {
     id
-    actorId
     actorType
+    actorDisplayName
     action
     resourceType
-    resourceId
+    resourceDisplayName
     createdAt
   }
 `;
@@ -150,8 +150,8 @@ function AuditLogEntryRow({
       <Td>
         <div className="flex items-center gap-2">
           <ActorTypeBadge type={entry.actorType} />
-          <span className="text-sm font-mono text-txt-secondary truncate max-w-48">
-            {entry.actorId}
+          <span className="text-sm text-txt-secondary">
+            {entry.actorDisplayName}
           </span>
         </div>
       </Td>
@@ -159,14 +159,9 @@ function AuditLogEntryRow({
         <ActionBadge action={entry.action} />
       </Td>
       <Td>
-        <div className="flex items-center gap-2">
-          <span className="text-sm font-medium">
-            {entry.resourceType}
-          </span>
-          <span className="text-sm font-mono text-txt-tertiary truncate max-w-48">
-            {entry.resourceId}
-          </span>
-        </div>
+        <span className="text-sm font-medium">
+          {entry.resourceDisplayName}
+        </span>
       </Td>
     </Tr>
   );

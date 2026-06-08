@@ -46,9 +46,11 @@ type AuditLogEntry implements Node {
     organization: Organization @goField(forceResolver: true)
     actorId: ID!
     actorType: AuditLogActorType!
+    actorDisplayName: String! @goField(forceResolver: true)
     action: String!
     resourceType: String!
     resourceId: ID!
+    resourceDisplayName: String! @goField(forceResolver: true)
     metadata: String
     createdAt: Datetime!
 

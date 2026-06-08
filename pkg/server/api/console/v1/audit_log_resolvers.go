@@ -42,6 +42,40 @@ func (r *auditLogEntryResolver) Organization(ctx context.Context, obj *types.Aud
 	return types.NewOrganization(organization), nil
 }
 
+// ActorDisplayName is the resolver for the actorDisplayName field.
+func (r *auditLogEntryResolver) ActorDisplayName(ctx context.Context, obj *types.AuditLogEntry) (string, error) {
+	switch obj.ActorType {
+	case coredata.AuditLogActorTypeSystem:
+		return "System", nil
+	case coredata.AuditLogActorTypeAPIKey:
+		return "API Key", nil
+	case coredata.AuditLogActorTypeUser:
+		profile, err := r.iam.OrganizationService.GetProfileForIdentityAndOrganization(
+			ctx,
+			obj.ActorID,
+			obj.Organization.ID,
+		)
+		if err != nil {
+			if errors.Is(err, coredata.ErrResourceNotFound) {
+				return obj.ActorID.String(), nil
+			}
+
+			r.logger.ErrorCtx(ctx, "cannot load actor profile", log.Error(err))
+
+			return obj.ActorID.String(), nil
+		}
+
+		return profile.FullName, nil
+	default:
+		return obj.ActorID.String(), nil
+	}
+}
+
+// ResourceDisplayName is the resolver for the resourceDisplayName field.
+func (r *auditLogEntryResolver) ResourceDisplayName(ctx context.Context, obj *types.AuditLogEntry) (string, error) {
+	return obj.ResourceType, nil
+}
+
 // Permission is the resolver for the permission field.
 func (r *auditLogEntryResolver) Permission(ctx context.Context, obj *types.AuditLogEntry, action string) (bool, error) {
 	return r.Resolver.Permission(ctx, obj, action)
