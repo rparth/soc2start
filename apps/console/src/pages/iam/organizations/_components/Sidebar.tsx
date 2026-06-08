@@ -157,6 +157,7 @@ export function Sidebar(props: { fKey: SidebarFragment$key }) {
           `${prefix}/assets`,
           `${prefix}/data`,
           `${prefix}/third-parties`,
+          `${prefix}/employee`,
         ]}
       >
         {organization.canListMembers && (
@@ -194,6 +195,11 @@ export function Sidebar(props: { fKey: SidebarFragment$key }) {
             to={`${prefix}/third-parties`}
           />
         )}
+        <SidebarItem
+          label={__("Signature and Approvals")}
+          icon={IconPageCheck}
+          to={`${prefix}/employee`}
+        />
       </SidebarSection>
 
       <SidebarSection

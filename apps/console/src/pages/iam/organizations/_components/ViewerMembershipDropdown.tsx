@@ -18,7 +18,6 @@ import {
   DropdownSeparator,
   IconArrowBoxLeft,
   IconCircleQuestionmark,
-  IconPageTextLine,
   UserDropdown,
   UserDropdownItem,
   useToast,
@@ -28,7 +27,6 @@ import { graphql } from "relay-runtime";
 
 import type { ViewerMembershipDropdownFragment$key } from "#/__generated__/iam/ViewerMembershipDropdownFragment.graphql";
 import type { ViewerMembershipDropdownSignOutMutation } from "#/__generated__/iam/ViewerMembershipDropdownSignOutMutation.graphql";
-import { useOrganizationId } from "#/hooks/useOrganizationId";
 
 export const fragment = graphql`
   fragment ViewerMembershipDropdownFragment on Organization {
@@ -55,7 +53,6 @@ export function ViewerMembershipDropdown(props: {
   const { fKey } = props;
 
   const { __ } = useTranslate();
-  const organizationId = useOrganizationId();
   const { toast } = useToast();
 
   const {
@@ -94,11 +91,6 @@ export function ViewerMembershipDropdown(props: {
 
   return (
     <UserDropdown fullName={fullName} email={email}>
-      <UserDropdownItem
-        to={`/organizations/${organizationId}/employee`}
-        icon={IconPageTextLine}
-        label={__("My Signatures")}
-      />
       <UserDropdownItem
         to="mailto:support@getprobo.com"
         icon={IconCircleQuestionmark}
