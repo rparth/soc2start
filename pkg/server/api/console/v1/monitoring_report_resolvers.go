@@ -90,6 +90,22 @@ func (r *monitoringReportResolver) Uploader(ctx context.Context, obj *types.Moni
 	return types.NewProfile(profile), nil
 }
 
+// RawContent is the resolver for the rawContent field.
+func (r *monitoringReportResolver) RawContent(ctx context.Context, obj *types.MonitoringReport) (*string, error) {
+	scope, err := r.authorize(ctx, obj.ID, probo.ActionMonitoringReportGet)
+	if err != nil {
+		return nil, err
+	}
+
+	content, err := r.probo.MonitoringReports.GetFileContent(ctx, scope, obj.ID)
+	if err != nil {
+		r.logger.ErrorCtx(ctx, "cannot get monitoring report file content", log.Error(err))
+		return nil, gqlutils.Internal(ctx)
+	}
+
+	return &content, nil
+}
+
 // Permission is the resolver for the permission field.
 func (r *monitoringReportResolver) Permission(ctx context.Context, obj *types.MonitoringReport, action string) (bool, error) {
 	return r.Resolver.Permission(ctx, obj, action)

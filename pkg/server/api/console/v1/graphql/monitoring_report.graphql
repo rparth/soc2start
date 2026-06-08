@@ -21,6 +21,7 @@ type MonitoringReport implements Node {
     uploader: Profile @goField(forceResolver: true)
     rowCount: Int!
     summary: String!
+    rawContent: String @goField(forceResolver: true)
     createdAt: Datetime!
     updatedAt: Datetime!
     permission(action: String!): Boolean! @goField(forceResolver: true)

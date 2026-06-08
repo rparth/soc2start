@@ -34,7 +34,7 @@ import {
   useConfirm,
   useToast,
 } from "@probo/ui";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import {
   graphql,
   type PreloadedQuery,
@@ -56,6 +56,7 @@ export const monitoringReportDetailsPageQuery = graphql`
         reportType
         rowCount
         summary
+        rawContent
         createdAt
         updatedAt
         organization {
@@ -230,8 +231,8 @@ export default function MonitoringReportDetailsPage({
       {activeTab === "summary" && summary && (
         <SummaryTab summary={summary} />
       )}
-      {activeTab === "raw" && report.file?.downloadUrl && (
-        <RawDataTab downloadUrl={report.file.downloadUrl} />
+      {activeTab === "raw" && report.rawContent && (
+        <RawDataTab rawContent={report.rawContent} />
       )}
     </div>
   );
@@ -355,44 +356,30 @@ function SummaryTab({ summary }: { summary: SummaryData }) {
   );
 }
 
-function RawDataTab({ downloadUrl }: { downloadUrl: string }) {
+function RawDataTab({ rawContent }: { rawContent: string }) {
   const { __ } = useTranslate();
-  const [rows, setRows] = useState<string[][]>([]);
-  const [headers, setHeaders] = useState<string[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("FAIL");
   const [severityFilter, setSeverityFilter] = useState<string>("ALL");
   const [page, setPage] = useState(0);
   const pageSize = 50;
 
-  useEffect(() => {
-    const fetchCSV = async () => {
-      try {
-        const response = await fetch(downloadUrl);
-        const text = await response.text();
-        const lines = text.split("\n").filter((line) => line.trim());
+  const { headers, rows, error } = useMemo(() => {
+    const lines = rawContent.split("\n").filter((line) => line.trim());
 
-        if (lines.length === 0) {
-          setError("Empty CSV file");
-          return;
-        }
+    if (lines.length === 0) {
+      return { headers: [], rows: [], error: "Empty CSV file" };
+    }
 
-        const parseLine = (line: string) =>
-          line.split(";").map((cell) => cell.trim());
+    const parseLine = (line: string) =>
+      line.split(";").map((cell) => cell.trim());
 
-        setHeaders(parseLine(lines[0]));
-        setRows(lines.slice(1).map(parseLine));
-      } catch {
-        setError("Failed to load CSV data");
-      } finally {
-        setLoading(false);
-      }
+    return {
+      headers: parseLine(lines[0]),
+      rows: lines.slice(1).map(parseLine),
+      error: null,
     };
-
-    void fetchCSV();
-  }, [downloadUrl]);
+  }, [rawContent]);
 
   const statusIdx = useMemo(
     () => headers.findIndex((h) => h.toUpperCase() === "STATUS"),
@@ -458,14 +445,6 @@ function RawDataTab({ downloadUrl }: { downloadUrl: string }) {
     },
     [],
   );
-
-  if (loading) {
-    return (
-      <Card className="p-8 text-center text-txt-secondary">
-        {__("Loading CSV data...")}
-      </Card>
-    );
-  }
 
   if (error) {
     return (

@@ -24,6 +24,7 @@ import (
 	"strings"
 	"time"
 
+	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"go.gearno.de/kit/pg"
 	"go.probo.inc/probo/pkg/coredata"
 	"go.probo.inc/probo/pkg/filevalidation"
@@ -218,6 +219,45 @@ func (s MonitoringReportService) CountForOrganizationID(
 	}
 
 	return count, nil
+}
+
+func (s MonitoringReportService) GetFileContent(
+	ctx context.Context, scope coredata.Scoper,
+	reportID gid.GID,
+) (string, error) {
+	report, err := s.Get(ctx, scope, reportID)
+	if err != nil {
+		return "", fmt.Errorf("cannot get monitoring report: %w", err)
+	}
+
+	if report.FileID == nil {
+		return "", fmt.Errorf("monitoring report has no file")
+	}
+
+	file, err := s.svc.Files.Get(ctx, scope, *report.FileID)
+	if err != nil {
+		return "", fmt.Errorf("cannot get file: %w", err)
+	}
+
+	result, err := s.svc.s3.GetObject(
+		ctx,
+		&s3.GetObjectInput{
+			Bucket: &s.svc.bucket,
+			Key:    &file.FileKey,
+		},
+	)
+	if err != nil {
+		return "", fmt.Errorf("cannot get file from S3: %w", err)
+	}
+
+	defer func() { _ = result.Body.Close() }()
+
+	data, err := io.ReadAll(result.Body)
+	if err != nil {
+		return "", fmt.Errorf("cannot read file data: %w", err)
+	}
+
+	return string(data), nil
 }
 
 func parseProwlerCSV(r io.Reader, reportType coredata.MonitoringReportType) (*MonitoringReportSummary, int, error) {
