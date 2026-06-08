@@ -23,6 +23,7 @@ import {
   useRef,
   useState,
 } from "react";
+import { createPortal } from "react-dom";
 import { useLocation } from "react-router";
 import { tv } from "tailwind-variants";
 
@@ -95,11 +96,11 @@ const FlyoutPanel = forwardRef<HTMLDivElement, FlyoutProps>(
 
     if (!visible) return null;
 
-    return (
+    return createPortal(
       <div
         ref={ref}
         className={clsx(
-          "fixed top-16 bottom-0 z-50 w-[220px] border-r border-border-solid bg-level-0 px-2 py-4 shadow-md transition-all duration-150 ease-out overflow-y-auto",
+          "fixed top-12 bottom-0 z-50 w-[220px] border-r border-border-solid bg-level-0 px-2 py-4 shadow-md transition-all duration-150 ease-out overflow-y-auto",
           animateIn
             ? "opacity-100 translate-x-0"
             : "opacity-0 -translate-x-2",
@@ -110,7 +111,8 @@ const FlyoutPanel = forwardRef<HTMLDivElement, FlyoutProps>(
           {label}
         </div>
         {children}
-      </div>
+      </div>,
+      document.body,
     );
   },
 );
@@ -145,7 +147,7 @@ export function SidebarSection({ icon: Icon, label, basePaths, children }: Props
 
   useEffect(() => {
     setShowFlyout(false);
-  }, [location.pathname]);
+  }, [location.pathname, isCollapsed]);
 
   const toggleOpen = useCallback(() => {
     const next = !isOpen;
@@ -163,8 +165,15 @@ export function SidebarSection({ icon: Icon, label, basePaths, children }: Props
         setShowFlyout(false);
       }
     };
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setShowFlyout(false);
+    };
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
+    document.addEventListener("keydown", handleEscape);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("keydown", handleEscape);
+    };
   }, [showFlyout]);
 
   if (isCollapsed) {
