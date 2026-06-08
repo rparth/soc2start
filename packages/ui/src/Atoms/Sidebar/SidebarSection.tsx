@@ -70,10 +70,12 @@ type FlyoutProps = PropsWithChildren<{
   show: boolean;
   triggerRef: RefObject<HTMLButtonElement | null>;
   label: string;
+  onMouseEnter?: () => void;
+  onMouseLeave?: () => void;
 }>;
 
 const FlyoutPanel = forwardRef<HTMLDivElement, FlyoutProps>(
-  function FlyoutPanel({ show, triggerRef, label, children }, ref) {
+  function FlyoutPanel({ show, triggerRef, label, children, onMouseEnter, onMouseLeave }, ref) {
     const [leftPx, setLeftPx] = useState(56);
     const [animateIn, setAnimateIn] = useState(false);
 
@@ -99,8 +101,10 @@ const FlyoutPanel = forwardRef<HTMLDivElement, FlyoutProps>(
     return createPortal(
       <div
         ref={ref}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
         className={clsx(
-          "fixed top-12 bottom-0 z-50 w-[220px] border-r border-border-solid bg-level-0 px-2 py-4 shadow-lg transition-all duration-150 ease-out overflow-y-auto",
+          "fixed top-12 bottom-0 z-50 w-[220px] border-r border-border-solid bg-level-1 px-2 py-4 shadow-lg transition-all duration-150 ease-out overflow-y-auto",
           animateIn
             ? "opacity-100 translate-x-0"
             : "opacity-0 -translate-x-2",
@@ -130,6 +134,8 @@ export function SidebarSection({ icon: Icon, label, basePaths, children }: Props
   const [showFlyout, setShowFlyout] = useState(false);
   const flyoutRef = useRef<HTMLDivElement>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  const hoverTimerRef = useRef<ReturnType<typeof setTimeout>>(null);
+  const closeTimerRef = useRef<ReturnType<typeof setTimeout>>(null);
 
   const hasActiveChild = basePaths.some(path => location.pathname.startsWith(path));
 
@@ -176,15 +182,35 @@ export function SidebarSection({ icon: Icon, label, basePaths, children }: Props
     };
   }, [showFlyout]);
 
+  const openFlyout = useCallback(() => {
+    if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+    hoverTimerRef.current = setTimeout(() => setShowFlyout(true), 120);
+  }, []);
+
+  const closeFlyout = useCallback(() => {
+    if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+    closeTimerRef.current = setTimeout(() => setShowFlyout(false), 200);
+  }, []);
+
+  const cancelClose = useCallback(() => {
+    if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      if (hoverTimerRef.current) clearTimeout(hoverTimerRef.current);
+      if (closeTimerRef.current) clearTimeout(closeTimerRef.current);
+    };
+  }, []);
+
   if (isCollapsed) {
     return (
       <li>
         <button
           ref={triggerRef}
           type="button"
-          onClick={() => setShowFlyout(!showFlyout)}
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
+          onMouseEnter={() => { setIsHovered(true); openFlyout(); }}
+          onMouseLeave={() => { setIsHovered(false); closeFlyout(); }}
           className={sectionHeader({ hasActiveChild, isCollapsed: true, isHovered })}
         >
           <Icon size={16} />
@@ -194,6 +220,8 @@ export function SidebarSection({ icon: Icon, label, basePaths, children }: Props
           show={showFlyout}
           triggerRef={triggerRef}
           label={label}
+          onMouseEnter={cancelClose}
+          onMouseLeave={closeFlyout}
         >
           <sidebarContext.Provider value={{ open: true }}>
             <ul className="space-y-[2px]">
