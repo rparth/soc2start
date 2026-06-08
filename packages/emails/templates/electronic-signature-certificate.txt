@@ -8,5 +8,4 @@ The certificate contains a complete record of the signing event, including the i
 
 If you have any questions, please contact support.
 
-{{.SenderCompanyHeadquarterAddress}}
-Powered By Probo
+SOC2Start.io - https://soc2start.io

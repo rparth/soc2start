@@ -1,4 +1,4 @@
-Probo
+SOC2Start.io
 
 Hi {{.RecipientFullName}},
 
@@ -8,5 +8,4 @@ Please use this link to connect to {{.OrganizationName}}'s Compliance Page:
 
 IMPORTANT: This link expires in {{.DurationInMinutes}} minutes. Use it promptly after receiving this email.
 
-{{.SenderCompanyHeadquarterAddress}}
-Powered By Prob
+SOC2Start.io - https://soc2start.io

@@ -12,5 +12,4 @@ If you did not request this subscription, or no longer want to receive these ema
 
 {{.UnsubscribeURL}}
 
-{{.SenderCompanyHeadquarterAddress}}
-Powered By Probo
+SOC2Start.io - https://soc2start.io

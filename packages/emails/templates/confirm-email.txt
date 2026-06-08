@@ -1,12 +1,11 @@
-Probo
+SOC2Start.io
 
 Hi {{.RecipientFullName}},
 
-Thanks for joining Probo! Please confirm your email address by clicking the link below:
+Thanks for joining SOC2Start.io! Please confirm your email address by clicking the link below:
 
 {{.ConfirmationUrl}}
 
-If you did not sign up for Probo, please ignore this email.
+If you did not sign up for SOC2Start.io, please ignore this email.
 
-{{.SenderCompanyHeadquarterAddress}}
-Powered By Probo
+SOC2Start.io - https://soc2start.io

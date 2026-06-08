@@ -111,20 +111,20 @@ func DefaultPresenterConfig(staticAssetsBucket string, baseURL string) Presenter
 	return PresenterConfig{
 		BaseURL: baseURL,
 		PoweredByLogo: Asset{
-			Name:       "probo-gray-small.png",
-			ObjectKey:  "probo-gray-small.png",
+			Name:       "soc2start.png",
+			ObjectKey:  "soc2start.png",
 			BucketName: staticAssetsBucket,
 			MimeType:   "image/png",
 		},
-		SenderCompanyName:       "Probo",
-		SenderCompanyWebsiteURL: "https://www.getprobo.com",
+		SenderCompanyName:       "SOC2Start.io",
+		SenderCompanyWebsiteURL: "https://soc2start.io",
 		SenderCompanyLogo: Asset{
-			Name:       "probo.png",
-			ObjectKey:  "probo.png",
+			Name:       "soc2start.png",
+			ObjectKey:  "soc2start.png",
 			BucketName: staticAssetsBucket,
 			MimeType:   "image/png",
 		},
-		SenderCompanyHeadquarterAddress: "Probo Inc, 490 Post St, STE 640, San Francisco, CA, 94102, US",
+		SenderCompanyHeadquarterAddress: "",
 	}
 }
 

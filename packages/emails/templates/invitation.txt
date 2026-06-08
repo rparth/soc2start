@@ -1,12 +1,11 @@
-Probo
+SOC2Start.io
 
 Hi {{.RecipientFullName}},
 
-You have been invited to join organization {{.OrganizationName}} on Probo. Click the link below to activate your account:
+You have been invited to join organization {{.OrganizationName}} on SOC2Start.io. Click the link below to activate your account:
 
 {{.InvitationUrl}}
 
 If you don't want to do so, you can ignore this email.
 
-{{.SenderCompanyHeadquarterAddress}}
-Powered By Probo
+SOC2Start.io - https://soc2start.io
