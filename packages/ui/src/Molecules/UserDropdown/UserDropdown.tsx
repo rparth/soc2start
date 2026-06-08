@@ -22,7 +22,6 @@ import {
   DropdownItem,
   DropdownSeparator,
 } from "../../Atoms/Dropdown/Dropdown";
-import { IconChevronDown } from "../../Atoms/Icons";
 import type { IconProps } from "../../Atoms/Icons/type";
 
 type Props = PropsWithChildren<{ fullName: string; email: string }>;
@@ -34,8 +33,6 @@ export function UserDropdown({ fullName, children, email }: Props) {
       toggle={(
         <Button variant="tertiary">
           <Avatar name={fullName} />
-          <span>{fullName}</span>
-          <IconChevronDown size={16} />
         </Button>
       )}
     >
