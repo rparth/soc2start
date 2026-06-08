@@ -289,6 +289,10 @@ func (r *mutationResolver) VerifyEmail(ctx context.Context, input types.VerifyEm
 			return nil, gqlutils.Invalid(ctx, err)
 		}
 
+		if _, ok := errors.AsType[*iam.ErrExpiredToken](err); ok {
+			return nil, gqlutils.Invalid(ctx, err)
+		}
+
 		if _, ok := errors.AsType[*iam.ErrEmailVerificationMismatch](err); ok {
 			return nil, gqlutils.Invalid(ctx, err)
 		}

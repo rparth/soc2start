@@ -158,6 +158,10 @@ func (s AccountService) ChangeEmail(ctx context.Context, identityID gid.GID, req
 func (s AccountService) VerifyEmail(ctx context.Context, token string) error {
 	payload, err := statelesstoken.ValidateToken[EmailConfirmationData](s.tokenSecret, TokenTypeEmailConfirmation, token)
 	if err != nil {
+		var expiredErr *statelesstoken.ErrExpiredToken
+		if errors.As(err, &expiredErr) {
+			return NewExpiredTokenError()
+		}
 		return NewInvalidTokenError()
 	}
 
