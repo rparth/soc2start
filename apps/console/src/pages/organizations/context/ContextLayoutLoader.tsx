@@ -25,6 +25,7 @@ export default function ContextLayoutLoader() {
   return (
     <div className="space-y-6">
       <PageHeader
+        breadcrumbs={[__("Context")]}
         title={__("Context")}
         description={__(
           "Structured company information for AI assistants and compliance workflows.",

@@ -49,6 +49,7 @@ export default function TasksPage({ queryRef }: Props) {
         organizationRef={query.organization as TasksCardOrganizationFragment$key}
         header={({ connectionId, canCreateTask, refetch }) => (
           <PageHeader
+            breadcrumbs={[__("Tasks")]}
             title={__("Tasks")}
             description={__(
               "Track your assigned compliance tasks and keep progress on track.",

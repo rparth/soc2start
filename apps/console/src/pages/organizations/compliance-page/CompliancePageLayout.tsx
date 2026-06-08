@@ -62,6 +62,7 @@ export function CompliancePageLayout(props: { queryRef: PreloadedQuery<Complianc
   return (
     <div className="space-y-6">
       <PageHeader
+        breadcrumbs={[__("Compliance Page")]}
         title={__("Compliance Page")}
         description={__(
           "Configure your public compliance page to showcase your security and compliance posture.",

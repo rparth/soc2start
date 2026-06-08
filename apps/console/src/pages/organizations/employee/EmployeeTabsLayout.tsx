@@ -21,7 +21,7 @@ export default function EmployeeTabsLayout() {
 
   return (
     <div className="space-y-6">
-      <PageHeader title={__("Documents")} />
+      <PageHeader breadcrumbs={[__("Organization")]} title={__("Signature and Approvals")} />
       <Tabs>
         <TabLink to="signatures" end>
           {__("Signatures")}

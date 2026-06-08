@@ -36,6 +36,7 @@ export default function AccessReviewLayout() {
   return (
     <div className="space-y-6">
       <PageHeader
+        breadcrumbs={[__("Access Reviews")]}
         title={__("Access Reviews")}
         description={__(
           "Review and manage user access across your organization's systems and applications.",

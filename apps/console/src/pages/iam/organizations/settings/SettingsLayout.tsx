@@ -33,7 +33,7 @@ export default function SettingsLayout() {
 
   return (
     <div className="space-y-6">
-      <PageHeader title={__("Settings")} />
+      <PageHeader breadcrumbs={[__("Settings")]} title={__("Settings")} />
 
       <Tabs>
         <TabLink to={`/organizations/${organizationId}/settings/general`}>
