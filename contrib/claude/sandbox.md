@@ -48,10 +48,10 @@ After `make sandbox-status`, use the VM IP to access services from the host:
 
 During provisioning, the sandbox automatically generates:
 
-- **`/etc/probod/config.yml`** — probod config with the VM IP as cookie domain, `secure: false`, and correct CORS origins
+- **`/etc/soc2startd/config.yml`** — probod config with the VM IP as cookie domain, `secure: false`, and correct CORS origins
 - **`apps/console/.env`** and **`apps/trust/.env`** — `VITE_API_URL` pointing to the VM IP
 
-Probod config is at `/etc/probod/config.yml`.
+Probod config is at `/etc/soc2startd/config.yml`.
 
 ### Custom environment variables
 
@@ -64,7 +64,7 @@ AUTH_OIDC_CLIENT_ID=my-client-id
 AUTH_OIDC_CLIENT_SECRET=s3cret
 ```
 
-This file is sourced during provisioning before `probod-bootstrap` runs. Any variable set here overrides the defaults. The sandbox must be recreated (`sandbox-delete` + `sandbox-create`) for changes to take effect.
+This file is sourced during provisioning before `soc2startd-bootstrap` runs. Any variable set here overrides the defaults. The sandbox must be recreated (`sandbox-delete` + `sandbox-create`) for changes to take effect.
 
 ## Systemd services
 
@@ -73,11 +73,11 @@ The sandbox provisions four systemd services:
 | Service         | Description                                                | Starts on boot |
 | --------------- | ---------------------------------------------------------- | -------------- |
 | `probo-stack`   | Docker Compose stack (Postgres, SeaweedFS, Keycloak, etc.) | Yes            |
-| `probod`        | Probo API server (depends on `probo-stack`)                | No             |
+| `soc2startd`        | Probo API server (depends on `probo-stack`)                | No             |
 | `probo-console` | Console frontend dev server                                | No             |
 | `probo-trust`   | Trust frontend dev server                                  | No             |
 
-`probo-stack` starts automatically when the VM boots. `probod`, `probo-console`, and `probo-trust` must be started manually after building.
+`probo-stack` starts automatically when the VM boots. `soc2startd`, `probo-console`, and `probo-trust` must be started manually after building.
 
 Manage them with `systemctl`:
 ```bash

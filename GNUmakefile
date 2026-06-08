@@ -22,16 +22,16 @@ DOCKER_BUILD=	DOCKER_BUILDKIT=1 $(DOCKER) build $(DOCKER_BUILD_FLAGS)
 
 DOCKER_COMPOSE=	$(DOCKER) compose -f compose.yaml $(DOCKER_COMPOSE_FLAGS)
 
-PRB_VERSION=             $(shell cat cmd/prb/VERSION)
-PROBOD_VERSION=          $(shell cat cmd/probod/VERSION)
-PROBOD_BOOTSTRAP_VERSION=$(shell cat cmd/probod-bootstrap/VERSION)
-PROBOCTL_VERSION=        $(shell cat cmd/proboctl/VERSION)
+SOC2START_CLI_VERSION=             $(shell cat cmd/soc2start/VERSION)
+SOC2STARTD_VERSION=          $(shell cat cmd/soc2startd/VERSION)
+SOC2STARTD_BOOTSTRAP_VERSION=$(shell cat cmd/soc2startd-bootstrap/VERSION)
+SOC2STARTCTL_VERSION=        $(shell cat cmd/soc2startctl/VERSION)
 SOC2START_AGENT_VERSION=     $(shell cat cmd/soc2start-agent/VERSION)
 
-PRB_LDFLAGS=             -ldflags "-X 'main.version=$(PRB_VERSION)'"
-PROBOD_LDFLAGS=          -ldflags "-X 'main.version=$(PROBOD_VERSION)' -X 'main.env=prod'"
-PROBOD_BOOTSTRAP_LDFLAGS=-ldflags "-X 'main.version=$(PROBOD_BOOTSTRAP_VERSION)'"
-PROBOCTL_LDFLAGS=        -ldflags "-X 'main.version=$(PROBOCTL_VERSION)'"
+SOC2START_CLI_LDFLAGS=             -ldflags "-X 'main.version=$(SOC2START_CLI_VERSION)'"
+SOC2STARTD_LDFLAGS=          -ldflags "-X 'main.version=$(SOC2STARTD_VERSION)' -X 'main.env=prod'"
+SOC2STARTD_BOOTSTRAP_LDFLAGS=-ldflags "-X 'main.version=$(SOC2STARTD_BOOTSTRAP_VERSION)'"
+SOC2STARTCTL_LDFLAGS=        -ldflags "-X 'main.version=$(SOC2STARTCTL_VERSION)'"
 SOC2START_AGENT_LDFLAGS=     -ldflags "-X 'main.version=$(SOC2START_AGENT_VERSION)'"
 
 GCFLAGS=	-gcflags="-e"
@@ -74,18 +74,18 @@ EMBEDDED= apps/console/dist/index.html \
 	apps/trust/dist/index.html \
 	@probo/emails
 
-PROBOD_BIN_EXTRA_DEPS=
-PROBOD_BIN=	bin/probod
-PROBOD_SRC=	cmd/probod/main.go
+SOC2STARTD_BIN_EXTRA_DEPS=
+SOC2STARTD_BIN=	bin/soc2startd
+SOC2STARTD_SRC=	cmd/soc2startd/main.go
 
-PRB_BIN=	bin/prb
-PRB_SRC=	cmd/prb/main.go
+SOC2START_CLI_BIN=	bin/soc2start-cli
+SOC2START_CLI_SRC=	cmd/soc2start/main.go
 
-PROBOD_BOOTSTRAP_BIN=	bin/probod-bootstrap
-PROBOD_BOOTSTRAP_SRC=	cmd/probod-bootstrap/main.go
+SOC2STARTD_BOOTSTRAP_BIN=	bin/soc2startd-bootstrap
+SOC2STARTD_BOOTSTRAP_SRC=	cmd/soc2startd-bootstrap/main.go
 
-PROBOCTL_BIN=	bin/proboctl
-PROBOCTL_SRC=	cmd/proboctl/main.go
+SOC2STARTCTL_BIN=	bin/soc2startctl
+SOC2STARTCTL_SRC=	cmd/soc2startctl/main.go
 
 SOC2START_AGENT_BIN=	bin/soc2start-agent
 SOC2START_AGENT_SRC=	cmd/soc2start-agent/main.go
@@ -164,18 +164,18 @@ test-bench: test ## Run benchmark tests
 
 .PHONY: test-e2e
 test-e2e: CGO_ENABLED=1
-test-e2e: $(PROBOD_BIN) ## Run console e2e tests
-	PROBO_E2E_BINARY=$(CURDIR)/$(PROBOD_BIN) \
+test-e2e: $(SOC2STARTD_BIN) ## Run console e2e tests
+	PROBO_E2E_BINARY=$(CURDIR)/$(SOC2STARTD_BIN) \
 	PROBO_E2E_CONFIG=$(E2E_CONFIG) \
 	GOTESTSUM_FORMAT=testname $(GO_TEST) -count=1 ./e2e/console/...
 
-bin/probod-coverage:
-	CGO_ENABLED=0 $(GO_BUILD) $(PROBOD_LDFLAGS) -cover -o $@ $(PROBOD_SRC)
+bin/soc2startd-coverage:
+	CGO_ENABLED=0 $(GO_BUILD) $(SOC2STARTD_LDFLAGS) -cover -o $@ $(SOC2STARTD_SRC)
 
 .PHONY: test-e2e-coverage
-test-e2e-coverage: bin/probod-coverage ## Run e2e tests with coverage
+test-e2e-coverage: bin/soc2startd-coverage ## Run e2e tests with coverage
 	@$(RM) -rf $(E2E_COVER_DIR) && $(MKDIR) -p $(E2E_COVER_DIR)
-	PROBO_E2E_BINARY=$(CURDIR)/bin/probod-coverage \
+	PROBO_E2E_BINARY=$(CURDIR)/bin/soc2startd-coverage \
 	PROBO_E2E_COVERDIR=$(E2E_COVER_DIR) \
 	PROBO_E2E_CONFIG=$(E2E_CONFIG) \
 	CGO_ENABLED=1 $(GO) test -count=1 -v ./e2e/console/...
@@ -189,19 +189,19 @@ coverage-combined: coverage-report test-e2e-coverage ## Generate combined covera
 	$(GO) tool cover -html=coverage-combined.out -o=coverage-combined.html
 
 .PHONY: build
-build: $(PROBOD_BIN) bin/prb bin/probod-bootstrap bin/proboctl $(SOC2START_AGENT_BIN)
+build: $(SOC2STARTD_BIN) bin/soc2start-cli bin/soc2startd-bootstrap bin/soc2startctl $(SOC2START_AGENT_BIN)
 
 CFG_DEV_OAUTH2_KEY = cfg/.dev-oauth2-signing-key.pem
 DEV_ENV            = .env
 
 .PHONY: dev-config
-dev-config: cfg/dev.yaml ## Generate cfg/dev.yaml via probod-bootstrap (picks up edits to .env)
+dev-config: cfg/dev.yaml ## Generate cfg/dev.yaml via soc2startd-bootstrap (picks up edits to .env)
 
 $(CFG_DEV_OAUTH2_KEY):
 	@$(MKDIR) $(@D)
 	$(OPENSSL) genrsa -out $@ 2048
 
-cfg/dev.yaml: bin/probod-bootstrap $(CFG_DEV_OAUTH2_KEY) compose/pebble/certs/rootCA.pem $(wildcard $(DEV_ENV))
+cfg/dev.yaml: bin/soc2startd-bootstrap $(CFG_DEV_OAUTH2_KEY) compose/pebble/certs/rootCA.pem $(wildcard $(DEV_ENV))
 	@$(MKDIR) $(@D)
 	set -a; \
 	PROBOD_ENCRYPTION_KEY="thisisnotasecretAAAAAAAAAAAAAAAAAAAAAAAAAAA="; \
@@ -210,7 +210,7 @@ cfg/dev.yaml: bin/probod-bootstrap $(CFG_DEV_OAUTH2_KEY) compose/pebble/certs/ro
 	AUTH_COOKIE_SECURE=false; \
 	OAUTH2_SERVER_SIGNING_KEY="$$($(CAT) $(CFG_DEV_OAUTH2_KEY))"; \
 	API_CORS_ALLOWED_ORIGINS="http://localhost:8080,http://localhost:5173,http://localhost:5174"; \
-	AWS_ACCESS_KEY_ID=probod; \
+	AWS_ACCESS_KEY_ID=soc2startd; \
 	AWS_SECRET_ACCESS_KEY=thisisnotasecret; \
 	AWS_ENDPOINT=http://127.0.0.1:8333; \
 	OPENAI_API_KEY=thisisnotasecret; \
@@ -219,7 +219,7 @@ cfg/dev.yaml: bin/probod-bootstrap $(CFG_DEV_OAUTH2_KEY) compose/pebble/certs/ro
 	ACME_ROOT_CA="$$($(CAT) compose/pebble/certs/rootCA.pem)"; \
 	if [ -f $(DEV_ENV) ]; then . $(DEV_ENV); fi; \
 	set +a; \
-	./bin/probod-bootstrap -output $@
+	./bin/soc2startd-bootstrap -output $@
 
 .PHONY: sbom-docker
 sbom-docker: docker-build
@@ -232,7 +232,7 @@ sbom-docker: docker-build
 sbom:
 	$(SYFT) dir:. -o cyclonedx-json \
 		--source-name "probo" \
-		--source-version "$(PROBOD_VERSION)" \
+		--source-version "$(SOC2STARTD_VERSION)" \
 		> sbom.json
 
 .PHONY: scan-sbom
@@ -258,21 +258,21 @@ scan-license: ## Check dependencies licenses compliance
 docker-build:
 	$(DOCKER_BUILD) --tag $(DOCKER_IMAGE_NAME):$(DOCKER_TAG_NAME) --file Dockerfile .
 
-.PHONY: $(PROBOD_BIN)
-$(PROBOD_BIN): generate embed
-	$(GO_BUILD) $(PROBOD_LDFLAGS) -o $(PROBOD_BIN) $(PROBOD_SRC)
+.PHONY: $(SOC2STARTD_BIN)
+$(SOC2STARTD_BIN): generate embed
+	$(GO_BUILD) $(SOC2STARTD_LDFLAGS) -o $(SOC2STARTD_BIN) $(SOC2STARTD_SRC)
 
-.PHONY: bin/prb
-bin/prb:
-	$(GO_BUILD) $(PRB_LDFLAGS) -o $(PRB_BIN) $(PRB_SRC)
+.PHONY: bin/soc2start-cli
+bin/soc2start-cli:
+	$(GO_BUILD) $(SOC2START_CLI_LDFLAGS) -o $(SOC2START_CLI_BIN) $(SOC2START_CLI_SRC)
 
-.PHONY: $(PROBOD_BOOTSTRAP_BIN)
-$(PROBOD_BOOTSTRAP_BIN):
-	$(GO_BUILD) $(PROBOD_BOOTSTRAP_LDFLAGS) -o $(PROBOD_BOOTSTRAP_BIN) $(PROBOD_BOOTSTRAP_SRC)
+.PHONY: $(SOC2STARTD_BOOTSTRAP_BIN)
+$(SOC2STARTD_BOOTSTRAP_BIN):
+	$(GO_BUILD) $(SOC2STARTD_BOOTSTRAP_LDFLAGS) -o $(SOC2STARTD_BOOTSTRAP_BIN) $(SOC2STARTD_BOOTSTRAP_SRC)
 
-.PHONY: bin/proboctl
-bin/proboctl:
-	$(GO_BUILD) $(PROBOCTL_LDFLAGS) -o $(PROBOCTL_BIN) $(PROBOCTL_SRC)
+.PHONY: bin/soc2startctl
+bin/soc2startctl:
+	$(GO_BUILD) $(SOC2STARTCTL_LDFLAGS) -o $(SOC2STARTCTL_BIN) $(SOC2STARTCTL_SRC)
 
 .PHONY: $(SOC2START_AGENT_BIN)
 $(SOC2START_AGENT_BIN):
@@ -398,7 +398,7 @@ stack-ps: ## List the docker stack containers
 
 .PHONY: psql
 psql: ## Open a psql shell to the postgres container
-	$(DOCKER_COMPOSE) exec postgres psql -U probod -d probod
+	$(DOCKER_COMPOSE) exec postgres psql -U soc2startd -d soc2startd
 
 compose/pebble/certs/rootCA.pem:
 	@$(MKDIR) compose/pebble/certs

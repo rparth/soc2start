@@ -103,7 +103,7 @@ func dialTestPg(t *testing.T, ctx context.Context) *pgx.Conn {
 
 	dsn := os.Getenv("PROBO_E2E_PG_URL")
 	if dsn == "" {
-		dsn = "postgres://probod:probod@localhost:5432/probod_test?sslmode=disable"
+		dsn = "postgres://soc2startd:soc2startd@localhost:5432/soc2startd_test?sslmode=disable"
 	}
 
 	conn, err := pgx.Connect(ctx, dsn)

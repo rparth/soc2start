@@ -105,9 +105,9 @@ postgres:
     storageClass: ""
   # -- Connection settings (used by probo)
   auth:
-    username: probod
+    username: soc2startd
     password: ""
-    database: probod
+    database: soc2startd
     # -- Existing secret with keys: PG_USERNAME, PG_PASSWORD
     existingSecret: ""
   # -- External PostgreSQL (used when postgres.enabled is false)

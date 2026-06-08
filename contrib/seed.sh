@@ -130,7 +130,7 @@ echo "  Created API key"
 echo ""
 echo "==> Seeding data..."
 
-PRB="./bin/prb"
+PRB="./bin/soc2start-cli"
 
 echo "  Creating people..."
 

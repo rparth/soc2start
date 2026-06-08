@@ -28,7 +28,7 @@ var (
 
 func main() {
 	impl := probod.New()
-	unit := unit.NewUnit(impl, "probod", version, env)
+	unit := unit.NewUnit(impl, "soc2startd", version, env)
 
 	err := unit.Run()
 	if err != nil && err != context.Canceled {

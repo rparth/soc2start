@@ -7,10 +7,10 @@ changelog entry, commit, tag, push.
 
 | Track                   | Tag pattern                    | Entrypoint                       |
 | ----------------------- | ------------------------------ | -------------------------------- |
-| CLI (`prb`)             | `prb/v*`                       | [prb.md](./prb.md)               |
-| Server (`probod` group) | `probod/v*`                    | [probod.md](./probod.md)         |
-| `probod-bootstrap`      | `probod-bootstrap/v*`          | [probod-bootstrap.md](./probod-bootstrap.md) |
-| `proboctl`              | `proboctl/v*`                  | [proboctl.md](./proboctl.md)     |
+| CLI (`soc2start-cli`)             | `soc2start-cli/v*`                       | [soc2start-cli.md](./soc2start-cli.md)               |
+| Server (`soc2startd` group) | `soc2startd/v*`                    | [soc2startd.md](./soc2startd.md)         |
+| `soc2startd-bootstrap`      | `soc2startd-bootstrap/v*`          | [soc2startd-bootstrap.md](./soc2startd-bootstrap.md) |
+| `soc2startctl`              | `soc2startctl/v*`                  | [soc2startctl.md](./soc2startctl.md)     |
 | `soc2start-agent`           | `soc2start-agent/v*`               | [soc2start-agent.md](./soc2start-agent.md) |
 | `@probo/n8n-nodes-probo` | `@probo/n8n-nodes-probo/v*`   | [n8n-nodes-probo.md](./n8n-nodes-probo.md) |
 | `@probo/cookie-banner`  | `@probo/cookie-banner/v*`      | [cookie-banner.md](./cookie-banner.md) |
@@ -24,7 +24,7 @@ user-facing changes.** Never release a track that has no commits since its
 last tag.
 
 When the user asks for a release **for a specific track** (e.g. "release
-the CLI", "release probod"), open the corresponding entrypoint above and
+the CLI", "release soc2startd"), open the corresponding entrypoint above and
 follow it.
 
 Versions are SemVer in the **0.x** series. Never bump MAJOR.
@@ -48,21 +48,21 @@ Then for each track, list commits since its last tag, scoped to that
 track's paths:
 
 ```shell
-# prb
-git log $(git describe --tags --abbrev=0 --match='prb/v*')..HEAD --oneline \
-  -- cmd/prb pkg/cli pkg/cmd
+# soc2start-cli
+git log $(git describe --tags --abbrev=0 --match='soc2start-cli/v*')..HEAD --oneline \
+  -- cmd/soc2start pkg/cli pkg/cmd
 
-# probod (server group: probod + console + trust + ui)
-git log $(git describe --tags --abbrev=0 --match='probod/v*')..HEAD --oneline \
-  -- cmd/probod apps/console apps/trust packages/ui pkg
+# soc2startd (server group: soc2startd + console + trust + ui)
+git log $(git describe --tags --abbrev=0 --match='soc2startd/v*')..HEAD --oneline \
+  -- cmd/soc2startd apps/console apps/trust packages/ui pkg
 
-# probod-bootstrap
-git log $(git describe --tags --abbrev=0 --match='probod-bootstrap/v*')..HEAD --oneline \
-  -- cmd/probod-bootstrap
+# soc2startd-bootstrap
+git log $(git describe --tags --abbrev=0 --match='soc2startd-bootstrap/v*')..HEAD --oneline \
+  -- cmd/soc2startd-bootstrap
 
-# proboctl
-git log $(git describe --tags --abbrev=0 --match='proboctl/v*')..HEAD --oneline \
-  -- cmd/proboctl pkg/proboctl
+# soc2startctl
+git log $(git describe --tags --abbrev=0 --match='soc2startctl/v*')..HEAD --oneline \
+  -- cmd/soc2startctl pkg/proboctl
 
 # soc2start-agent
 git log $(git describe --tags --abbrev=0 --match='soc2start-agent/v*')..HEAD --oneline \

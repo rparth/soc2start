@@ -5,7 +5,7 @@ CLI commands use [cobra](https://github.com/spf13/cobra) with `pkg/cmd/cmdutil.F
 ## Directory structure
 
 ```
-cmd/prb/main.go                           # Binary entry point
+cmd/soc2start/main.go                           # Binary entry point
 pkg/cmd/root/                             # Root command, registers all subcommands
 pkg/cmd/<resource>/<resource>.go          # Group command, wires verbs
 pkg/cmd/<resource>/list/list.go           # List verb

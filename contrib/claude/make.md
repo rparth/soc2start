@@ -6,14 +6,14 @@ The project uses a `GNUmakefile` at the root. Builds run with `--jobs=$(nproc)` 
 
 | Target                       | Purpose                                                                                                |
 | ---------------------------- | ------------------------------------------------------------------------------------------------------ |
-| `make build`                 | Build `bin/probod`, `bin/prb`, and `bin/probod-bootstrap` (does not include frontend apps and Relay)   |
-| `make build WITH_APPS=1`     | Build `bin/probod`, `bin/prb`, and `bin/probod-bootstrap` (includes frontend apps, codegen, and Relay) |
+| `make build`                 | Build `bin/soc2startd`, `bin/soc2start-cli`, and `bin/soc2startd-bootstrap` (does not include frontend apps and Relay)   |
+| `make build WITH_APPS=1`     | Build `bin/soc2startd`, `bin/soc2start-cli`, and `bin/soc2startd-bootstrap` (includes frontend apps, codegen, and Relay) |
 | `make test`                  | Run tests with race detection and coverage                                                             |
 | `make test MODULE=./pkg/foo` | Run tests for a single module                                                                          |
 | `make test-verbose`          | Tests with verbose output                                                                              |
 | `make test-short`            | Short tests only                                                                                       |
 | `make test-bench`            | Run benchmarks                                                                                         |
-| `make test-e2e`              | Run console end-to-end tests (requires `bin/probod`)                                                   |
+| `make test-e2e`              | Run console end-to-end tests (requires `bin/soc2startd`)                                                   |
 | `make lint`                  | Run all linters: `vet` + `go-fmt` + `go-fix` + `go-lint` + `npm-lint`                                  |
 | `make fmt`                   | Format Go code (`go fmt ./...`)                                                                        |
 | `make clean`                 | Remove all build artifacts, `node_modules`, generated files, and coverage                              |

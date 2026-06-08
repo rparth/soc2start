@@ -25,7 +25,7 @@ helm install my-probo oci://artifact.probo.inc/probo/probo --version <chart-vers
 ```
 
 Replace `<chart-version>` with a released chart version (e.g. `0.1.0`). The
-chart defaults to the probod image tag `v<appVersion>` from
+chart defaults to the soc2startd image tag `v<appVersion>` from
 `Chart.yaml`.
 
 Configure secrets and external services with `--set` flags or a values file
@@ -61,9 +61,9 @@ helm install my-probo ./charts/probo \
   --set probo.trustAuth.tokenSecret="$TRUST_TOKEN_SECRET" \
   --set-file probo.oauth2.signingKey="./oauth2_signing_key.pem" \
   --set postgresql.enabled=true \
-  --set postgresql.auth.postgresUser="probod" \
+  --set postgresql.auth.postgresUser="soc2startd" \
   --set postgresql.auth.postgresPassword="your-db-password" \
-  --set postgresql.auth.database="probod" \
+  --set postgresql.auth.database="soc2startd" \
   --set seaweedfs.enabled=true \
   --set s3.bucket="your-bucket-name" \
   --set s3.accessKeyId="your-access-key" \
@@ -82,7 +82,7 @@ helm install my-probo ./charts/probo \
   --set-file probo.oauth2.signingKey="./oauth2_signing_key.pem" \
   --set probo.mailer.smtp.password="smtp-password" \
   --set postgresql.enabled=true \
-  --set postgresql.auth.postgresPassword="probod" \
+  --set postgresql.auth.postgresPassword="soc2startd" \
   --set s3.accessKeyId="your-access-key" \
   --set s3.secretAccessKey="your-secret-key" \
   -f ./charts/probo/values.yaml
@@ -452,11 +452,11 @@ spec:
 | postgresql.enabled                                      | bool    | `true`                                             | Enable included PostgreSQL container for demo purposes using CloudNativePG                          |
 | postgresql.resources.limits.memory                      | string  | `"2Gi"`                                            | PostgreSQL memory limit                                                                             |
 | postgresql.resources.limits.ephemeral-storage           | string  | `"5Gi"`                                            | PostgreSQL ephemeral storage limit                                                                  |
-| postgresql.auth.postgresUser                            | string  | `"probod"`                                         | PostgreSQL username                                                                                 |
-| postgresql.auth.postgresPassword                        | string  | `"probod"`                                         | PostgreSQL password                                                                                 |
-| postgresql.auth.database                                | string  | `"probod"`                                         | PostgreSQL database name                                                                            |
+| postgresql.auth.postgresUser                            | string  | `"soc2startd"`                                         | PostgreSQL username                                                                                 |
+| postgresql.auth.postgresPassword                        | string  | `"soc2startd"`                                         | PostgreSQL password                                                                                 |
+| postgresql.auth.database                                | string  | `"soc2startd"`                                         | PostgreSQL database name                                                                            |
 | s3.region                                               | string  | `"us-east-1"`                                      | S3 region                                                                                           |
-| s3.bucket                                               | string  | `"probod"`                                         | S3 bucket name                                                                                      |
+| s3.bucket                                               | string  | `"soc2startd"`                                         | S3 bucket name                                                                                      |
 | s3.endpoint                                             | string  | `""`                                               | S3 endpoint (leave empty for AWS S3, set for S3-compatible storage)                                 |
 | s3.accessKeyId                                          | string  | `""`                                               | **REQUIRED** (when seaweedfs.enabled=false) S3 access key                                           |
 | s3.secretAccessKey                                      | string  | `""`                                               | **REQUIRED** (when seaweedfs.enabled=false) S3 secret key                                           |
@@ -465,8 +465,8 @@ spec:
 | seaweedfs.image.tag                                     | string  | `"latest"`                                         | SeaweedFS image tag                                                                                 |
 | seaweedfs.persistence.enabled                           | bool    | `false`                                            | Enable SeaweedFS persistence                                                                        |
 | seaweedfs.persistence.size                              | string  | `"10Gi"`                                           | SeaweedFS persistent volume size                                                                    |
-| seaweedfs.auth.accessKey                                | string  | `"probod"`                                         | SeaweedFS S3 access key                                                                             |
-| seaweedfs.auth.secretKey                                | string  | `"probod"`                                         | SeaweedFS S3 secret key                                                                             |
+| seaweedfs.auth.accessKey                                | string  | `"soc2startd"`                                         | SeaweedFS S3 access key                                                                             |
+| seaweedfs.auth.secretKey                                | string  | `"soc2startd"`                                         | SeaweedFS S3 secret key                                                                             |
 | chrome.enabled                                          | bool    | `true`                                             | Deploy Chrome headless in the cluster for PDF generation                                            |
 | chrome.replicaCount                                     | int     | `1`                                                | Number of Chrome replicas                                                                           |
 | chrome.image.repository                                 | string  | `"chromedp/headless-shell"`                        | Chrome container image repository                                                                   |

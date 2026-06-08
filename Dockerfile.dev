@@ -51,10 +51,10 @@ RUN go generate ./pkg/server/api/mcp/v1
 ARG VERSION=dev
 RUN CGO_ENABLED=0 go build -gcflags="-e" \
     -ldflags "-X 'main.version=${VERSION}' -X 'main.env=dev'" \
-    -o bin/probod cmd/probod/main.go
+    -o bin/soc2startd cmd/soc2startd/main.go
 RUN CGO_ENABLED=0 go build -gcflags="-e" \
     -ldflags "-X 'main.version=${VERSION}'" \
-    -o bin/probod-bootstrap cmd/probod-bootstrap/main.go
+    -o bin/soc2startd-bootstrap cmd/soc2startd-bootstrap/main.go
 
 # --- Stage 3: Runtime ---
 ARG BASE_IMAGE
@@ -66,16 +66,16 @@ RUN useradd -m probo && \
     apt-get install -y ca-certificates libcap2-bin openssl && \
     rm -rf /var/lib/apt/lists/*
 
-COPY --from=go-builder /app/bin/probod /usr/local/bin/probod
-COPY --from=go-builder /app/bin/probod-bootstrap /usr/local/bin/probod-bootstrap
+COPY --from=go-builder /app/bin/soc2startd /usr/local/bin/soc2startd
+COPY --from=go-builder /app/bin/soc2startd-bootstrap /usr/local/bin/soc2startd-bootstrap
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
-RUN chmod +x /usr/local/bin/probod && \
-    chmod +x /usr/local/bin/probod-bootstrap && \
+RUN chmod +x /usr/local/bin/soc2startd && \
+    chmod +x /usr/local/bin/soc2startd-bootstrap && \
     chmod +x /usr/local/bin/entrypoint.sh && \
-    setcap CAP_NET_BIND_SERVICE=+eip /usr/local/bin/probod && \
-    mkdir -p /etc/probod && \
-    chown probo:probo /etc/probod
+    setcap CAP_NET_BIND_SERVICE=+eip /usr/local/bin/soc2startd && \
+    mkdir -p /etc/soc2startd && \
+    chown probo:probo /etc/soc2startd
 
 USER probo
 

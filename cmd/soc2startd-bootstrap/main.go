@@ -12,7 +12,7 @@
 // OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 // PERFORMANCE OF THIS SOFTWARE.
 
-// probod-bootstrap generates a probod configuration file from environment variables.
+// soc2startd-bootstrap generates a soc2startd configuration file from environment variables.
 package main
 
 import (
@@ -28,7 +28,7 @@ var (
 )
 
 func main() {
-	outputPath := flag.String("output", "/etc/probod/config.yml", "output path for the generated config file")
+	outputPath := flag.String("output", "/etc/soc2startd/config.yml", "output path for the generated config file")
 	showVersion := flag.Bool("version", false, "print version and exit")
 
 	flag.Parse()

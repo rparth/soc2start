@@ -94,13 +94,13 @@ Signed-off-by: John Doe <john.doe@example.org>
    make dev-config
    ```
 
-   The target stashes a dev-only RSA signing key under `cfg/.dev-oauth2-signing-key.pem` so tokens survive probod restarts, and sources `.env` if present so you can override defaults without editing the Makefile. `cfg/dev.yaml`, `.env`, and the signing key are all gitignored. Re-run the target to regenerate.
+   The target stashes a dev-only RSA signing key under `cfg/.dev-oauth2-signing-key.pem` so tokens survive soc2startd restarts, and sources `.env` if present so you can override defaults without editing the Makefile. `cfg/dev.yaml`, `.env`, and the signing key are all gitignored. Re-run the target to regenerate.
 
 7. Start the development servers:
 
    ```bash
    # In one terminal - start the API server
-   bin/probod -cfg-file cfg/dev.yaml
+   bin/soc2startd -cfg-file cfg/dev.yaml
 
    # In another terminal - start the frontend
    npm -w @probo/console run dev

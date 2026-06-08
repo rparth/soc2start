@@ -1,6 +1,6 @@
 # End-to-End Testing
 
-E2E tests live in `e2e/console/` (package `console_test`) and run against a live `bin/probod` instance. The test infrastructure handles server lifecycle, authentication, and test data creation.
+E2E tests live in `e2e/console/` (package `console_test`) and run against a live `bin/soc2startd` instance. The test infrastructure handles server lifecycle, authentication, and test data creation.
 
 ## Running tests
 

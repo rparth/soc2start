@@ -41,7 +41,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: CONFIG_FILE
-              value: "/data/probod/config.yml"
+              value: "/data/soc2startd/config.yml"
             # Observability - Metrics
             - name: METRICS_ADDR
               value: "0.0.0.0:{{ .Values.probo.metrics.port }}"

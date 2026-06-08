@@ -64,7 +64,7 @@ func (r *Renewer) renewDomain(ctx context.Context, domain CustomDomain) {
 
 ### Enrichment chain
 
-The root logger created in `probod` flows through the system, gaining context at each layer:
+The root logger created in `soc2startd` flows through the system, gaining context at each layer:
 
 ```
 probod (root)

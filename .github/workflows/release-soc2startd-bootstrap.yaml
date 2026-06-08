@@ -1,9 +1,9 @@
-name: "Release prb"
+name: "Release soc2startd-bootstrap"
 
 on:
   push:
     tags:
-      - "prb/v*"
+      - "soc2startd-bootstrap/v*"
 
 permissions:
   contents: "read"
@@ -46,7 +46,7 @@ jobs:
           if [ "$GOOS" = "windows" ]; then EXT=".exe"; fi
 
           go build -ldflags "-s -w -X 'main.version=${VERSION}'" \
-            -gcflags="-e" -o "dist/prb${EXT}" ./cmd/prb/main.go
+            -gcflags="-e" -o "dist/soc2startd-bootstrap${EXT}" ./cmd/soc2startd-bootstrap/main.go
       - name: "Create archive"
         env:
           GOOS: "${{ matrix.goos }}"
@@ -67,13 +67,13 @@ jobs:
           if [ "$GOOS" = "windows" ]; then EXT=".exe"; fi
 
           mkdir -p archives
-          PRB_DIR="prb_${OS}_${ARCH}"
-          mkdir -p "staging/${PRB_DIR}"
-          cp "dist/prb${EXT}" README.md LICENSE cmd/prb/CHANGELOG.md "staging/${PRB_DIR}/"
+          DIR="soc2startd-bootstrap_${OS}_${ARCH}"
+          mkdir -p "staging/${DIR}"
+          cp "dist/soc2startd-bootstrap${EXT}" README.md LICENSE cmd/soc2startd-bootstrap/CHANGELOG.md "staging/${DIR}/"
           if [ "$GOOS" = "windows" ]; then
-            (cd staging && zip -r "../archives/${PRB_DIR}.zip" "${PRB_DIR}")
+            (cd staging && zip -r "../archives/${DIR}.zip" "${DIR}")
           else
-            tar -czf "archives/${PRB_DIR}.tar.gz" -C staging "${PRB_DIR}"
+            tar -czf "archives/${DIR}.tar.gz" -C staging "${DIR}"
           fi
       - uses: "actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f" # v7
         with:
@@ -108,7 +108,7 @@ jobs:
       - name: "Generate SBOM"
         uses: "anchore/sbom-action@e22c389904149dbc22b58101806040fa8d37a610" # v0.24.0
         with:
-          path: ./cmd/prb
+          path: ./cmd/soc2startd-bootstrap
           format: cyclonedx-json
           output-file: sbom.json
       - name: "Run vulnerability scan"
@@ -132,7 +132,7 @@ jobs:
           awk -v ver="$VERSION" '
             /^## \[/ { if (found) exit; if ($0 ~ "\\[" ver "\\]") found=1 }
             found
-          ' cmd/prb/CHANGELOG.md > release-notes.md
+          ' cmd/soc2startd-bootstrap/CHANGELOG.md > release-notes.md
       - name: "Create GitHub release"
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -154,99 +154,3 @@ jobs:
           name: "sbom"
           path: "sbom.json"
           retention-days: 30
-
-  homebrew:
-    name: "homebrew"
-    needs: [github-release]
-    runs-on: "runs-on=${{ github.run_id }}/runner=2cpu-linux-x64/extras=s3-cache"
-    permissions:
-      contents: "read"
-    steps:
-      - uses: "runs-on/action@742bf56072eb4845a0f94b3394673e4903c90ff0" # v2
-      - name: "Download checksums from release"
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh release download "${GITHUB_REF_NAME}" \
-            --repo "${GITHUB_REPOSITORY}" \
-            --pattern "checksums.txt"
-      - name: "Generate and publish Homebrew formula"
-        env:
-          GH_TOKEN: ${{ secrets.HOMEBREW_TAP_GITHUB_TOKEN }}
-        run: |
-          VERSION="${GITHUB_REF_NAME##*/v}"
-          TAG="${GITHUB_REF_NAME}"
-          BASE_URL="https://github.com/${GITHUB_REPOSITORY}/releases/download/${TAG}"
-
-          DARWIN_ARM64_SHA=$(grep "prb_Darwin_arm64.tar.gz" checksums.txt | awk '{print $1}')
-          DARWIN_X86_64_SHA=$(grep "prb_Darwin_x86_64.tar.gz" checksums.txt | awk '{print $1}')
-          LINUX_ARM64_SHA=$(grep "prb_Linux_arm64.tar.gz" checksums.txt | awk '{print $1}')
-          LINUX_X86_64_SHA=$(grep "prb_Linux_x86_64.tar.gz" checksums.txt | awk '{print $1}')
-
-          cat > prb.rb << RUBY
-          # typed: false
-          # frozen_string_literal: true
-
-          class Prb < Formula
-            desc "Probo CLI"
-            homepage "https://github.com/getprobo/probo"
-            version "${VERSION}"
-            license "MIT"
-
-            on_macos do
-              on_arm do
-                url "${BASE_URL}/prb_Darwin_arm64.tar.gz"
-                sha256 "${DARWIN_ARM64_SHA}"
-              end
-              on_intel do
-                url "${BASE_URL}/prb_Darwin_x86_64.tar.gz"
-                sha256 "${DARWIN_X86_64_SHA}"
-              end
-            end
-
-            on_linux do
-              on_arm do
-                url "${BASE_URL}/prb_Linux_arm64.tar.gz"
-                sha256 "${LINUX_ARM64_SHA}"
-              end
-              on_intel do
-                url "${BASE_URL}/prb_Linux_x86_64.tar.gz"
-                sha256 "${LINUX_X86_64_SHA}"
-              end
-            end
-
-            def install
-              bin.install "prb"
-            end
-
-            test do
-              assert_match version.to_s, shell_output("#{bin}/prb --version")
-            end
-          end
-          RUBY
-
-          CONTENT=$(base64 -w0 prb.rb)
-          HEAD_OID=$(gh api "repos/getprobo/homebrew-tap/git/ref/heads/main" --jq '.object.sha')
-
-          gh api graphql -f query='
-            mutation($headline: String!, $oid: GitObjectID!, $contents: Base64String!) {
-              createCommitOnBranch(input: {
-                branch: {
-                  repositoryNameWithOwner: "getprobo/homebrew-tap"
-                  branchName: "main"
-                }
-                message: { headline: $headline }
-                expectedHeadOid: $oid
-                fileChanges: {
-                  additions: [{
-                    path: "Formula/prb.rb"
-                    contents: $contents
-                  }]
-                }
-              }) {
-                commit { url }
-              }
-            }' \
-            -f headline="prb ${VERSION}" \
-            -f oid="${HEAD_OID}" \
-            -f contents="${CONTENT}"

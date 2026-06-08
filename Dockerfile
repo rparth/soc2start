@@ -13,16 +13,16 @@ RUN useradd -m probo && \
     rm -rf /var/lib/apt/lists/*
 
 ARG TARGETPLATFORM
-COPY $TARGETPLATFORM/probod /usr/local/bin/probod
-COPY $TARGETPLATFORM/probod-bootstrap /usr/local/bin/probod-bootstrap
+COPY $TARGETPLATFORM/soc2startd /usr/local/bin/soc2startd
+COPY $TARGETPLATFORM/soc2startd-bootstrap /usr/local/bin/soc2startd-bootstrap
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 
-RUN chmod +x /usr/local/bin/probod && \
-    chmod +x /usr/local/bin/probod-bootstrap && \
+RUN chmod +x /usr/local/bin/soc2startd && \
+    chmod +x /usr/local/bin/soc2startd-bootstrap && \
     chmod +x /usr/local/bin/entrypoint.sh && \
-    setcap CAP_NET_BIND_SERVICE=+eip /usr/local/bin/probod && \
-    mkdir -p /etc/probod && \
-    chown probo:probo /etc/probod
+    setcap CAP_NET_BIND_SERVICE=+eip /usr/local/bin/soc2startd && \
+    mkdir -p /etc/soc2startd && \
+    chown probo:probo /etc/soc2startd
 
 USER probo
 

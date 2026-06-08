@@ -101,7 +101,7 @@ make build
 make dev-config
 
 # 6. Run the server
-bin/probod -cfg-file cfg/dev.yaml
+bin/soc2startd -cfg-file cfg/dev.yaml
 ```
 
 The web console is available at `http://localhost:8080`.

@@ -174,7 +174,7 @@ func (e *TestEnv) dumpOutputOnFailure(context string, err error) {
 			output = output[len(output)-maxTail:]
 		}
 
-		fmt.Fprintf(os.Stderr, "--- probod output start ---\n%s\n--- probod output end ---\n", output)
+		fmt.Fprintf(os.Stderr, "--- soc2startd output start ---\n%s\n--- soc2startd output end ---\n", output)
 	} else {
 		fmt.Fprintf(os.Stderr, "e2etest: no captured output available\n")
 	}
@@ -244,7 +244,7 @@ func GetMailpitBaseURL() string {
 	return testEnv.MailpitBaseURL
 }
 
-// generateConfig builds a probod config for the e2e suite via the
+// generateConfig builds a soc2startd config for the e2e suite via the
 // bootstrap package (which auto-generates SAML credentials) and
 // writes it to a temp file. A fresh OAuth2 signing key is minted
 // here and injected via env. Returns the path.
@@ -273,7 +273,7 @@ func generateConfig() (string, error) {
 		"API_CORS_ALLOWED_ORIGINS": "http://localhost:18080",
 
 		// PG.
-		"PG_DATABASE":      "probod_test",
+		"PG_DATABASE":      "soc2startd_test",
 		"PG_POOL_SIZE":     "10",
 		"PG_MIN_POOL_SIZE": "1",
 
@@ -292,8 +292,8 @@ func generateConfig() (string, error) {
 		"TRUST_CENTER_HTTPS_ADDR": ":10443",
 
 		// AWS / S3 (SeaweedFS).
-		"AWS_BUCKET":            "probod-test",
-		"AWS_ACCESS_KEY_ID":     "probod",
+		"AWS_BUCKET":            "soc2startd-test",
+		"AWS_ACCESS_KEY_ID":     "soc2startd",
 		"AWS_SECRET_ACCESS_KEY": "thisisnotasecret",
 		"AWS_ENDPOINT":          "http://127.0.0.1:8333",
 
@@ -329,7 +329,7 @@ func generateConfig() (string, error) {
 		return "", fmt.Errorf("create temp dir: %w", err)
 	}
 
-	path := filepath.Join(tmpDir, "probod.yml")
+	path := filepath.Join(tmpDir, "soc2startd.yml")
 
 	if err := bootstrap.WriteConfig(cfg, path); err != nil {
 		return "", fmt.Errorf("write config: %w", err)

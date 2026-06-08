@@ -79,7 +79,7 @@ spec:
             - name: data
               mountPath: /data
             - name: config
-              mountPath: /etc/probod
+              mountPath: /etc/soc2startd
       volumes:
         - name: data
           emptyDir: {}
