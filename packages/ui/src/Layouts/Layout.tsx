@@ -140,7 +140,7 @@ export function Layout({
               hasDrawer && "lg:pr-105",
             )}
           >
-            <div className="py-6 px-4 sm:px-6 lg:py-12 lg:px-8 max-w-[1200px] w-full mx-auto min-h-[calc(100dvh-48px)]">
+            <div className="py-6 px-4 sm:px-6 lg:py-8 lg:px-6 w-full min-h-[calc(100dvh-48px)]">
               {children}
             </div>
           </main>
