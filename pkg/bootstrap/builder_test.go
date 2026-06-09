@@ -193,6 +193,7 @@ func TestBuilder_Build_Defaults(t *testing.T) {
 	assert.Equal(t, "localhost:1025", cfg.Probod.Notifications.Mailer.SMTP.Addr)
 	assert.False(t, cfg.Probod.Notifications.Mailer.SMTP.TLSRequired)
 	assert.Empty(t, cfg.Probod.Notifications.Mailer.SMTP.HelloName)
+	assert.Empty(t, cfg.Probod.Notifications.Mailer.Resend.APIKey)
 	assert.Equal(t, 60, cfg.Probod.Notifications.Mailer.MailerInterval)
 	assert.Equal(t, 60, cfg.Probod.Notifications.Slack.SenderInterval)
 	assert.Empty(t, cfg.Probod.Notifications.Slack.SigningSecret)
@@ -313,6 +314,7 @@ func TestBuilder_Build_CustomValues(t *testing.T) {
 	env["WEBHOOK_SENDER_INTERVAL"] = "10"
 	env["WEBHOOK_CACHE_TTL"] = "3600"
 	env["CONNECTOR_SLACK_SIGNING_SECRET"] = "slack-signing-secret"
+	env["RESEND_API_KEY"] = "re_test_123456"
 	// Firecrawl
 	env["FIRECRAWL_API_KEY"] = "fc-test-key"
 	// Agents — providers
@@ -416,6 +418,7 @@ func TestBuilder_Build_CustomValues(t *testing.T) {
 	assert.True(t, cfg.Probod.AWS.UsePathStyle)
 	// Notifications
 	assert.Equal(t, "slack-signing-secret", cfg.Probod.Notifications.Slack.SigningSecret)
+	assert.Equal(t, "re_test_123456", cfg.Probod.Notifications.Mailer.Resend.APIKey)
 	assert.Equal(t, 10, cfg.Probod.Notifications.Webhook.SenderInterval)
 	assert.Equal(t, 3600, cfg.Probod.Notifications.Webhook.CacheTTL)
 	// Agents tools — Firecrawl

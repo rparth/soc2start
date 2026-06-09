@@ -169,6 +169,9 @@ func (b *Builder) Build() (*probodconfig.FullConfig, error) {
 						TLSRequired: b.getEnvBoolOrDefault("SMTP_TLS_REQUIRED", false),
 						HelloName:   b.getEnv("SMTP_HELLO_NAME"),
 					},
+					Resend: probodconfig.ResendConfig{
+						APIKey: b.getEnv("RESEND_API_KEY"),
+					},
 				},
 				Slack: probodconfig.SlackConfig{
 					SenderInterval: b.getEnvIntOrDefault("SLACK_SENDER_INTERVAL", 60),

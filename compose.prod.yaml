@@ -32,11 +32,12 @@ services:
       METRICS_ADDR: "probo:8081"
       TRACING_ADDR: ""
 
-      # Email notifications
+      # Email notifications (Resend overrides SMTP when set)
       SMTP_ADDR: "your.smtp.server:587"
       SMTP_TLS_REQUIRED: "false"
       MAILER_SENDER_NAME: "Probo"
       MAILER_SENDER_EMAIL: "no-reply@notification.getprobo.com"
+      # RESEND_API_KEY: "re_..."
 
       # Chrome for PDF generation
       CHROME_DP_ADDR: "chrome:9222"

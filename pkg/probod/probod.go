@@ -644,18 +644,32 @@ func (impl *Implm) Run(
 	)
 
 	mailerCtx, stopMailer := context.WithCancel(context.Background())
+
+	var emailSender mailer.Sender
+	if impl.cfg.Notifications.Mailer.Resend.APIKey != "" {
+		emailSender = mailer.NewResendSender(
+			impl.cfg.Notifications.Mailer.Resend.APIKey,
+			l.Named("resend-sender"),
+		)
+	} else {
+		emailSender = mailer.NewSMTPSender(
+			mailer.SMTPConfig{
+				Addr:        impl.cfg.Notifications.Mailer.SMTP.Addr,
+				User:        impl.cfg.Notifications.Mailer.SMTP.User,
+				Password:    impl.cfg.Notifications.Mailer.SMTP.Password,
+				TLSRequired: impl.cfg.Notifications.Mailer.SMTP.TLSRequired,
+				HelloName:   impl.cfg.Notifications.Mailer.SMTP.HelloName,
+			},
+			impl.cfg.Notifications.Mailer.SenderEmail,
+		)
+	}
+
 	sendingWorker := mailer.NewSendingWorker(
 		pgClient,
 		fileManagerService,
 		impl.cfg.Notifications.Mailer.SenderName,
 		impl.cfg.Notifications.Mailer.SenderEmail,
-		mailer.SMTPConfig{
-			Addr:        impl.cfg.Notifications.Mailer.SMTP.Addr,
-			User:        impl.cfg.Notifications.Mailer.SMTP.User,
-			Password:    impl.cfg.Notifications.Mailer.SMTP.Password,
-			TLSRequired: impl.cfg.Notifications.Mailer.SMTP.TLSRequired,
-			HelloName:   impl.cfg.Notifications.Mailer.SMTP.HelloName,
-		},
+		emailSender,
 		l.Named("sending-worker"),
 		[]mailer.SendingWorkerOption{
 			mailer.WithSendingWorkerSMTPTimeout(time.Second * 10),

@@ -15,17 +15,11 @@
 package mailer
 
 import (
-	"bytes"
 	"context"
-	"crypto/tls"
 	"errors"
 	"fmt"
-	"net"
-	"net/smtp"
-	"os"
 	"time"
 
-	"github.com/jhillyerd/enmime"
 	"go.gearno.de/kit/log"
 	"go.gearno.de/kit/pg"
 	"go.gearno.de/kit/worker"
@@ -38,7 +32,7 @@ type (
 		pg          *pg.Client
 		fileManager *filemanager.Service
 		logger      *log.Logger
-		smtp        SMTPConfig
+		sender      Sender
 		senderName  string
 		senderEmail string
 		smtpTimeout time.Duration
@@ -69,7 +63,7 @@ func NewSendingWorker(
 	fileManager *filemanager.Service,
 	senderName string,
 	senderEmail string,
-	smtpCfg SMTPConfig,
+	sender Sender,
 	logger *log.Logger,
 	handlerOpts []SendingWorkerOption,
 	workerOpts ...worker.Option,
@@ -78,7 +72,7 @@ func NewSendingWorker(
 		pg:          pgClient,
 		fileManager: fileManager,
 		logger:      logger,
-		smtp:        smtpCfg,
+		sender:      sender,
 		senderName:  senderName,
 		senderEmail: senderEmail,
 		smtpTimeout: 25 * time.Second,
@@ -156,7 +150,7 @@ func (h *sendingHandler) sendAndCommit(
 	ctx context.Context,
 	email *coredata.Email,
 ) error {
-	var buf bytes.Buffer
+	var msg Message
 
 	if err := h.pg.WithConn(
 		ctx,
@@ -171,24 +165,26 @@ func (h *sendingHandler) sendAndCommit(
 				fromName = *email.SenderName + " via " + h.senderName
 			}
 
-			mail := enmime.Builder().
-				Subject(email.Subject).
-				From(fromName, h.senderEmail).
-				To(email.RecipientName, email.RecipientEmail).
-				Text([]byte(email.TextBody))
+			msg = Message{
+				From:     fromName + " <" + h.senderEmail + ">",
+				To:       email.RecipientEmail,
+				Subject:  email.Subject,
+				TextBody: email.TextBody,
+			}
 
 			if email.ReplyTo != nil {
-				mail = mail.ReplyTo("", email.ReplyTo.String())
+				msg.ReplyTo = email.ReplyTo.String()
 			}
 
 			if email.HtmlBody != nil {
-				mail = mail.HTML([]byte(*email.HtmlBody))
+				msg.HTMLBody = *email.HtmlBody
 			}
 
 			if email.UnsubscribeURL != nil {
-				mail = mail.
-					Header("List-Unsubscribe", "<"+*email.UnsubscribeURL+">").
-					Header("List-Unsubscribe-Post", "List-Unsubscribe=One-Click")
+				msg.Headers = map[string]string{
+					"List-Unsubscribe":      "<" + *email.UnsubscribeURL + ">",
+					"List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+				}
 			}
 
 			for _, att := range attachments {
@@ -202,16 +198,14 @@ func (h *sendingHandler) sendAndCommit(
 					return fmt.Errorf("cannot download attachment %s: %w", att.Filename, err)
 				}
 
-				mail = mail.AddAttachment(data, file.MimeType, att.Filename)
-			}
-
-			envelope, err := mail.Build()
-			if err != nil {
-				return fmt.Errorf("cannot build email: %w", err)
-			}
-
-			if err := envelope.Encode(&buf); err != nil {
-				return fmt.Errorf("cannot encode email: %w", err)
+				msg.Attachments = append(
+					msg.Attachments,
+					Attachment{
+						Filename:    att.Filename,
+						ContentType: file.MimeType,
+						Content:     data,
+					},
+				)
 			}
 
 			return nil
@@ -223,7 +217,7 @@ func (h *sendingHandler) sendAndCommit(
 	sendCtx, cancel := context.WithTimeout(ctx, h.smtpTimeout)
 	defer cancel()
 
-	if err := h.sendMail(sendCtx, []string{email.RecipientEmail}, buf.Bytes()); err != nil {
+	if err := h.sender.Send(sendCtx, &msg); err != nil {
 		if errors.Is(err, context.DeadlineExceeded) {
 			return fmt.Errorf("email sending timed out after %s: %w", h.smtpTimeout, err)
 		}
@@ -248,7 +242,8 @@ func (h *sendingHandler) sendAndCommit(
 			return nil
 		},
 	); err != nil {
-		h.logger.ErrorCtx(ctx,
+		h.logger.ErrorCtx(
+			ctx,
 			"email sent but failed to commit status update; will not re-queue to avoid duplicate delivery",
 			log.Error(err),
 			log.String("email_id", email.ID.String()),
@@ -291,83 +286,4 @@ func (h *sendingHandler) failEmail(
 			return nil
 		},
 	)
-}
-
-func (h *sendingHandler) sendMail(ctx context.Context, to []string, msg []byte) error {
-	host, _, err := net.SplitHostPort(h.smtp.Addr)
-	if err != nil {
-		return fmt.Errorf("invalid address: %w", err)
-	}
-
-	var d net.Dialer
-
-	conn, err := d.DialContext(ctx, "tcp", h.smtp.Addr)
-	if err != nil {
-		return fmt.Errorf("connection error: %w", err)
-	}
-
-	defer func() { _ = conn.Close() }()
-
-	if deadline, ok := ctx.Deadline(); ok {
-		if err := conn.SetDeadline(deadline); err != nil {
-			return fmt.Errorf("cannot set connection deadline: %w", err)
-		}
-	}
-
-	c, err := smtp.NewClient(conn, host)
-	if err != nil {
-		return fmt.Errorf("SMTP client creation error: %w", err)
-	}
-
-	defer func() { _ = c.Quit() }()
-
-	helloName := h.smtp.HelloName
-	if helloName == "" {
-		if helloName, err = os.Hostname(); err != nil {
-			helloName = "localhost"
-		}
-	}
-
-	if err := c.Hello(helloName); err != nil {
-		return fmt.Errorf("SMTP EHLO error: %w", err)
-	}
-
-	if h.smtp.TLSRequired {
-		if err := c.StartTLS(&tls.Config{ServerName: host}); err != nil {
-			return fmt.Errorf("TLS negotiation error: %w", err)
-		}
-	}
-
-	if h.smtp.User != "" && h.smtp.Password != "" {
-		auth := smtp.PlainAuth("", h.smtp.User, h.smtp.Password, host)
-		if err = c.Auth(auth); err != nil {
-			return fmt.Errorf("SMTP authentication error: %w", err)
-		}
-	}
-
-	if err = c.Mail(h.senderEmail); err != nil {
-		return fmt.Errorf("MAIL FROM error: %w", err)
-	}
-
-	for _, addr := range to {
-		if err = c.Rcpt(addr); err != nil {
-			return fmt.Errorf("RCPT TO error: %w", err)
-		}
-	}
-
-	wr, err := c.Data()
-	if err != nil {
-		return fmt.Errorf("DATA command error: %w", err)
-	}
-
-	_, err = wr.Write(msg)
-	if err != nil {
-		return fmt.Errorf("message write error: %w", err)
-	}
-
-	if err = wr.Close(); err != nil {
-		return fmt.Errorf("message close error: %w", err)
-	}
-
-	return nil
 }

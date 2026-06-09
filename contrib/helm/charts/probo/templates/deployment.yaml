@@ -229,6 +229,13 @@ spec:
             - name: SMTP_HELLO_NAME
               value: {{ .Values.probo.mailer.smtp.helloName | quote }}
             {{- end }}
+            {{- if .Values.probo.mailer.resend.apiKey }}
+            - name: RESEND_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "probo.fullname" . }}
+                  key: resend-api-key
+            {{- end }}
             # OpenAI Integration
             {{- if .Values.probo.openai.apiKey }}
             - name: OPENAI_API_KEY

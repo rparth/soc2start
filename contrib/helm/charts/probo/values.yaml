@@ -252,6 +252,9 @@ probo:
       password: ""
       tlsRequired: true
       helloName: ""
+    # Resend configuration (overrides SMTP when apiKey is set)
+    resend:
+      apiKey: ""
 #    smtp:
 #      addr: "localhost:1025"
 #      user: ""

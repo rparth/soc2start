@@ -61,6 +61,10 @@ spec:
             - name: SMTP_PASSWORD
               value: {{ .Values.probo.smtp.password | quote }}
             {{- end }}
+            {{- if .Values.probo.resend.apiKey }}
+            - name: RESEND_API_KEY
+              value: {{ .Values.probo.resend.apiKey | quote }}
+            {{- end }}
           readinessProbe:
             httpGet:
               path: /healthz

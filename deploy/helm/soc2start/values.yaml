@@ -48,6 +48,9 @@ probo:
     user: ""
     password: ""
     tlsRequired: true
+  # -- Resend configuration (overrides SMTP when apiKey is set)
+  resend:
+    apiKey: ""
   # -- OTEL SDK disabled
   otelDisabled: false
   # -- Tracing endpoint

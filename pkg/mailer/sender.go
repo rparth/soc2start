@@ -12,24 +12,29 @@
 // OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
 // PERFORMANCE OF THIS SOFTWARE.
 
-package probodconfig
+package mailer
 
-type MailerConfig struct {
-	MailerInterval int          `json:"mailer-interval"`
-	SenderName     string       `json:"sender-name"`
-	SenderEmail    string       `json:"sender-email"`
-	SMTP           SMTPConfig   `json:"smtp"`
-	Resend         ResendConfig `json:"resend"`
-}
+import "context"
 
-type SMTPConfig struct {
-	Addr        string `json:"addr"`
-	User        string `json:"user"`
-	Password    string `json:"password"`
-	TLSRequired bool   `json:"tls-required"`
-	HelloName   string `json:"hello-name"`
-}
+type (
+	Sender interface {
+		Send(ctx context.Context, msg *Message) error
+	}
 
-type ResendConfig struct {
-	APIKey string `json:"api-key"`
-}
+	Message struct {
+		From        string
+		To          string
+		Subject     string
+		TextBody    string
+		HTMLBody    string
+		ReplyTo     string
+		Headers     map[string]string
+		Attachments []Attachment
+	}
+
+	Attachment struct {
+		Filename    string
+		ContentType string
+		Content     []byte
+	}
+)
