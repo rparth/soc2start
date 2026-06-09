@@ -154,7 +154,7 @@ function HelpPanelOverlay({
           "fixed top-0 right-0 z-[60] h-full bg-level-1 shadow-dialog border-l border-border-low",
           "transition-transform duration-300 [transition-timing-function:cubic-bezier(0.16,1,0.3,1)]",
           isOpen ? "translate-x-0" : "translate-x-full",
-          content.wide ? "w-full sm:w-[50vw]" : "w-full sm:w-[440px]",
+          "w-full sm:w-[50vw]",
         )}
       >
         <div className="flex flex-col h-full">
