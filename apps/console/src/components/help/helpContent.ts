@@ -394,4 +394,76 @@ export const helpContent: Record<string, HelpContent> = {
       },
     ],
   },
+
+  mcpSupport: {
+    title: "MCP Support",
+    subtitle: "AI integration",
+    description:
+      "SOC2Start exposes a Model Context Protocol (MCP) server that lets AI assistants like Claude, Codex, and other MCP-compatible clients interact with your compliance data programmatically. Connect your AI tools to query frameworks, manage risks, create documents, and automate compliance workflows.",
+    wide: true,
+    sections: [
+      {
+        title: "What is MCP",
+        content:
+          "The Model Context Protocol is an open standard that lets AI assistants connect to external tools and data sources. SOC2Start's MCP server exposes 272 tools covering every area of the platform, from frameworks and controls to risk assessments and document management.",
+      },
+      {
+        title: "Generating connection config",
+        content:
+          "Use the CLI command to generate connection configuration for your AI client. Run: soc2start ai mcp connect --format <format>. Supported formats are claude-desktop (for Claude Desktop app), claude-code (for Claude Code CLI), generic (for other MCP clients), url (endpoint URL only), and all (all formats at once).",
+      },
+      {
+        title: "Connecting Claude Desktop",
+        content:
+          "Run: soc2start ai mcp connect --format claude-desktop. Copy the output JSON into your Claude Desktop configuration file (Settings > Developer > MCP Servers). Restart Claude Desktop to activate the connection.",
+      },
+      {
+        title: "Connecting Claude Code",
+        content:
+          "Run: soc2start ai mcp connect --format claude-code. Copy the output JSON into your Claude Code MCP settings file (.claude/mcp.json or the project-level equivalent). The connection will be available in your next Claude Code session.",
+      },
+      {
+        title: "Available tool categories",
+        content:
+          "The MCP server provides tools organized by domain. Each category includes list, get, create, update, and delete operations where applicable.",
+        subsections: [
+          {
+            title: "Governance",
+            content:
+              "Frameworks, controls, measures, findings, and statements of applicability. Import compliance frameworks, link controls to measures, track implementation progress, and manage compliance gaps.",
+          },
+          {
+            title: "Risk management",
+            content:
+              "Risks, risk assessments, risk assessment nodes, processes, scenarios, scopes, and threats. Create structured risk assessments, model threat scenarios, and link risks to mitigating measures.",
+          },
+          {
+            title: "Organization",
+            content:
+              "Users, assets, data classification, documents (with versioning, approvals, and digital signatures), tasks, and third parties (with contacts, services, and risk assessments).",
+          },
+          {
+            title: "Privacy",
+            content:
+              "Processing activities, rights requests, data protection impact assessments, transfer impact assessments, cookie banners (with categories, consent records, translations, and tracker management).",
+          },
+          {
+            title: "Compliance",
+            content:
+              "Audits, obligations, audit log entries, compliance external URLs, access reviews (campaigns, sources, entries, and decisions), and trust center management (references, files, and custom domains).",
+          },
+          {
+            title: "Monitoring",
+            content:
+              "Webhook subscriptions and events, SCIM configuration and events, and organization context management.",
+          },
+        ],
+      },
+      {
+        title: "Authentication",
+        content:
+          "MCP connections authenticate using your API token. The CLI command automatically uses the token from your active login session. If you haven't logged in yet, run: soc2start auth login.",
+      },
+    ],
+  },
 };

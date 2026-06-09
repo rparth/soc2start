@@ -216,6 +216,11 @@ export const navigationHelpContent: HelpContent = {
           content:
             "Create and manage personal API keys for programmatic access to the platform. Set expiration dates and revoke keys as needed.",
         },
+        {
+          title: "MCP Integration",
+          content:
+            "Connect AI assistants (Claude, Codex, and other MCP-compatible clients) to your SOC2Start instance. Use the CLI command soc2start ai mcp connect to generate connection configuration for your preferred AI client. The MCP server exposes 272 tools covering frameworks, controls, risks, documents, audits, and more.",
+        },
       ],
     },
   ],
