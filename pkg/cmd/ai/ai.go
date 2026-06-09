@@ -67,16 +67,16 @@ and outputs the connection config in the requested format.`,
 
 			host := cfg.ActiveHost
 			if host == "" {
-				return fmt.Errorf("no active host configured; run 'prb auth login' first")
+				return fmt.Errorf("no active host configured; run 'soc2start auth login' first")
 			}
 
 			hc, ok := cfg.Hosts[host]
 			if !ok {
-				return fmt.Errorf("no credentials for host %q; run 'prb auth login' first", host)
+				return fmt.Errorf("no credentials for host %q; run 'soc2start auth login' first", host)
 			}
 
 			if hc.Token == "" {
-				return fmt.Errorf("no API token for host %q; run 'prb auth login' first", host)
+				return fmt.Errorf("no API token for host %q; run 'soc2start auth login' first", host)
 			}
 
 			serverCfg := mcp.ServerConfig{
