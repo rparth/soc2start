@@ -13,15 +13,19 @@
 // PERFORMANCE OF THIS SOFTWARE.
 
 import { useTranslate } from "@probo/i18n";
-import { PageHeader, TabLink, Tabs } from "@probo/ui";
+import { HelpButton, PageHeader, TabLink, Tabs } from "@probo/ui";
 import { Outlet } from "react-router";
+
+import { helpContent } from "#/components/help/helpContent";
 
 export default function EmployeeTabsLayout() {
   const { __ } = useTranslate();
 
   return (
     <div className="space-y-6">
-      <PageHeader breadcrumbs={[__("Organization")]} title={__("Signature and Approvals")} />
+      <PageHeader breadcrumbs={[__("Organization")]} title={__("Signature and Approvals")}>
+        <HelpButton content={helpContent.signaturesAndApprovals} />
+      </PageHeader>
       <Tabs>
         <TabLink to="signatures" end>
           {__("Signatures")}

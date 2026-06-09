@@ -395,6 +395,30 @@ export const helpContent: Record<string, HelpContent> = {
     ],
   },
 
+  signaturesAndApprovals: {
+    title: "Signature and Approvals",
+    subtitle: "Document workflows",
+    description:
+      "Manage document signatures and approval workflows. This page shows documents that require your signature or approval, allowing you to track and complete pending requests.",
+    sections: [
+      {
+        title: "Signatures",
+        content:
+          "View documents that require your digital signature. When a document owner requests your signature, it appears here. Sign documents to acknowledge policies, accept terms, or certify compliance artifacts. You can filter by state to see requested or already-signed documents.",
+      },
+      {
+        title: "Approvals",
+        content:
+          "Review document versions awaiting your approval. As an approver, you can approve or reject a document version. Approval quorums determine how many approvals are needed before a document version is considered accepted.",
+      },
+      {
+        title: "How it works",
+        content:
+          "Document owners create new versions and request signatures or set up approval quorums. When your signature or approval is requested, you receive a notification and the document appears in this section. Completed signatures and approvals serve as compliance evidence for audits.",
+      },
+    ],
+  },
+
   userRoles: {
     title: "User Roles",
     subtitle: "Access control",
