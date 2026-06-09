@@ -31,3 +31,9 @@ bin/soc2start
 bin/soc2startctl
 bin/soc2startd
 bin/soc2startd-bootstrap
+
+# Built binaries (root)
+/soc2start
+/soc2startctl
+/soc2startd
+/soc2startd-bootstrap
