@@ -216,10 +216,23 @@ export const navigationHelpContent: HelpContent = {
           content:
             "Create and manage personal API keys for programmatic access to the platform. Set expiration dates and revoke keys as needed.",
         },
+      ],
+    },
+    {
+      id: "mcp-integration",
+      title: "MCP Integration",
+      content:
+        "SOC2Start exposes a Model Context Protocol (MCP) server with 272 tools that lets AI assistants interact with your compliance data. Connect Claude, Codex, or any MCP-compatible client to automate compliance workflows.",
+      subsections: [
         {
-          title: "MCP Integration",
+          title: "Getting connected",
           content:
-            "Connect AI assistants (Claude, Codex, and other MCP-compatible clients) to your SOC2Start instance. Use the CLI command soc2start ai mcp connect to generate connection configuration for your preferred AI client. The MCP server exposes 272 tools covering frameworks, controls, risks, documents, audits, and more.",
+            "Install the SOC2Start CLI and run: soc2start auth login. Then run: soc2start ai mcp connect --format <client> (use claude-desktop, claude-code, or generic). Copy the output JSON into your AI client's MCP configuration.",
+        },
+        {
+          title: "What you can do",
+          content:
+            "Query frameworks and controls, create and update risks, generate documents, manage third-party assessments, run access reviews, and more. All 272 tools are organized by domain: governance, risk management, organization, privacy, compliance, and monitoring.",
         },
       ],
     },
