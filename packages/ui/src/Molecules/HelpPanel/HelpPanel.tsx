@@ -204,11 +204,11 @@ function HelpPanelOverlay({
                 </ul>
               </nav>
               <div ref={scrollRef} className="flex-1 overflow-y-auto">
-                <div className="px-6 py-5 space-y-6">
-                  <p className="text-sm text-txt-secondary leading-relaxed">{content.description}</p>
-                  <div className="space-y-6">
+                <div className="px-6 py-6">
+                  <p className="text-sm text-txt-secondary leading-relaxed mb-8">{content.description}</p>
+                  <div className="space-y-8">
                     {content.sections.map((section) => (
-                      <HelpSectionCard key={section.id ?? slugify(section.title)} section={section} />
+                      <HelpSectionBlock key={section.id ?? slugify(section.title)} section={section} />
                     ))}
                   </div>
                 </div>
@@ -216,13 +216,13 @@ function HelpPanelOverlay({
             </div>
           ) : (
             <div className="flex-1 overflow-y-auto">
-              <div className="px-6 py-5 space-y-6">
-                <p className="text-sm text-txt-secondary leading-relaxed">{content.description}</p>
+              <div className="px-6 py-6">
+                <p className="text-sm text-txt-secondary leading-relaxed mb-8">{content.description}</p>
 
                 {content.sections && content.sections.length > 0 && (
-                  <div className="space-y-4">
+                  <div className="space-y-8">
                     {content.sections.map((section) => (
-                      <HelpSectionCard key={section.title} section={section} />
+                      <HelpSectionBlock key={section.title} section={section} />
                     ))}
                   </div>
                 )}
@@ -239,23 +239,23 @@ function slugify(text: string): string {
   return text.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
 }
 
-function HelpSectionCard({ section }: { section: HelpSection }) {
+function HelpSectionBlock({ section }: { section: HelpSection }) {
   const sectionId = section.id ?? slugify(section.title);
   return (
-    <div data-section-id={sectionId} className="rounded-md border border-border-low bg-level-0 p-4 space-y-3">
-      <h3 className="text-sm font-semibold text-txt-primary">{section.title}</h3>
+    <section data-section-id={sectionId}>
+      <h3 className="text-sm font-semibold text-txt-primary mb-2">{section.title}</h3>
       <p className="text-sm text-txt-secondary leading-relaxed">{section.content}</p>
       {section.subsections && section.subsections.length > 0 && (
-        <div className="space-y-2 pt-1">
+        <div className="mt-4 space-y-4">
           {section.subsections.map((sub) => (
-            <div key={sub.title} className="pl-3 border-l-2 border-border-low space-y-1">
-              <h4 className="text-xs font-medium text-txt-primary">{sub.title}</h4>
-              <p className="text-xs text-txt-secondary leading-relaxed">{sub.content}</p>
+            <div key={sub.title}>
+              <h4 className="text-sm font-medium text-txt-primary mb-1">{sub.title}</h4>
+              <p className="text-sm text-txt-secondary leading-relaxed">{sub.content}</p>
             </div>
           ))}
         </div>
       )}
-    </div>
+    </section>
   );
 }
 
