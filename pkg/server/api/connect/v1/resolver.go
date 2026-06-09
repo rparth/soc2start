@@ -37,6 +37,7 @@ import (
 	"github.com/go-chi/chi/v5"
 	"go.gearno.de/kit/log"
 	"go.probo.inc/probo/pkg/baseurl"
+	"go.probo.inc/probo/pkg/connector"
 	"go.probo.inc/probo/pkg/gid"
 	"go.probo.inc/probo/pkg/iam"
 	"go.probo.inc/probo/pkg/saferedirect"
@@ -48,12 +49,13 @@ import (
 
 type (
 	Resolver struct {
-		authorize      authz.AuthorizeFunc
-		batchAuthorize authz.BatchAuthorizeFunc
-		logger         *log.Logger
-		iam            *iam.Service
-		baseURL        *baseurl.BaseURL
-		sessionCookie  *authn.Cookie
+		authorize          authz.AuthorizeFunc
+		batchAuthorize     authz.BatchAuthorizeFunc
+		logger             *log.Logger
+		iam                *iam.Service
+		baseURL            *baseurl.BaseURL
+		sessionCookie      *authn.Cookie
+		connectorRegistry  *connector.ConnectorRegistry
 	}
 )
 
@@ -65,13 +67,14 @@ func NewMux(
 	baseURL *baseurl.BaseURL,
 	allowedRedirectHost saferedirect.AllowedHostFunc,
 	isTrustCenterDomain IsTrustCenterDomainFunc,
+	connectorRegistry *connector.ConnectorRegistry,
 ) *chi.Mux {
 	r := chi.NewMux()
 
 	sessionMiddleware := authn.NewSessionMiddleware(svc, cookieConfig)
 	apiKeyMiddleware := authn.NewAPIKeyMiddleware(svc, tokenSecret)
 	oauth2Middleware := authn.NewOAuth2AccessTokenMiddleware(svc)
-	graphqlHandler := NewGraphQLHandler(svc, logger, baseURL, cookieConfig)
+	graphqlHandler := NewGraphQLHandler(svc, logger, baseURL, cookieConfig, connectorRegistry)
 	samlHandler := NewSAMLHandler(svc, cookieConfig, baseURL, logger)
 	scimHandler := NewSCIMHandler(svc, logger.Named("scim"))
 

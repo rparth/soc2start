@@ -19,6 +19,7 @@ import (
 
 	"go.gearno.de/kit/log"
 	"go.probo.inc/probo/pkg/baseurl"
+	"go.probo.inc/probo/pkg/connector"
 	"go.probo.inc/probo/pkg/iam"
 	"go.probo.inc/probo/pkg/securecookie"
 	"go.probo.inc/probo/pkg/server/api/authn"
@@ -29,15 +30,16 @@ import (
 	"go.probo.inc/probo/pkg/server/gqlutils/directives/session"
 )
 
-func NewGraphQLHandler(svc *iam.Service, logger *log.Logger, baseURL *baseurl.BaseURL, cookieConfig securecookie.Config) http.Handler {
+func NewGraphQLHandler(svc *iam.Service, logger *log.Logger, baseURL *baseurl.BaseURL, cookieConfig securecookie.Config, connectorRegistry *connector.ConnectorRegistry) http.Handler {
 	config := schema.Config{
 		Resolvers: &Resolver{
-			authorize:      authz.NewAuthorizeFunc(svc, logger),
-			batchAuthorize: authz.NewBatchAuthorizeFunc(svc, logger),
-			logger:         logger,
-			iam:            svc,
-			baseURL:        baseURL,
-			sessionCookie:  authn.NewCookie(&cookieConfig),
+			authorize:         authz.NewAuthorizeFunc(svc, logger),
+			batchAuthorize:    authz.NewBatchAuthorizeFunc(svc, logger),
+			logger:            logger,
+			iam:               svc,
+			baseURL:           baseURL,
+			sessionCookie:     authn.NewCookie(&cookieConfig),
+			connectorRegistry: connectorRegistry,
 		},
 		Directives: schema.DirectiveRoot{
 			Authentication: authentication.Directive,

@@ -277,16 +277,31 @@ func (r *organizationResolver) ScimConfiguration(ctx context.Context, obj *types
 
 // ScimBridgeTypes is the resolver for the scimBridgeTypes field.
 func (r *organizationResolver) ScimBridgeTypes(ctx context.Context, obj *types.Organization) ([]*types.SCIMBridgeTypeInfo, error) {
-	return []*types.SCIMBridgeTypeInfo{
-		{
-			Type:         coredata.SCIMBridgeTypeGoogleWorkspace,
-			Oauth2Scopes: googleworkspace.OAuth2Scopes,
-		},
-		{
-			Type:         coredata.SCIMBridgeTypeMicrosoft365,
-			Oauth2Scopes: microsoft365.OAuth2Scopes,
-		},
-	}, nil
+	all := []struct {
+		bridgeType coredata.SCIMBridgeType
+		provider   string
+		scopes     []string
+	}{
+		{coredata.SCIMBridgeTypeGoogleWorkspace, "GOOGLE_WORKSPACE", googleworkspace.OAuth2Scopes},
+		{coredata.SCIMBridgeTypeMicrosoft365, "MICROSOFT_365", microsoft365.OAuth2Scopes},
+	}
+
+	var infos []*types.SCIMBridgeTypeInfo
+
+	for _, entry := range all {
+		if r.connectorRegistry != nil {
+			if _, err := r.connectorRegistry.Get(entry.provider); err != nil {
+				continue
+			}
+		}
+
+		infos = append(infos, &types.SCIMBridgeTypeInfo{
+			Type:         entry.bridgeType,
+			Oauth2Scopes: entry.scopes,
+		})
+	}
+
+	return infos, nil
 }
 
 // AuditLogEntries is the resolver for the auditLogEntries field.

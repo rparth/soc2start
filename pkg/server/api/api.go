@@ -255,6 +255,7 @@ func NewServer(cfg Config) (*Server, error) {
 				_, err := cfg.Trust.GetByDomainName(ctx, host)
 				return err == nil
 			},
+			cfg.ConnectorRegistry,
 		),
 	}, nil
 }

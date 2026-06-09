@@ -41,14 +41,18 @@ export function ConnectorList(props: { fKey: ConnectorListFragment$key }) {
   const data = useFragment<ConnectorListFragment$key>(connectorListFragment, fKey);
   const { __ } = useTranslate();
 
-  const googleWorkspaceScopes
-    = data.scimBridgeTypes.find(info => info.type === "GOOGLE_WORKSPACE")?.oauth2Scopes ?? [];
-  const microsoft365Scopes
-    = data.scimBridgeTypes.find(info => info.type === "MICROSOFT_365")?.oauth2Scopes ?? [];
+  const googleWorkspaceInfo
+    = data.scimBridgeTypes.find(info => info.type === "GOOGLE_WORKSPACE");
+  const microsoft365Info
+    = data.scimBridgeTypes.find(info => info.type === "MICROSOFT_365");
 
   const bridgeType = data.scimConfiguration?.bridge?.type ?? null;
-  const showGoogleWorkspace = bridgeType === null || bridgeType === "GOOGLE_WORKSPACE";
-  const showMicrosoft365 = bridgeType === null || bridgeType === "MICROSOFT_365";
+  const showGoogleWorkspace = (bridgeType === null && !!googleWorkspaceInfo) || bridgeType === "GOOGLE_WORKSPACE";
+  const showMicrosoft365 = (bridgeType === null && !!microsoft365Info) || bridgeType === "MICROSOFT_365";
+
+  if (!showGoogleWorkspace && !showMicrosoft365) {
+    return null;
+  }
 
   return (
     <div className="space-y-4">
@@ -61,13 +65,13 @@ export function ConnectorList(props: { fKey: ConnectorListFragment$key }) {
       {showGoogleWorkspace && (
         <GoogleWorkspaceConnector
           fKey={data.scimConfiguration ?? null}
-          oauth2Scopes={googleWorkspaceScopes}
+          oauth2Scopes={googleWorkspaceInfo?.oauth2Scopes ?? []}
         />
       )}
       {showMicrosoft365 && (
         <Microsoft365Connector
           fKey={data.scimConfiguration ?? null}
-          oauth2Scopes={microsoft365Scopes}
+          oauth2Scopes={microsoft365Info?.oauth2Scopes ?? []}
         />
       )}
     </div>
