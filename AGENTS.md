@@ -32,6 +32,10 @@ Detailed guides for specific subsystems live in `contrib/claude/`:
 - [`contrib/claude/sandbox.md`](contrib/claude/sandbox.md) — Lima sandbox environments (create, manage, access services)
 - [`contrib/claude/n8n.md`](contrib/claude/n8n.md) — n8n community node (resources, operations, GraphQL helpers)
 
+## Help Documentation Obligation
+
+Any change that is exposed to the user MUST include a corresponding update to the overlay help documentation (both global and contextual help). This applies to new features, modified workflows, renamed UI elements, added/removed pages, and any user-facing behavioral changes.
+
 ## vibeflow Agent Session Rules
 
 **CRITICAL - When a vibeflow session_init prompt is active (autonomous agent mode), these rules apply to ALL work, including ad-hoc user requests:**
