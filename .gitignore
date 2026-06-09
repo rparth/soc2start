@@ -26,3 +26,8 @@ cfg/dev_local.yaml
 cfg/dev.yaml
 .env
 .oauth-credentials.txt
+output
+bin/soc2start
+bin/soc2startctl
+bin/soc2startd
+bin/soc2startd-bootstrap

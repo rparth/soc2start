@@ -183,49 +183,49 @@ jobs:
           LINUX_ARM64_SHA=$(grep "soc2start-cli_Linux_arm64.tar.gz" checksums.txt | awk '{print $1}')
           LINUX_X86_64_SHA=$(grep "soc2start-cli_Linux_x86_64.tar.gz" checksums.txt | awk '{print $1}')
 
-          cat > prb.rb << RUBY
+          cat > soc2start-cli.rb << RUBY
           # typed: false
           # frozen_string_literal: true
 
-          class Prb < Formula
-            desc "Probo CLI"
-            homepage "https://github.com/getprobo/probo"
+          class Soc2startCli < Formula
+            desc "soc2start CLI"
+            homepage "https://github.com/${GITHUB_REPOSITORY}"
             version "${VERSION}"
-            license "MIT"
+            license "ISC"
 
             on_macos do
               on_arm do
-                url "${BASE_URL}/prb_Darwin_arm64.tar.gz"
+                url "${BASE_URL}/soc2start-cli_Darwin_arm64.tar.gz"
                 sha256 "${DARWIN_ARM64_SHA}"
               end
               on_intel do
-                url "${BASE_URL}/prb_Darwin_x86_64.tar.gz"
+                url "${BASE_URL}/soc2start-cli_Darwin_x86_64.tar.gz"
                 sha256 "${DARWIN_X86_64_SHA}"
               end
             end
 
             on_linux do
               on_arm do
-                url "${BASE_URL}/prb_Linux_arm64.tar.gz"
+                url "${BASE_URL}/soc2start-cli_Linux_arm64.tar.gz"
                 sha256 "${LINUX_ARM64_SHA}"
               end
               on_intel do
-                url "${BASE_URL}/prb_Linux_x86_64.tar.gz"
+                url "${BASE_URL}/soc2start-cli_Linux_x86_64.tar.gz"
                 sha256 "${LINUX_X86_64_SHA}"
               end
             end
 
             def install
-              bin.install "prb"
+              bin.install "soc2start-cli"
             end
 
             test do
-              assert_match version.to_s, shell_output("#{bin}/prb --version")
+              assert_match version.to_s, shell_output("#{bin}/soc2start-cli --version")
             end
           end
           RUBY
 
-          CONTENT=$(base64 -w0 prb.rb)
+          CONTENT=$(base64 -w0 soc2start-cli.rb)
           HEAD_OID=$(gh api "repos/getprobo/homebrew-tap/git/ref/heads/main" --jq '.object.sha')
 
           gh api graphql -f query='
@@ -239,7 +239,7 @@ jobs:
                 expectedHeadOid: $oid
                 fileChanges: {
                   additions: [{
-                    path: "Formula/prb.rb"
+                    path: "Formula/soc2start-cli.rb"
                     contents: $contents
                   }]
                 }
@@ -247,6 +247,6 @@ jobs:
                 commit { url }
               }
             }' \
-            -f headline="prb ${VERSION}" \
+            -f headline="soc2start-cli ${VERSION}" \
             -f oid="${HEAD_OID}" \
             -f contents="${CONTENT}"

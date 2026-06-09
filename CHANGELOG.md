@@ -15,9 +15,9 @@ Each release track now keeps its own changelog. The history below 0.173.0 of the
 
 Each track is published under its own annotated tag of the form `<track>/v<version>`:
 
-- `prb/vX.Y.Z`
-- `probod/vX.Y.Z` (also tags the `artifact.probo.inc/probo/probo` Docker image)
-- `probod-bootstrap/vX.Y.Z`
+- `soc2start-cli/vX.Y.Z`
+- `soc2startd/vX.Y.Z` (also tags the `artifact.probo.inc/probo/probo` Docker image)
+- `soc2startd-bootstrap/vX.Y.Z`
 - `helm/vX.Y.Z` (also publishes the chart to `oci://artifact.probo.inc/probo/probo`)
 - `@probo/n8n-nodes-probo/vX.Y.Z`
 - `@probo/cookie-banner/vX.Y.Z`
