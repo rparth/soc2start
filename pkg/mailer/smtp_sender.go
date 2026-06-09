@@ -41,8 +41,8 @@ func NewSMTPSender(cfg SMTPConfig, senderEmail string) *SMTPSender {
 func (s *SMTPSender) Send(ctx context.Context, msg *Message) error {
 	mail := enmime.Builder().
 		Subject(msg.Subject).
-		From("", msg.From).
-		To("", msg.To).
+		From(msg.FromName, msg.FromEmail).
+		To(msg.ToName, msg.To).
 		Text([]byte(msg.TextBody))
 
 	if msg.ReplyTo != "" {

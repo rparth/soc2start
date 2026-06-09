@@ -22,8 +22,10 @@ type (
 	}
 
 	Message struct {
-		From        string
+		FromName    string
+		FromEmail   string
 		To          string
+		ToName      string
 		Subject     string
 		TextBody    string
 		HTMLBody    string

@@ -166,11 +166,14 @@ func (h *sendingHandler) sendAndCommit(
 			}
 
 			msg = Message{
-				From:     fromName + " <" + h.senderEmail + ">",
-				To:       email.RecipientEmail,
-				Subject:  email.Subject,
-				TextBody: email.TextBody,
+				FromName:  fromName,
+				FromEmail: h.senderEmail,
+				To:        email.RecipientEmail,
+				Subject:   email.Subject,
+				TextBody:  email.TextBody,
 			}
+
+			msg.ToName = email.RecipientName
 
 			if email.ReplyTo != nil {
 				msg.ReplyTo = email.ReplyTo.String()

@@ -70,8 +70,13 @@ type (
 )
 
 func (s *ResendSender) Send(ctx context.Context, msg *Message) error {
+	from := msg.FromEmail
+	if msg.FromName != "" {
+		from = msg.FromName + " <" + msg.FromEmail + ">"
+	}
+
 	req := resendRequest{
-		From:    msg.From,
+		From:    from,
 		To:      []string{msg.To},
 		Subject: msg.Subject,
 		Text:    msg.TextBody,
