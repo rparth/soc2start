@@ -22,6 +22,7 @@ import {
   Card,
   DropdownItem,
   EmptyState,
+  HelpButton,
   IconCircleCheck,
   IconKey,
   IconTrashCan,
@@ -51,6 +52,7 @@ import type { DevicePosturePageFragment$key } from "#/__generated__/core/DeviceP
 import type { DevicePosturePageQuery } from "#/__generated__/core/DevicePosturePageQuery.graphql";
 import type { DevicePosturePageRefetchQuery } from "#/__generated__/core/DevicePosturePageRefetchQuery.graphql";
 import type { DevicePosturePageRowFragment$key } from "#/__generated__/core/DevicePosturePageRowFragment.graphql";
+import { helpContent } from "#/components/help/helpContent";
 import { useOrganizationId } from "#/hooks/useOrganizationId";
 
 import { GenerateEnrollmentTokenDialog } from "./GenerateEnrollmentTokenDialog";
@@ -170,6 +172,7 @@ export default function DevicePosturePage({
           "View connected agents and their security posture status.",
         )}
       >
+        <HelpButton content={helpContent.devicePosture} />
         {organization.node?.canCreateDevice && (
           <GenerateEnrollmentTokenDialog organizationId={organizationId}>
             <Button icon={IconKey}>

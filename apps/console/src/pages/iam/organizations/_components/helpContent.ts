@@ -227,7 +227,7 @@ export const navigationHelpContent: HelpContent = {
         {
           title: "Getting connected",
           content:
-            "Install the SOC2Start CLI and run: soc2start auth login. Then run: soc2start ai mcp connect --format <client> (use claude-desktop, claude-code, or generic). Copy the output JSON into your AI client's MCP configuration.",
+            "The MCP endpoint is at /mcp/v1 relative to your base URL (for example, https://app.soc2start.io/mcp/v1). Generate an API token in Settings > API Keys, then run: soc2start ai mcp connect --format <client> (use claude-desktop, claude-code, or generic). Copy the output JSON into your AI client's MCP configuration.",
         },
         {
           title: "What you can do",

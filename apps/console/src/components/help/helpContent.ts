@@ -395,6 +395,30 @@ export const helpContent: Record<string, HelpContent> = {
     ],
   },
 
+  devicePosture: {
+    title: "Device Posture",
+    subtitle: "Endpoint monitoring",
+    description:
+      "Monitor the security posture of enrolled devices across your organization. The soc2start-agent runs on employee machines and reports encryption status, OS version, firewall state, and other security indicators.",
+    sections: [
+      {
+        title: "Enrolling devices",
+        content:
+          "Click Enroll Device to generate a one-time enrollment token. Install the soc2start-agent on the target machine, then run: soc2start-agent enroll --token <token>. The agent registers the device and begins reporting posture data. If a device is re-enrolled (same hardware UUID), the existing record is updated rather than duplicated.",
+      },
+      {
+        title: "Reviewing posture",
+        content:
+          "Each enrolled device shows its hostname, OS, last seen timestamp, and overall posture status. Click a device to see detailed posture checks: disk encryption enabled, firewall active, OS up to date, screen lock configured, and antivirus running. Devices that fail checks are flagged for remediation.",
+      },
+      {
+        title: "Compliance evidence",
+        content:
+          "Device posture data serves as evidence for SOC 2 CC6.7 (endpoint protection) and ISO 27001 A.8.1 (user endpoint devices). Auditors can verify that employee devices meet your security baseline by reviewing posture reports.",
+      },
+    ],
+  },
+
   signaturesAndApprovals: {
     title: "Signature and Approvals",
     subtitle: "Document workflows",
@@ -502,9 +526,19 @@ export const helpContent: Record<string, HelpContent> = {
           "The Model Context Protocol is an open standard that lets AI assistants connect to external tools and data sources. SOC2Start's MCP server exposes 272 tools covering every area of the platform, from frameworks and controls to risk assessments and document management.",
       },
       {
+        title: "MCP endpoint URL",
+        content:
+          "The MCP server endpoint is at /mcp/v1 relative to your instance's base URL. For example, if your SOC2Start instance is at https://app.soc2start.io, the MCP endpoint is https://app.soc2start.io/mcp/v1. You can retrieve just the URL by running: soc2start ai mcp connect --format url.",
+      },
+      {
+        title: "Generating an API token",
+        content:
+          "MCP connections require an API token for authentication. To generate one: go to your profile menu (top right), select Settings, then API Keys. Click Create API Key, give it a name (for example, \"Claude MCP\"), set an expiration date, and copy the generated token. You can also use the CLI: run soc2start auth login to authenticate, and the CLI will store your token automatically.",
+      },
+      {
         title: "Generating connection config",
         content:
-          "Use the CLI command to generate connection configuration for your AI client. Run: soc2start ai mcp connect --format <format>. Supported formats are claude-desktop (for Claude Desktop app), claude-code (for Claude Code CLI), generic (for other MCP clients), url (endpoint URL only), and all (all formats at once).",
+          "Use the CLI command to generate connection configuration for your AI client. Run: soc2start ai mcp connect --format <format>. Supported formats are claude-desktop (for Claude Desktop app), claude-code (for Claude Code CLI), generic (for other MCP clients), url (endpoint URL only), and all (all formats at once). The output includes your endpoint URL and API token ready to paste.",
       },
       {
         title: "Connecting Claude Desktop",
@@ -556,7 +590,7 @@ export const helpContent: Record<string, HelpContent> = {
       {
         title: "Authentication",
         content:
-          "MCP connections authenticate using your API token. The CLI command automatically uses the token from your active login session. If you haven't logged in yet, run: soc2start auth login.",
+          "MCP connections authenticate using your API token sent as a Bearer token in the Authorization header. The CLI command soc2start ai mcp connect automatically embeds the token from your active login session into the generated config. Alternatively, create a dedicated API key in Settings > API Keys and use it in your MCP client configuration.",
       },
     ],
   },
