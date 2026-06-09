@@ -24,12 +24,12 @@ export const helpContent: Record<string, HelpContent> = {
       {
         title: "Getting started",
         content:
-          "Import a built-in framework to get started quickly, or create a custom framework tailored to your organization's needs. Each framework organizes its requirements into controls grouped by sections.",
+          "Click the Add Framework button to import a built-in framework like SOC 2 Type II or ISO 27001. Once imported, you will see the framework's controls organized by sections. Open any control to see its requirements and start linking measures to it.",
       },
       {
         title: "How frameworks connect",
         content:
-          "Frameworks contain controls. Controls are implemented by measures. A single measure can satisfy controls across multiple frameworks, so implementing multi-factor authentication once can cover requirements in both SOC 2 and ISO 27001.",
+          "Frameworks contain controls. Controls are implemented by measures. For example, if you implement an MFA measure, you can link it to the SOC 2 CC6.1 access control and the ISO 27001 A.8.5 authentication control simultaneously. This way, one action covers requirements across multiple frameworks.",
       },
     ],
   },
@@ -43,12 +43,12 @@ export const helpContent: Record<string, HelpContent> = {
       {
         title: "Controls and measures",
         content:
-          "Each control is satisfied by one or more measures. Link existing measures to a control or create new ones directly. Progress is tracked automatically based on the implementation state of linked measures.",
+          "Open a control to see its details and linked measures. Click Link Measure to connect an existing measure, or create a new one directly from the control page. The control's progress bar updates automatically as linked measures move through implementation states (not started, in progress, implemented).",
       },
       {
         title: "Evidence",
         content:
-          "Controls require evidence to demonstrate compliance during audits. Evidence is collected through the measures linked to each control and can be gathered manually or automatically.",
+          "During an audit, auditors review the evidence attached to each control's measures. To add evidence, go to a linked measure, click Add Evidence, and upload screenshots, exports, or documents that prove the control is operating effectively.",
       },
     ],
   },
@@ -62,12 +62,12 @@ export const helpContent: Record<string, HelpContent> = {
       {
         title: "Cross-framework coverage",
         content:
-          "Measures can be linked to controls from multiple frameworks. For example, an MFA implementation measure might satisfy access control requirements in SOC 2, ISO 27001, and HIPAA simultaneously.",
+          "When creating a measure (for example, \"Enable MFA for all employees\"), link it to every control it satisfies across your frameworks. Open the measure, go to the Controls tab, and click Link Control. You might link it to SOC 2 CC6.1, ISO 27001 A.8.5, and HIPAA 164.312(d) in a single measure.",
       },
       {
         title: "Implementation tracking",
         content:
-          "Track the implementation state of each measure from not started through to fully implemented. Attach evidence, assign owners, and link related risks to maintain a complete compliance picture.",
+          "Update each measure's status as you progress: Not Started, In Progress, or Implemented. Assign an owner responsible for the measure, attach evidence (screenshots, configuration exports, policy documents), and link any related risks that this measure mitigates.",
       },
     ],
   },
@@ -81,12 +81,12 @@ export const helpContent: Record<string, HelpContent> = {
       {
         title: "Risk assessment",
         content:
-          "Assess each risk by evaluating its likelihood of occurrence and potential impact. The combination produces a risk score that helps prioritize mitigation efforts.",
+          "Click Add Risk to create a new risk entry. Set the likelihood (rare, unlikely, possible, likely, almost certain) and impact (negligible, minor, moderate, major, severe). The system calculates a risk score automatically. For example, a \"Data breach via unencrypted backup\" risk with likely likelihood and major impact would score as critical.",
       },
       {
         title: "Mitigation",
         content:
-          "Link measures to risks to track how each threat is being mitigated. As measures are implemented, the residual risk decreases, giving you a clear view of your security posture.",
+          "Open a risk and click Link Measure to connect mitigating actions. For example, link an \"Encrypt all backups at rest\" measure to your data breach risk. As you implement the measure, the risk's mitigation status updates to show progress toward reducing the threat.",
       },
     ],
   },
@@ -100,12 +100,12 @@ export const helpContent: Record<string, HelpContent> = {
       {
         title: "Vendor assessments",
         content:
-          "Evaluate each third party's security posture and compliance certifications. Track contract terms, data processing agreements, and review schedules to maintain oversight.",
+          "Click Add Third Party to register a new vendor. Fill in the vendor's name, legal entity, and category. Then add contacts (your account manager, their security team), services they provide, and upload their compliance reports (SOC 2 report, ISO certificate). Conduct a risk assessment to evaluate their security posture.",
       },
       {
         title: "Risk tracking",
         content:
-          "Link third parties to relevant risks and measures. Monitor their compliance status and set up review cycles to ensure ongoing adherence to your security standards.",
+          "For each third party, add a risk assessment scoring their data handling, security practices, and business continuity. Link the vendor to risks in your risk register (for example, \"Vendor data breach\" risk) and to measures that mitigate those risks (such as requiring encryption in their DPA).",
       },
     ],
   },
@@ -119,12 +119,12 @@ export const helpContent: Record<string, HelpContent> = {
       {
         title: "Asset management",
         content:
-          "Catalog your critical assets and link them to applicable controls and risks. Understanding which assets support which business processes helps prioritize security investments.",
+          "Click Add Asset to register a system, application, or infrastructure component. For example, add your production database with its type, owner, and hosting location. You can then link assets to controls that protect them and risks that threaten them, giving auditors a clear view of what is protected and how.",
       },
       {
         title: "Classification",
         content:
-          "Classify assets by sensitivity and criticality. This determines the level of protection required and helps ensure appropriate security controls are in place.",
+          "Set each asset's criticality level (critical, high, medium, low) and data sensitivity classification. A production database holding customer PII would be critical/confidential, while a marketing analytics dashboard might be low/internal. These classifications help prioritize which assets get the strongest protections.",
       },
     ],
   },
@@ -138,12 +138,12 @@ export const helpContent: Record<string, HelpContent> = {
       {
         title: "Audit preparation",
         content:
-          "Prepare for audits by reviewing control effectiveness and gathering required evidence. Use snapshots to capture your compliance posture at a specific point in time.",
+          "Click Add Audit to create a new audit campaign. Select the framework being audited (for example, SOC 2 Type II), set the audit period, and assign a lead. Before the audit begins, review each control in the framework to ensure measures are implemented and evidence is attached. Download the audit report when ready to share with your auditor.",
       },
       {
         title: "Findings management",
         content:
-          "Track findings identified during audits, classify their severity, and implement corrective actions. Link findings to specific controls and measures for traceability.",
+          "When an auditor identifies a gap, click Add Finding and classify it: Nonconformity (must fix immediately), Observation (should address in next cycle), or Opportunity for Improvement (nice to have). Link the finding to the specific control, document the root cause, and create a task to track remediation.",
       },
     ],
   },
@@ -157,12 +157,12 @@ export const helpContent: Record<string, HelpContent> = {
       {
         title: "Version control",
         content:
-          "Track document revisions with full version history. Each version is preserved, providing a complete audit trail of policy changes over time.",
+          "Click Add Document and choose a template (Information Security Policy, Acceptable Use Policy, etc.) or start blank. Edit the content in the built-in editor, then click Publish to create a new version. Previous versions are preserved automatically, so you can always compare changes or revert.",
       },
       {
         title: "Digital signatures",
         content:
-          "Require digital signatures for policy acknowledgment. Track who has signed each document and send reminders for outstanding signatures.",
+          "After publishing a document version, go to the Signatures tab and click Request Signature to select team members who need to acknowledge the policy. Track who has signed and who hasn't. Click Send Signing Notifications to remind outstanding signers via email.",
       },
     ],
   },
@@ -176,12 +176,12 @@ export const helpContent: Record<string, HelpContent> = {
       {
         title: "Classification",
         content:
-          "Classify findings by type and severity. Nonconformities require immediate corrective action, while observations and opportunities for improvement can be addressed in planned cycles.",
+          "When adding a finding, choose its type: Nonconformity (a control that failed; for example, \"MFA not enforced for admin accounts\"), Observation (a weakness that hasn't caused failure yet), Opportunity for Improvement (a suggestion), or Exception (a documented deviation). Nonconformities require immediate corrective action before the next audit cycle.",
       },
       {
         title: "Root cause analysis",
         content:
-          "Document the root cause of each finding and define corrective actions. Link findings to specific controls and track remediation progress to prevent recurrence.",
+          "Open a finding and document why it occurred (for example, \"MFA was not required in the SSO configuration for admin roles\"). Define the corrective action (\"Update SSO policy to require MFA for all roles\"), link the finding to the affected control, and create a remediation task with a due date. Track progress until the finding is resolved.",
       },
     ],
   },
@@ -271,12 +271,12 @@ export const helpContent: Record<string, HelpContent> = {
       {
         title: "Task management",
         content:
-          "Create and assign tasks for compliance activities. Set due dates, priorities, and link tasks to the controls, measures, or findings they address.",
+          "Click Add Task to create a new work item. Give it a clear title (for example, \"Review and update password policy\"), set a due date, choose a priority, and assign it to a team member. Link the task to the measure or finding it addresses so progress is tracked in context.",
       },
       {
         title: "Progress tracking",
         content:
-          "Monitor task completion across your team. Track overdue items and ensure that compliance deadlines are met.",
+          "Use the task list to filter by assignee, status, or due date. Overdue tasks are highlighted. When a task is complete, mark it as done. The linked measure or finding updates to reflect the completed work.",
       },
     ],
   },
@@ -290,12 +290,12 @@ export const helpContent: Record<string, HelpContent> = {
       {
         title: "Review process",
         content:
-          "Connect your identity providers and applications to automatically pull user access data. Review each user's access and approve, revoke, or flag for further investigation.",
+          "First, add access sources (your identity provider, GitHub, AWS IAM, etc.) under Settings. Then create a review campaign: give it a name, select the scope (which access sources to review), and assign reviewers. Once started, reviewers see each user's access entries and can approve, revoke, or flag them for investigation.",
       },
       {
         title: "Compliance evidence",
         content:
-          "Completed access reviews serve as evidence for SOC 2, ISO 27001, and other frameworks that require periodic access certification.",
+          "Completed access reviews are automatically recorded with timestamps, reviewer decisions, and any notes. This serves as audit evidence for SOC 2 CC6.2/CC6.3 (logical access controls), ISO 27001 A.9.2.5 (review of user access rights), and similar requirements across other frameworks.",
       },
     ],
   },
@@ -328,12 +328,12 @@ export const helpContent: Record<string, HelpContent> = {
       {
         title: "Branding",
         content:
-          "Customize your compliance page with your organization's logo, colors, and branding. Upload light and dark mode logos for a polished appearance.",
+          "Go to the Branding tab to upload your organization's logo (both light and dark mode variants). Set your brand colors and customize the page title. The preview updates in real time so you can see how it will look to visitors.",
       },
       {
         title: "Content management",
         content:
-          "Choose which frameworks, audits, and documents to display publicly. Control visibility at a granular level to share only what's appropriate for external audiences.",
+          "Use the Frameworks tab to choose which frameworks to display (for example, show SOC 2 Type II but hide an in-progress ISO 27001). Add external references (links to your security page, SOC 2 report download) and upload files (PDF audit reports, certifications) that visitors can access. Set frameworks to Public or Private visibility individually.",
       },
     ],
   },
@@ -347,12 +347,12 @@ export const helpContent: Record<string, HelpContent> = {
       {
         title: "Request management",
         content:
-          "Log incoming rights requests, verify the requester's identity, and track the response workflow. Ensure each request is fulfilled within the required timeframe.",
+          "When you receive a data subject request (for example, \"Please delete my account data\"), click Add Rights Request. Select the request type (access, rectification, erasure, portability, restriction, or objection), enter the requester's details, and set the deadline (GDPR requires response within 30 days). Update the status as you process it.",
       },
       {
         title: "Compliance tracking",
         content:
-          "Maintain a complete audit trail of all rights requests and responses. This documentation serves as evidence of your organization's compliance with privacy regulations.",
+          "Each rights request maintains a timestamped log of actions taken, the final response, and any supporting documents. This audit trail proves to regulators that your organization handles privacy requests within mandated timeframes. Filter requests by status to find any approaching their deadline.",
       },
     ],
   },
@@ -366,12 +366,12 @@ export const helpContent: Record<string, HelpContent> = {
       {
         title: "Uploading reports",
         content:
-          "Upload semicolon-delimited CSV files exported from Prowler. The system parses each report to extract summary statistics including pass/fail counts broken down by AWS service and finding severity.",
+          "Run Prowler against your AWS account (prowler aws --output-formats csv), then click Upload Report and select the generated CSV file. The system parses the semicolon-delimited output and extracts pass/fail statistics by AWS service (IAM, S3, EC2, etc.) and finding severity (critical, high, medium, low, informational).",
       },
       {
         title: "Reviewing results",
         content:
-          "Each uploaded report shows a summary tab with pass/fail breakdowns by severity and service, plus a raw data tab where you can search and paginate through individual findings.",
+          "Click any uploaded report to see two tabs. The Summary tab shows a visual breakdown of pass/fail counts by severity and service. The Raw Data tab lets you search, sort, and paginate through individual findings. Use the column selector to show or hide specific fields. Save column preferences for your next visit.",
       },
     ],
   },
