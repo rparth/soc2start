@@ -395,6 +395,76 @@ export const helpContent: Record<string, HelpContent> = {
     ],
   },
 
+  userRoles: {
+    title: "User Roles",
+    subtitle: "Access control",
+    description:
+      "SOC2Start uses role-based access control with five distinct roles. Each role determines what a user can see and do within the organization. Roles are assigned when inviting users or through SCIM/SAML provisioning.",
+    wide: true,
+    sections: [
+      {
+        title: "Owner",
+        content:
+          "Full administrative control over the organization. Owners can manage all compliance data, configure SSO (SAML) and SCIM provisioning, delete the organization, promote other users to Owner, and remove members. There must always be at least one Owner.",
+        subsections: [
+          {
+            title: "Unique capabilities",
+            content:
+              "Only Owners can: delete the organization, configure SAML SSO, set up SCIM provisioning, promote users to Owner role, remove members from the organization, and delete SCIM-sourced memberships.",
+          },
+        ],
+      },
+      {
+        title: "Admin",
+        content:
+          "Full access to all compliance data (frameworks, controls, measures, risks, documents, audits, and more). Admins can manage team members, send invitations, and update the organization. They can view SAML and SCIM configurations but cannot modify them.",
+        subsections: [
+          {
+            title: "Limitations",
+            content:
+              "Admins cannot: delete the organization, configure SAML SSO, manage SCIM provisioning, promote users to Owner, or remove members from the organization.",
+          },
+        ],
+      },
+      {
+        title: "Viewer",
+        content:
+          "Read-only access to all compliance data across the organization. Viewers can browse frameworks, controls, measures, risks, documents, audits, findings, assets, data classifications, processing activities, monitoring reports, and the trust center. They can also sign and approve documents.",
+        subsections: [
+          {
+            title: "Limitations",
+            content:
+              "Viewers cannot: create, update, or delete any compliance entities. They have read-only access to all data but cannot make changes to frameworks, controls, measures, or other resources.",
+          },
+        ],
+      },
+      {
+        title: "Auditor",
+        content:
+          "Read-only access to compliance data needed for auditing. Auditors can view frameworks, controls, measures, risks, documents, audits, findings, risk assessments, and monitoring reports. They can sign documents and export PDFs for evidence collection.",
+        subsections: [
+          {
+            title: "Differences from Viewer",
+            content:
+              "Auditors have similar read access to Viewers but without access to internal organizational features like the trust center, webhooks, access reviews, cookie banners, rights requests, or connector configurations.",
+          },
+        ],
+      },
+      {
+        title: "Employee",
+        content:
+          "Limited access focused on document workflows. Employees can view and sign documents assigned to them, approve or reject document versions, and view their device posture status. This role is typically assigned to non-compliance team members who only need to acknowledge policies.",
+        subsections: [
+          {
+            title: "Limitations",
+            content:
+              "Employees cannot: view compliance frameworks, controls, measures, risks, audits, third parties, or other compliance management features. Their access is restricted to documents shared with them and their own device information.",
+          },
+        ],
+      },
+    ],
+  },
+
   mcpSupport: {
     title: "MCP Support",
     subtitle: "AI integration",
